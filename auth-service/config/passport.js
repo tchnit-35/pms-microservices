@@ -24,7 +24,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done)=> {
         const newUser = new User({
-          user_id:profile.id,
+          _id:profile.id,
           display_name:profile.displayName,
           firstname:profile.name.givenName,
           lastname:profile.name.familyName,

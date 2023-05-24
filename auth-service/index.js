@@ -14,9 +14,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 //passport middleware
-
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 //cors middleware
 
@@ -37,40 +36,44 @@ app.listen("3000", () => {
  //Load db
  connectDb()
 
-//Registering User
-app.post("/auth/register", async (req, res) => {
-  const { email, password, name } = req.body;
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-      return res.json({ message: "User already exists" });
-  } else {
-      const newUser = new User({
-          email:email,
-          display_name:name,
-          acc_password:password,
-      });
-      newUser.save();
-      return res.json(newUser);
-  }
-});
+// //Registering User
+// app.post("/auth/register", async (req, res) => {
+//   const { email, password, name } = req.body;
+//   const userExists = await User.findOne({ email });
+//   if (userExists) {
+//       return res.json({ message: "User already exists" });
+//   } else {
+//       const newUser = new User({
+//           email:email,
+//           display_name:name,
+//           acc_password:password,
+//       });
+//       newUser.save();
+//       return res.json(newUser);
+//   }
+// });
 
-//Login User
- app.post("/auth/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-      return res.json({ message: "User doesn't exist" });
-  } else {
-      if (password !== user.acc_password) {
-          return res.json({ message: "Password Incorrect" });
-      }
-      const payload = {
-          email:user.email,
-          display_name: user.display_name
-      };
-      jwt.sign(payload, "secret", (err, token) => {
-          if (err) console.log(err);
-          else return res.json({ token: token });
-      });
-  }
-});
+// //Login User
+//  app.post("/auth/login", async (req, res) => {
+//   const { email, password } = req.body;
+//   const user = await User.findOne({ email });
+//   if (!user) {
+//       return res.json({ message: "User doesn't exist" });
+//   } else {
+//       if (password !== user.acc_password) {
+//           return res.json({ message: "Password Incorrect" });
+//       }
+//       const payload = {
+//           email:user.email,
+//           display_name: user.display_name
+//       };
+//       jwt.sign(payload, "secret", (err, token) => {
+//           if (err) console.log(err);
+//           else return res.json({ token: token });
+//       });
+//   }
+// });
+
+app.get('/',(req,res)=>{
+  res.send("Working")
+})
