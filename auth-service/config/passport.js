@@ -6,7 +6,6 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 const passport = require("passport");
 require('dotenv').config( {path: '../config/config.env'} )
 
-
 const GOOGLE_CLIENT_ID ="1002194065885-3dnilvd57vs7epeopeeurj9rdonjgm8t.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
 

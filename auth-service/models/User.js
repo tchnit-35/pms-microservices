@@ -1,7 +1,14 @@
 const mongoose = require('mongoose')
-
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   user_id:{
+    type:String,
+    required:true
+  },
+  email:{
+    type:String,
+    required:true
+  },
+  acc_password:{
     type:String,
     required:true
   },
@@ -26,4 +33,5 @@ const userSchema = new mongoose.Schema({
     default: Date.now(),
   },
 })
-module.exports = mongoose.model('User',userSchema)
+
+module.exports = mongoose.model('User',UserSchema)
