@@ -130,7 +130,7 @@ router.post("/login", async (req, res) => {
           if (timeDiff < 86400) {
             return t;
           }
-        });
+        }); 
         
       }
       await User.findByIdAndUpdate(user._id, {
