@@ -21,17 +21,18 @@ passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
+      
     },
     async (accessToken, refreshToken, profile, done)=> {
         const newUser = new User({
           _id:profile.id,
-          display_name:profile.displayName,
           firstname:profile.name.givenName,
           lastname:profile.name.familyName,
-          photos: profile.photos[0].value
+          image: profile.photos[0].value,
+          email:profile.emails,
         })
         try{
-          let user = await User.findOne({user_id:profile.id})
+          let user = await User.findOne({_id:profile.id})
           if(user){
             done(null,user)
           }else{
