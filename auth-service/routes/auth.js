@@ -100,7 +100,6 @@ router.post("/register", async (req, res) => {
           acc_password:password,
       });
       newUser.save();
-      console.log(newUser.display_name)
       return res.json(newUser);
       
   }
