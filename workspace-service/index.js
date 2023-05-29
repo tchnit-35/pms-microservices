@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/db");
-const User = require('./models/Workspace');
+const Workspace = require('./models/Workspace');
+const workspaceRoute = require('./routes/workspace')
 const jwt = require('jsonwebtoken');
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(
   })
 );
 
-app.use("/auth", authRoute);
+app.use("/workspace", workspaceRoute);
 
 app.listen("4000", () => {
   console.log("Server is running at %d!",3000);
@@ -35,3 +36,11 @@ app.listen("4000", () => {
 app.get('/',(req,res)=>{
   res.send("Working")
 })
+
+async function connect() {
+  const amqpServer = "amqp://localhost:5672";
+  connection = await amqp.connect(amqpServer);
+  channel = await connection.createChannel();
+  await channel.assertQueue("WORKSPACE");
+}
+connect();

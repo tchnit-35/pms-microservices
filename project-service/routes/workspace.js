@@ -1,7 +1,7 @@
 const express = require("express")
 const { isAuth } = require('../../middlewares/auth');
 const Workspace = require("../models/Workspace");
-const app = express()
+const router = express.Router()
 
 //Returning Workspace
 
@@ -11,7 +11,7 @@ app.post('/workspace',(req,res)=>{
 
 //Creating Workspace
 
-app.post('/register/:user_id/workspace',isAuth,(req,res)=>{
+app.post('/create',isAuth,(req,res)=>{
   const {name} = req.body
   const newWorkpspace = new Workspace({
     master_id:user_id,
@@ -19,5 +19,7 @@ app.post('/register/:user_id/workspace',isAuth,(req,res)=>{
   })
   newWorkpspace.save()
   res.json(newWorkpspace)
-  res.redirect('/workspace)')
 })
+
+
+module.exports = router

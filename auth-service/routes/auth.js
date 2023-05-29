@@ -44,7 +44,7 @@ router.get("/logout", isAuth, async (req, res) => {
 
     await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
     res.json({ success: true, message: 'Sign out successfully!' });
-    res.redirect('/');
+    res.redirect('/'); 
   }
 });
 
@@ -99,8 +99,9 @@ router.post("/register", async (req, res) => {
           lastname:lastname,
           acc_password:password,
       });
-      newUser.save();
+      newUser.save(); 
       return res.json(newUser);
+      
       
   }
 });
@@ -137,6 +138,10 @@ router.post("/login", async (req, res) => {
       });
 
       res.json({user,token})
+      res.writeHead(302, {
+        Location: 'http://localhost:4000/workspace/'+user._id+'/dashboard'
+    });  
+    res.end();
     
   }
 });

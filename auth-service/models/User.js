@@ -28,16 +28,16 @@ const UserSchema = new mongoose.Schema({
   },
   tokens: [{ type: Object }],
 })
-UserSchema.pre('save', function (next) {
-  if (this.isModified('password')) {
-    bcrypt.hash(this.password, 8, (err, hash) => {
-      if (err) return next(err);
+// UserSchema.pre('save', function (next) {
+//   if (this.isModified('password')) {
+//     bcrypt.hash(this.password, 8, (err, hash) => {
+//       if (err) return next(err);
 
-      this.password = hash;
-      next();
-    });
-  }
-});
+//       this.password = hash;
+//       next();
+//     });
+//   }
+// });
 
 UserSchema.virtual('display_name').get(function() {
   return this.firstname+" "+this.lastname;
