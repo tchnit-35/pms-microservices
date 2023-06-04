@@ -25,7 +25,7 @@ exports.isAuth = async (req, res, next) => {
         });
       }
 
-      res.res.json({ success: false, message: 'Internal server error!' });
+      res.json({ success: false, message: 'Internal server error!' });
     }
   } else {
     res.json({ success: false, message: 'unauthorized access!' });
