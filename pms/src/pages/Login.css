@@ -1,0 +1,44 @@
+.custom-container{
+    max-width: 700px;
+}
+
+.my-text{
+    max-width: 550px;
+    
+}
+
+.txt{
+    font-size: 52px;
+    font-weight: normal;
+}
+
+.mb-6{
+    margin-bottom: 45px;
+}
+
+.ctm-btn{
+    height: 48px ;
+    width: 430px;
+    border-radius: 5px ;
+}
+
+.txt-2{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.alt{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+    column-gap: 1rem;
+}
+
+.alt::before, .alt::after{
+    content: "";
+    height: 1px;
+    background-color: black;
+    display: block;
+
+}
