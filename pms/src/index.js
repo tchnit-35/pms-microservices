@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/Signup'
 import Login from './pages/Login';
+import CreateWorkspace from './pages/CreateWorkspace';
 
 import {
   createBrowserRouter,
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/Login",
     element: <Login />,
+  },
+  {
+    path: "/CreateWorkspace",
+    element: <CreateWorkspace />,
   },
 ]);
 

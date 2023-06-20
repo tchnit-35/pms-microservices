@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 
 import AuthLink from "../components/auth_links/AuthLink";
 
-function BasicExample() {
+function Signup() {
   return (
     <section>
       <div className="wave wave1"></div>
@@ -105,4 +105,4 @@ function BasicExample() {
   );
 }
 
-export default BasicExample;
+export default Signup;

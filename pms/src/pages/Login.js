@@ -1,41 +1,92 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 
-import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Stack from "react-bootstrap/Stack";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/esm/Col";
 
-import Container from "react-bootstrap/esm/Container";
-import Button from "react-bootstrap/esm/Button";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGoogle,
   faGithub,
   faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 
-function Login() {
+import { Link } from "react-router-dom";
+
+import AuthLink from "../components/auth_links/AuthLink";
+
+function BasicExample() {
   return (
-    <>
-      <div className="p-4">
-        <Container className="p-4 d-flex flex-column align-items-center custom-container">
-          <div className="text-center my-text mb-6">
-            <h1 className="txt">You're one click away from less busywork</h1>
+    <section>
+      <div className="wave wave1"></div>
+      <div className="wave wave2"></div>
+      <div className="wave wave3"></div>
+      <div className="wave wave2"></div>
+      <div className="min-vh-100 d-flex justify-content-center align-items-center">
+        <Container className="my-container p-4">
+          <div className="text-center mb-4">
+            <h3 className="mb-2">TaskAID</h3>
+            <p>log into continue</p>
           </div>
-          <div>
-            <Button variant="primary"  className="d-flex align-items-center ctm-btn">
-              <div>
-                <FontAwesomeIcon icon={faGoogle} size="lg" className="mr-2" />
-              </div>
-              <span className="flex-grow-1 txt-2">Sign up with your Google work account</span>
-            </Button>
-            <div className=" vh-100 d-flex justify-content-center align-items-center">
-            <p className="alt">OR</p>
-            </div>
+          <div className="mb-2">
+            <Row>
+              <Col className="d-flex align-items-center my-col">
+                <Form>
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Control type="email" placeholder="Enter your email" className="inp" />
+                  </Form.Group>
+                  <Form.Group className="mb-1" controlId="formBasicPassword">
+                    <Form.Control
+                      type="password"
+                      placeholder=" Enter your password"
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="form-control mt-3 mb-4 btn-custom"
+                  >
+                    Sign up
+                  </Button>
+                </Form>
+              </Col>
+              <Col className="d-flex justify-content-center align-items-center my-col2">
+                <Stack className="d-flex justify-content-center align-items-center">
+                  <div>
+                    <AuthLink
+                      to="/"
+                      icon={faGoogle}
+                      text="Continue with Google"
+                      className="auth"
+                    />
+                    <AuthLink
+                      to="/"
+                      icon={faGithub}
+                      text="Continue with Github"
+                    />
+                    <AuthLink
+                      to="/"
+                      icon={faFacebook}
+                      text="Signup with Facebook"
+                    />
+                  </div>
+                </Stack>
+              </Col>
+            </Row>
+          </div>
+          <div
+            style={{ borderBottom: "1px solid #ccc", marginBottom: "1rem" }}
+          ></div>
+          <div className="d-flex justify-content-center">
+            <Link to="/Signup">Don't have an account? sign up</Link>
           </div>
         </Container>
       </div>
-    </>
+    </section>
   );
 }
 
-export default Login;
+export default BasicExample;
