@@ -1,6 +1,7 @@
 *{
   margin: 0;
   padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 section{
@@ -77,8 +78,8 @@ section .wave.wave4{
 
 .my-container {
   max-width: 800px;
-  background: white;
-  border-radius: 5px;
+  background: rgb(254, 254, 254);
+  border-radius: 7px;
   -webkit-box-shadow: 0px 0px 18px -9px rgba(0, 0, 0, 0.98);
   box-shadow: 0px 0px 18px -9px rgba(0, 0, 0, 0.98);
 }
@@ -127,4 +128,16 @@ section .wave.wave4{
 .strip {
   text-decoration: none !important;
   color: white !important;
+}
+
+.inp{
+  width: 330px;
+}
+
+.my-col{
+  border-right: 1px solid silver;
+}
+
+.auth{
+  width: 330px;
 }

@@ -3,7 +3,6 @@ import "./Login.css";
 
 import { Link } from "react-router-dom";
 
-import AuthNavBar from "../components/auth_navbar/AuthNavBar";
 import Container from "react-bootstrap/esm/Container";
 import Button from "react-bootstrap/esm/Button";
 
@@ -17,7 +16,6 @@ import {
 function Login() {
   return (
     <>
-      <AuthNavBar />
       <div className="p-4">
         <Container className="p-4 d-flex flex-column align-items-center custom-container">
           <div className="text-center my-text mb-6">
