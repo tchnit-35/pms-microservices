@@ -41,18 +41,18 @@ function Signup() {
                 <Stack className="d-flex justify-content-center align-items-center">
                   <div>
                     <AuthLink
-                      to="/"
+                      to="/Confirm"
                       icon={faGoogle}
                       text="Continue with Google"
                       className="auth"
                     />
                     <AuthLink
-                      to="/"
+                      to="/Confirm"
                       icon={faGithub}
                       text="Continue with Github"
                     />
                     <AuthLink
-                      to="/"
+                      to="/Confirm"
                       icon={faFacebook}
                       text="Signup with Facebook"
                     />
