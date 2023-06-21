@@ -8,11 +8,9 @@ import Stack from "react-bootstrap/Stack";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col";
 
-import {
-  faGoogle,
-  faGithub,
-  faFacebook,
-} from "@fortawesome/free-brands-svg-icons";
+import google from "../images/google.png";
+import github from "../images/github.png";
+import facebook from "../images/facebook.png";
 
 import { Link } from "react-router-dom";
 
@@ -21,8 +19,7 @@ import AuthLink from "../components/auth_links/AuthLink";
 function BasicExample() {
   return (
     <section>
-      <div className="wave wave1"></div>
-      <div className="wave wave2"></div>
+      <div className="wave wave1"></div> <div className="wave wave2"></div>
       <div className="wave wave3"></div>
       <div className="wave wave2"></div>
       <div className="min-vh-100 d-flex justify-content-center align-items-center">
@@ -39,10 +36,7 @@ function BasicExample() {
                     <Form.Control type="email" placeholder="Enter your email" className="inp" />
                   </Form.Group>
                   <Form.Group className="mb-1" controlId="formBasicPassword">
-                    <Form.Control
-                      type="password"
-                      placeholder=" Enter your password"
-                    />
+                    <Form.Control type="password" placeholder=" Enter your password" />
                   </Form.Group>
                   <Button
                     variant="primary"
@@ -56,30 +50,15 @@ function BasicExample() {
               <Col className="d-flex justify-content-center align-items-center my-col2">
                 <Stack className="d-flex justify-content-center align-items-center">
                   <div>
-                    <AuthLink
-                      to="/"
-                      icon={faGoogle}
-                      text="Continue with Google"
-                      className="auth"
-                    />
-                    <AuthLink
-                      to="/"
-                      icon={faGithub}
-                      text="Continue with Github"
-                    />
-                    <AuthLink
-                      to="/"
-                      icon={faFacebook}
-                      text="Signup with Facebook"
-                    />
+                    <AuthLink to="/" icon={google} text="Continue with Google" className="auth" />
+                    <AuthLink to="/" icon={github} text="Continue with Github" />
+                    <AuthLink to="/" icon={facebook} text="Signup with Facebook" />
                   </div>
                 </Stack>
               </Col>
             </Row>
           </div>
-          <div
-            style={{ borderBottom: "1px solid #ccc", marginBottom: "1rem" }}
-          ></div>
+          <div style={{ borderBottom: "1px solid #ccc", marginBottom: "1rem" }}></div>
           <div className="d-flex justify-content-center">
             <Link to="/Signup">Don't have an account? sign up</Link>
           </div>

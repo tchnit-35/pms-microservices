@@ -6,11 +6,9 @@ import Stack from "react-bootstrap/Stack";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col";
 
-import {
-  faGoogle,
-  faGithub,
-  faFacebook,
-} from "@fortawesome/free-brands-svg-icons";
+import google from "../images/google.png"
+import github from "../images/github.png"
+import facebook from "../images/facebook.png"
 
 import { Link } from "react-router-dom";
 
@@ -42,19 +40,18 @@ function Signup() {
                   <div>
                     <AuthLink
                       to="/Confirm"
-                      icon={faGoogle}
                       text="Continue with Google"
-                      className="auth"
+                      icon={google}
                     />
                     <AuthLink
                       to="/Confirm"
-                      icon={faGithub}
                       text="Continue with Github"
+                      icon={github}
                     />
                     <AuthLink
                       to="/Confirm"
-                      icon={faFacebook}
                       text="Signup with Facebook"
+                      icon={facebook}
                     />
                   </div>
                 </Stack>

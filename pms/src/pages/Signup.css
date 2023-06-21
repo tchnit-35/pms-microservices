@@ -114,25 +114,6 @@ section .wave.wave4{
   box-shadow: none !important;
 }
 
-.auth-btn {
-  background-color: #fafbfc;
-  height: 40px;
-  border-radius: 5px !important;
-  -webkit-box-shadow: 1px 0px 14px -4px #ababab;
-  box-shadow: 1px 0px 14px -4px #ababab;
-}
-
-.auth-btn:focus {
-  box-shadow: none;
-  border: none;
-  background-color: rgb(224, 224, 224);
-}
-
-.auth-btn:hover {
-  background-color: rgb(248, 248, 248) !important;
-  border: 1px solid rgb(248, 248, 248) !important;
-}
-
 .strip {
   text-decoration: none !important;
   color: white !important;
@@ -144,8 +125,4 @@ section .wave.wave4{
 
 .my-col{
   border-right: 1px solid silver;
-}
-
-.auth{
-  width: 330px;
 }
