@@ -2,8 +2,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Signup.css";
 
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -17,6 +15,7 @@ import {
 import { Link } from "react-router-dom";
 
 import AuthLink from "../components/auth_links/AuthLink";
+import UserForm from "../components/user_info_form/UserForm";
 
 function Signup() {
   return (
@@ -34,40 +33,9 @@ function Signup() {
           <div className="mb-2">
             <Row>
               <Col className="d-flex align-items-center my-col">
-                <Form>
-                  <Form.Group className="mb-0" controlId="formBasicEmail">
-                    <Form.Control
-                      className="form-Control inp"
-                      type="text"
-                      placeholder="Enter your First Name"
-                    />
-                  </Form.Group>
-                  <br />
-                  <Form.Group className="mb-0" controlId="formBasicEmail">
-                    <Form.Control
-                      className="form-Control"
-                      type="text"
-                      placeholder="Enter your Last Name"
-                    />
-                  </Form.Group>
-                  <br />
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control type="email" placeholder="Enter your email" />
-                  </Form.Group>
-                  <Form.Group className="mb-1" controlId="formBasicPassword">
-                    <Form.Control
-                      type="password"
-                      placeholder=" Enter your password"
-                    />
-                  </Form.Group>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="form-control mt-3 mb-4 btn-custom"
-                  >
-                    Sign up
-                  </Button>
-                </Form>
+
+              <UserForm />
+              
               </Col>
               <Col className="d-flex justify-content-center align-items-center my-col2">
                 <Stack className="d-flex justify-content-center align-items-center">
