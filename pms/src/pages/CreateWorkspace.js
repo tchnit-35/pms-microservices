@@ -18,7 +18,7 @@ function CreateWorkspace() {
       <Container className='p-4'>
                 <Container className='p-4 d-flex flex-column align-items-center'>
                     <div className='text-center mb-4'>
-                        <h4 className='mb-3'>Wellcome to TaskAID</h4>
+                        <h3 className='mb-3'>Wellcome to TaskAID</h3>
                         <p>Let's create your workspace</p>
                     </div>
                     <div>

@@ -14,12 +14,12 @@ const UserForm = ({ to, icon, text }) => {
           <Form.Control
             className="form-Control inp"
             type="text"
-            placeholder="Enter your First Name"
+            placeholder="Enter your first Name"
           />
         </Form.Group>
         <br />
         <Form.Group className="mb-0" controlId="formBasicEmail">
-          <Form.Control className="form-Control" type="text" placeholder="Enter your Last Name" />
+          <Form.Control className="form-Control" type="text" placeholder="Enter your last Name" />
         </Form.Group>
         <br />
         <Form.Group className="mb-3" controlId="formBasicEmail">
