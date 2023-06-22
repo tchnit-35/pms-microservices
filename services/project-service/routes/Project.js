@@ -17,7 +17,7 @@ router.delete('/:projectId',isAuth,deleteProject)
 router.get('/',isAuth,findProject)
 //Manage Tasks
 router.post("/:pid/tasks",isAuth,createTask)
-router.patch('/:projectId',isAuth,updateProject)
-router.delete('/:projectId',isAuth,deleteProject)
+router.patch('/:projectId',isAuth,updateTask)
+router.delete('/:projectId',isAuth,deleteTask)
 
 module.exports = router
