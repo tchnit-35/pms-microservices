@@ -1,12 +1,8 @@
-require("./config/passport");
-const mongoose = require("mongoose");
+require("../../shared/config/passport");
 const express = require("express");
-const cors = require("cors");
+const cors = require("cors"); 
 const connectDb = require("../../shared/config/db");
-const passport = require("passport");
 const authRoute = require("./routes/auth");
-const User = require('./models/User');
-const jwt = require('jsonwebtoken');
 const app = express();
 
 //json parsing middleware
@@ -34,6 +30,4 @@ app.listen("3000", () => {
  connectDb()
 
 
-app.get('/',(req,res)=>{
-  res.send("Working")
-})
+  

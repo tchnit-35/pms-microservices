@@ -1,5 +1,5 @@
-const Project = require("../models/Project");
-const Task = require('../models/Task')
+const Task = require("../../../shared/models/Task");
+const Project = require("../../../shared/models/Project"); 
 const mongoose = require('mongoose')
 
 exports.createTask = async (req,res)=>{

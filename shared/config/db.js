@@ -7,7 +7,7 @@ const connectDb = async()=>{
         useNewUrlParser:true,
         useUnifiedTopology: true,
       })
-      console.log("Auth Mongodb Connected") 
+      console.log("Mongodb Connected") 
   }
   catch(err){
       console.log(err)

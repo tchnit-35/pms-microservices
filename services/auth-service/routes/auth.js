@@ -3,7 +3,7 @@ const passport = require("passport");
 const jwt = require('jsonwebtoken');
 const User = require('../../../shared/models/User');
 const mongoose = require("mongoose");
-const { isAuth } = require('../../middlewares/auth');
+const { isAuth } = require('../../../shared/middlewares/auth');
 const CLIENT_URL = "/";
 
 //Login Success Status Route
@@ -44,7 +44,6 @@ router.get("/logout", isAuth, async (req, res) => {
 
     await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
     res.json({ success: true, message: 'Sign out successfully!' });
-    res.redirect('/'); 
   }
 });
 

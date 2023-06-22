@@ -99,6 +99,7 @@ exports.findProject = (req, res) => {
 
 exports.createProject = async (req,res)=>{
   const {project_title,startDate,endDate} = req.body
+  const projectMasterId = req.user._id 
   
   //Check if project already exists
   const projectExists = await Project.findOne({project_title});
@@ -113,7 +114,8 @@ exports.createProject = async (req,res)=>{
   const newProject = new Project({
     project_title,
     startDate,
-    endDate
+    endDate,
+    projectMasterId
   })
   return newProject
   .save()
