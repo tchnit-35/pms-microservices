@@ -62,7 +62,7 @@ function Signup() {
             style={{ borderBottom: "1px solid #ccc", marginBottom: "1rem" }}
           ></div>
           <div className="d-flex justify-content-center">
-            <Link to="/Login">Already have an account? Log in</Link>
+            <Link to="/Login" className="login-link">Already have an account? Log in</Link>
           </div>
         </Container>
       </div>

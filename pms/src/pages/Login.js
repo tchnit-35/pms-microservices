@@ -60,7 +60,7 @@ function BasicExample() {
           </div>
           <div style={{ borderBottom: "1px solid #ccc", marginBottom: "1rem" }}></div>
           <div className="d-flex justify-content-center">
-            <Link to="/Signup">Don't have an account? sign up</Link>
+            <Link to="/Signup" className="signup-link">Don't have an account? sign up</Link>
           </div>
         </Container>
       </div>

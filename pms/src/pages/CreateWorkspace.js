@@ -35,7 +35,7 @@ function CreateWorkspace() {
                         </Form.Group>
                     </div>
                     <div>
-                        <Link to="/Home">
+                        <Link to="/Project">
                         <Button variant="primary mt-3 mb-3" type="submit" className="btn-custom">
                             Create your Workspace
                         </Button>

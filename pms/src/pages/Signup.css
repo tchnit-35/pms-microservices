@@ -126,3 +126,8 @@ section .wave.wave4{
 .my-col{
   border-right: 1px solid silver;
 }
+
+.login-link{
+  font-size: 14px;
+  color: rgb(115, 136, 179);
+}
