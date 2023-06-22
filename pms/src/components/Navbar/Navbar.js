@@ -52,12 +52,7 @@ function NavigationBar() {
               </Nav.Link>
             </Nav>
             <Form className="d-flex me-3">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="custon-imput"
-                aria-label="Search"
-              />
+              <Form.Control type="search" placeholder="Search" className="custon-imput" aria-label="Search" />
             </Form>
             <Nav.Link href="#action3">
               <FontAwesomeIcon
