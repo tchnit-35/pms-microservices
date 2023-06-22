@@ -4,33 +4,39 @@ const mongoose = require('mongoose')
 
 exports.createTask = async (req,res)=>{
   const projectId = req.params.pid
-  const {name,startDate,endDate} = req.body
-  const newTask = new Task({
-    name,
-    startDate,
-    endDate,
-    projectId
-  })
-  newTask
-  .save()
-  .then(async ()=>{
-      await Project.find({_id:projectId})
-
-  .then(() => {
-   return res.status(200).json({
-      success: true,
-      message: 'Project is updated',
-      CreatedTask: newTask,
-    });
-  })
-  .catch((err) => {
-    res.status(500).json({
-      success: false,
-      message: 'Server error. Please try again.',
-      error:err.message
-    });
-  });
-  })
+  await Project.find({_id:projectId})
+    .then(()=>{
+      const {name,startDate,endDate} = req.body
+      const newTask = new Task({
+        name,
+        startDate,
+        endDate,
+        projectId
+      })
+      newTask
+      .save()
+      .then(() => {
+      return res.status(200).json({
+          success: true,
+          message: 'Task is created',
+          CreatedTask: newTask,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          success: false,
+          message: 'Server error. Please try again.',
+          error:err.message
+        });
+      });
+    })
+    .catch((err)=>{
+      res.status(500).json({
+        success: false,
+        message: 'No Such Project Found.',
+        error:err.message
+      });
+    })
 
 
 } 
@@ -91,9 +97,9 @@ exports.getByProjectId = async(req,res)=>{
   });
 }
 
-exports.getByUserEmail = async(req,res)=>{
-  const id = req.usee.email
-  await Task.find({userEmail :id})
+exports.getByUserId = async(req,res)=>{
+  const id = req.user._id
+  await Task.find({userId :id})
   .then((allTasks) => {
     return res.status(200).json({
       success: true,

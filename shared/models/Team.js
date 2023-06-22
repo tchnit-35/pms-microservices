@@ -7,7 +7,7 @@ const teamSchema = new Schema({
     },
     users:[{
       user_id:String,
-      role:['Head',"Regular"]
+      r
     }],
     industry:{
         type: String, 

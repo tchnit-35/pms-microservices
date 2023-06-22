@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-
 const TaskSchema = new mongoose.Schema({
+
   name:{
     type:String,
     required:true
@@ -15,8 +15,12 @@ const TaskSchema = new mongoose.Schema({
     default:Date.now,
     required:true
   },
-  userId:[{
-    type:mongoose.Schema.Types.ObjectId, ref:'User'
+  
+  project:{
+    project_id:String,
+  },
+  users:[{
+    user_id:String,
   }],
   description:{
     type:String,
@@ -30,13 +34,10 @@ const TaskSchema = new mongoose.Schema({
     type:Boolean,
     default:false
   },
-  projectId:{
-    type:mongoose.Schema.Types.ObjectId, ref:'Project'
-  },
   created_at: {
     type: Date,
     default: Date.now(),
   },
 })
 
-module.exports = mongoose.model("Task",TaskSchema)
+module.exports = mongoose.model('Task',TaskSchema)
