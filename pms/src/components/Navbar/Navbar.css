@@ -1,0 +1,48 @@
+.custom-navbar {
+  background-color: #12664f !important;
+  max-height: 60px;
+}
+
+.custon-imput {
+  background-color: #034e3b;
+  border: 0px solid #034e3b;
+  height: 35px;
+  width: 300px;
+}
+
+.custom-input::placeholder {
+  color: rgb(150, 133, 133) !important;
+}
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #7a82ab;
+  border-radius: 30px;
+  background-color: #7a82ab;
+}
+
+.aid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #ffffff;
+  border-radius: 30px;
+  background-color: #ffffff;
+}
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #7a82ab;
+  border-radius: 30px;
+  background-color: #7a82ab;
+}
