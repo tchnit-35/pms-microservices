@@ -9,6 +9,7 @@ import Col from "react-bootstrap/esm/Col";
 import google from "../images/google.png"
 import github from "../images/github.png"
 import facebook from "../images/facebook.png"
+import logo from "../images/logo.png"
 
 import { Link } from "react-router-dom";
 
@@ -25,8 +26,7 @@ function Signup() {
       <div className="min-vh-100 d-flex justify-content-center align-items-center">
         <Container className="my-container p-4">
           <div className="text-center mb-4">
-            <h3 className="mb-2">TaskAID</h3>
-            <p>sign up to continue</p>
+          <img src={logo} alt="logo"  className="logo" />
           </div>
           <div className="mb-2">
             <Row>

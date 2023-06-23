@@ -1,0 +1,51 @@
+.bg {
+  width: 100%;
+  height: 100vh;
+  background: #aadcb5;
+  overflow: hidden;
+}
+
+.content {
+  background-color: rgb(249, 249, 249);
+  height: 500px;
+  width: 500px;
+  border-radius: 50%;
+}
+
+.logo {
+  height: 150px;
+  width: 150px;
+}
+
+.my-text {
+  font-size: 25px;
+  font: bolder;
+  color: #848aa7;
+}
+
+.u-t {
+  font-size: 17px;
+  font: bolder;
+  color: #5f6587;
+}
+
+.p-6 {
+  padding: 50px;
+}
+
+.ctm-link {
+  margin-left: 5px;
+  color: rgb(210, 210, 210);
+  transition: color 0.3s ease;
+}
+
+.ctm-link:hover {
+    color: blue;
+  }
+  
+  
+  
+  
+  
+  
+  

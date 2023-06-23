@@ -119,3 +119,8 @@ section .wave.wave4 {
   font-size: 14px;
   color: rgb(115, 136, 179);
 }
+
+.logo{
+  height: 100px;
+  width: 100px;
+}
