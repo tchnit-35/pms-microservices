@@ -1,14 +1,15 @@
 import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";  
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./UserForm.css";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 const UserForm = ({ to, icon, text }) => {
+  const history = useHistory();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const UserForm = ({ to, icon, text }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/register", {
+      const response = await axios.post("http://localhost:4000/auth/register", {
         firstname: firstName,
         lastname: lastName,
         email,
@@ -26,8 +27,20 @@ const UserForm = ({ to, icon, text }) => {
       });
 
       // Handle the successful registration (e.g., show a success message, redirect to another page)
+
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+
+      history.push("/Confirm");
+      console.log("Registration successful");
+      console.log(response.data);
+
     } catch (error) {
+
       // Handle the registration error (e.g., show an error message)
+      console.log("Registration error:", error.message);
     }
   };
 
@@ -36,7 +49,7 @@ const UserForm = ({ to, icon, text }) => {
       <Form onSubmit={handleSubmit}>
         {/* First Name Input */}
 
-        <Form.Group className="mb-0" controlId="formBasicEmail">
+        <Form.Group className="mb-0" controlId="formBasicFirstName">
           <Form.Control
             className="form-Control inp"
             type="text"
@@ -49,11 +62,11 @@ const UserForm = ({ to, icon, text }) => {
 
         {/* Last Name Input */}
 
-        <Form.Group className="mb-0" controlId="formBasicEmail">
+        <Form.Group className="mb-0" controlId="formBasicLastName">
           <Form.Control
             className="form-Control"
             type="text"
-            placeholder="Enter your last Name"
+            placeholder="Enter your surname"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -84,11 +97,11 @@ const UserForm = ({ to, icon, text }) => {
 
         {/* Submit button */}
 
-        <Link to="/CreateWorkspace">
+        
           <Button variant="primary" type="submit" className="form-control mt-3 mb-4 btn-custom">
             Sign up
           </Button>
-        </Link>
+        
       </Form>
     </div>
   );
