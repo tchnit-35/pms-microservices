@@ -1,6 +1,7 @@
-const Project = require("../../../shared/models/Project");
+const Project = require("../models/Project");
 const mongoose = require('mongoose');
-const Task = require("../../../shared/models/Task");
+const amqp = require('amqplib');
+const UserProject = require("../models/UserProject");
 
 
 exports.getFutureProjects = async (req,res)=>{
@@ -98,47 +99,26 @@ exports.findProject = (req, res) => {
 };
 
 exports.createProject = async (req,res)=>{
-  const {project_title,startDate,endDate} = req.body
-  const projectMasterId = req.user._id 
-  
-  //Check if project already exists
-  const projectExists = await Project.findOne({project_title});
-
-  if(projectExists){
-    return res.status(400).json({
-      success:false,
-      message:'Project Already Existing'
-    })
+  const { project_title, startDate, endDate } = req.body
+  const user = req.user._id
+  try {
+    const project = new Project({ project_title,endDate,startDate })
+    const userProject = new UserProject({user,projectId,permission:'admin'})
+    await project.save();
+    await userProject.save()
+    res.send(project);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
+};
 
-  const newProject = new Project({
-    project_title,
-    startDate,
-    endDate,
-    projectMasterId
-  })
-  return newProject
-  .save()
-  .then((newProject) => {
-    return res.status(201).json({
-      success: true,
-      message: 'New project created successfully',
-      Project: newProject,
-    });
-  })
-  .catch((error) => {
-    res.status(500).json({
-      success: false,
-      message: 'Server error. Please try again.',
-      error: error.message,
-    });
-  });
-}
+
 
 exports.updateProject = async (req, res)=> {
   const id = req.params.projectId;
   const updateObject = req.body;
-  await Project.update({ _id:id }, { $set:updateObject })
+  await Project.updateOne({ _id:id }, { $set:updateObject })
     .exec()
     .then(() => {
       res.status(200).json({
@@ -156,22 +136,25 @@ exports.updateProject = async (req, res)=> {
 }
 
 exports.deleteProject = async (req,res)=>{
-  const id = req.params.projectId
-  await Project.findByIdAndRemove(id)
-  .exec()
-  .then(async ()=>{
-    await Task.deleteMany({projectId:id})
-  })
-  .then(() => {
-    res.status(200).json({
-      success: true,
-      message: 'Project is deleted',
-    });
-  })
-  .catch((err) => {
-    res.status(500).json({
-      success: false,
-      message: 'Server error. Please try again.'
-    });
-  });
-}
+  const projectId = req.params.id;
+
+  try {
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+
+    // Publish message to RabbitMQ indicating project has been deleted
+    const event = {
+      action: 'delete',
+      projectId
+    };
+    await publishEvent(event);
+
+    res.send(`Project ${project.name} has been deleted`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+};
+

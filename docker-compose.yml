@@ -1,0 +1,86 @@
+version: "3"
+services:
+  project-service:
+    build: ./services/project-service
+    ports:
+      - "3000:3000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+      
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - "4000:4000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+      
+  user-service:
+    build: ./services/user-service
+    ports:
+      - "5000:5000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+      
+  task-service:
+    build: ./services/task-service
+    ports:
+      - "6000:6000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+
+  team-service:
+    build: ./services/team-service
+    ports:
+      - "7000:7000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+
+  conversation-service:
+    build: ./services/team-service
+    ports:
+      - "8000:8000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+
+  message-service:
+    build: ./services/team-service
+    ports:
+      - "9000:9000"
+    environment:
+      - AMQP_SERVER=rabbitmq
+      - AMQP_PORT=5672
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3.9.29-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    networks:
+      - app-network
+      
+networks:
+  app-network:
+    driver: bridge

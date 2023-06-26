@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const passport = require("passport");
 const jwt = require('jsonwebtoken');
-const User = require('../../../shared/models/User');
+const User = require('../User');
 const mongoose = require("mongoose");
-const { isAuth } = require('../../../shared/middlewares/auth');
+const { isAuth } = require('../../auth');
 const CLIENT_URL = "/";
 
 //Login Success Status Route
@@ -84,26 +84,7 @@ router.get(
   })
 );
 
-//Registering User
 
-router.post("/register", async (req, res) => {
-  const { email, password, firstname,lastname } = req.body;
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-      return res.json({ message: "User already exists" });
-  } else {
-      const newUser = new User({
-          email:email,
-          firstname:firstname,
-          lastname:lastname,
-          acc_password:password,
-      });
-      newUser.save(); 
-      return res.json(newUser);
-      
-      
-  }
-});
 
 //Login User
 

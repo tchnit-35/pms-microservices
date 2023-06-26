@@ -1,11 +1,9 @@
-const Task = require("../../../shared/models/Task");
-const Project = require("../../../shared/models/Project"); 
+const Task = require("../models/Task");
+
 const mongoose = require('mongoose')
 
 exports.createTask = async (req,res)=>{
   const projectId = req.params.pid
-  await Project.find({_id:projectId})
-    .then(()=>{
       const {name,startDate,endDate} = req.body
       const newTask = new Task({
         name,
@@ -29,17 +27,9 @@ exports.createTask = async (req,res)=>{
           error:err.message
         });
       });
-    })
-    .catch((err)=>{
-      res.status(500).json({
-        success: false,
-        message: 'No Such Project Found.',
-        error:err.message
-      });
-    })
+    }
 
 
-} 
 exports.updateTask = async (req, res)=> {
   const id = req.query.taskId;
   const updateObject = req.body;
