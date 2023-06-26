@@ -90,7 +90,7 @@ router.post("/register", async (req, res) => {
   const { email, password, firstname,lastname } = req.body;
   const userExists = await User.findOne({ email });
   if (userExists) {
-      return res.json({ message: "User already exists" });
+      return res.status(401).json({ message: "User already exists" });
   } else {
       const newUser = new User({
           email:email,
@@ -111,10 +111,10 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-      return res.json({ message: "User doesn't exist" });
+      return res.status(401).json({ message: "Email or password is incorrect" });
   } else {
       if (password !== user.acc_password) {
-          return res.json({ message: "Password Incorrect" });
+          return res.status(401).json({ message: "Email or password is incorrect" });
       }
       const token = jwt.sign({ userId: user._id }, "secret", {
         expiresIn: '1d',

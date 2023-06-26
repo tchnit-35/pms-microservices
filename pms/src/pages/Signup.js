@@ -42,16 +42,19 @@ function Signup() {
                       to="/Confirm"
                       text="Continue with Google"
                       icon={google}
+                      endpoint="/auth/google"
                     />
                     <AuthLink
                       to="/Confirm"
                       text="Continue with Github"
                       icon={github}
+                      endpoint="/auth/github"
                     />
                     <AuthLink
                       to="/Confirm"
                       text="Signup with Facebook"
                       icon={facebook}
+                      endpoint="/auth/facebook"
                     />
                   </div>
                 </Stack>

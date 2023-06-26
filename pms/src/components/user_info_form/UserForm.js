@@ -1,52 +1,95 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./UserForm.css";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+
 import axios from "axios";
 
 const UserForm = ({ to, icon, text }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [FirstNameError, setFirstNameError] = useState("");
+  const [LastNameError, setLastNameError] = useState("");
+  const [EmailError, setEmailError] = useState("");
+  const [PasswordError, setPasswordError] = useState("");
+  const [error, setError] = useState(""); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post("http://localhost:4000/auth/register", {
-        firstname: firstName,
-        lastname: lastName,
-        email,
-        password,
-      });
+    // Check if all fields are filled in
+    if (!firstName) {
+      setFirstNameError("Please enter your first name");
+    } else {
+      setFirstNameError("");
+    }
 
-      // Handle the successful registration (e.g., show a success message, redirect to another page)
+    if (!lastName) {
+      setLastNameError("Please enter your last name");
+    } else {
+      setLastNameError("");
+    }
 
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setPassword('');
+    if (!email) {
+      setEmailError("Please enter an email address");
+    } else {
+      setEmailError("");
+    }
 
-      history.push("/Confirm");
-      console.log("Registration successful");
-      console.log(response.data);
+    if (!password) {
+      setPasswordError("Please enter a password");
+    } else {
+      setPasswordError("");
+    }
 
-    } catch (error) {
+    if (firstName && lastName && email && password) {
+      try {
+        const response = await axios.post("http://localhost:4000/auth/register", {
+          firstname: firstName,
+          lastname: lastName,
+          email,
+          password,
+        });
 
-      // Handle the registration error (e.g., show an error message)
-      console.log("Registration error:", error.message);
+        // Handle the successful registration
+
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+
+        navigate("/Confirm");
+        
+      } catch (error) {
+
+        // Handle the registration error
+        console.log("Registration error:", error.message);
+        setError("This user already exist");
+      }
     }
   };
 
   return (
     <div>
       <Form onSubmit={handleSubmit}>
+
+       {/* Error */}
+
+       {error && (
+                    <p className="error-msg2 text-center mb-2">
+                      <FontAwesomeIcon icon={faCircleExclamation} /> {error}
+                    </p>
+                  )}
+
         {/* First Name Input */}
 
         <Form.Group className="mb-0" controlId="formBasicFirstName">
@@ -58,6 +101,14 @@ const UserForm = ({ to, icon, text }) => {
             onChange={(e) => setFirstName(e.target.value)}
           />
         </Form.Group>
+
+        {/* First Name Error */}
+        {FirstNameError && (
+          <p className="error-msg">
+            <FontAwesomeIcon icon={faCircleExclamation} /> {FirstNameError}
+          </p>
+        )}
+
         <br />
 
         {/* Last Name Input */}
@@ -71,11 +122,19 @@ const UserForm = ({ to, icon, text }) => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Group>
-        <br />
+
+        {/* Last Name Error */}
+        {LastNameError && (
+          <p className="error-msg">
+            <FontAwesomeIcon icon={faCircleExclamation} /> {LastNameError}
+          </p>
+        )}
+
+        <br className="break" />
 
         {/* email Input */}
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="" controlId="formBasicEmail">
           <Form.Control
             type="email"
             placeholder="Enter your email"
@@ -83,6 +142,15 @@ const UserForm = ({ to, icon, text }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
+
+        {/* email Error */}
+        {EmailError && (
+        <p className="error-msg">
+        <FontAwesomeIcon icon={faCircleExclamation} /> {EmailError}
+        </p>
+        )}
+
+        <br />
 
         {/* Password Input */}
 
@@ -95,13 +163,19 @@ const UserForm = ({ to, icon, text }) => {
           />
         </Form.Group>
 
+        {/* Password Error */}
+
+        {PasswordError && (
+        <p className="error-msg mb-1">
+        <FontAwesomeIcon icon={faCircleExclamation} /> {PasswordError}
+        </p>
+        )}
+
         {/* Submit button */}
 
-        
-          <Button variant="primary" type="submit" className="form-control mt-3 mb-4 btn-custom">
-            Sign up
-          </Button>
-        
+        <Button variant="primary" type="submit" className="form-control mt-3 mb-4 btn-custom">
+          Sign up
+        </Button>
       </Form>
     </div>
   );

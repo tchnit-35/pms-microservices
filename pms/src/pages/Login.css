@@ -115,12 +115,26 @@ section .wave.wave4 {
   border-right: 1px solid silver;
 }
 
-.signup-link{
+.signup-link {
   font-size: 14px;
   color: rgb(115, 136, 179);
 }
 
-.logo{
+.logo {
   height: 100px;
   width: 100px;
+}
+
+.error-msg {
+  font-size: 12px;
+  font-style: italic;
+  color: rgb(214, 75, 75);
+  margin-bottom: -13px;
+}
+
+.error-msg2 {
+  font-size: 15px;
+  font-weight: normal;
+  color: rgb(214, 75, 75);
+  margin-bottom: -1px;
 }
