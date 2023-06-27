@@ -3,17 +3,20 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
     conversationId:{
-        type:mongoose.Schema.Types.ObjectId, ref:'Conversation'
+        type:String
     },
     senderId:{
-        type:mongoose.Schema.Types.ObjectId, ref:'Conversation'
+        type:String
     },
     message:{
         type:String
     },
-    dateTime:{
+    sentAt:{
         type: Date, default: Date.now 
-    }
+    },
+    mention:[{
+        username:String
+    }]
 })
 
 module.exports = mongoose.model('Message',messageSchema);

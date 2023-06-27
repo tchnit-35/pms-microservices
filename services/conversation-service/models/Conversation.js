@@ -7,8 +7,8 @@ const schema = mongoose.Schema;
 const conversationSchema = new schema({
     state:{
         type:String,
-        enum:['closed','active'],
-        default:"active"
+        enum:['inactive','active'],
+        default:"inactive"
     },
     lastMessage:{
         messageId:String,

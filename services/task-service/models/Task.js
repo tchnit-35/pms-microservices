@@ -5,8 +5,9 @@ const TaskSchema = new mongoose.Schema({
     type:String,
     required:true
   },
-  projectId:{
-    type:String, 
+  project:{
+    projectTitle:String,
+    projectId:String, 
   },  
  startDate:{
     type:Date,
