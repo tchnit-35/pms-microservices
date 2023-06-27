@@ -32,42 +32,4 @@ app.listen(PORT, () => {
  //Load db
  connectDb()
 
- //Connect to rabbitMQ server
- async function start() {
-  await amqp.connect('amqp://localhost:5672',async()=>{ 
-    const channel = await connection.createChannel();
 
-  const exchangeName = 'project';
-  const routingKey = 'project.change';
-
-  await channel.assertExchange(exchangeName, 'topic', {
-    durable: true
-  });
-
-  const queueName = 'task.delete';
-  await channel.assertQueue(queueName, {
-    durable: true
-  });
- 
-  await channel.bindQueue(queueName, exchangeName, routingKey);
-
-  console.log(`Task microservice listening for project deletion events`);
-
-  channel.consume(queueName, async (msg) => {
-    try {
-      const event = JSON.parse(msg.content.toString());
-      if (event.action === 'delete') {
-        const { projectId } = event;
-        await Task.deleteMany({ projectId });
-        console.log(`Deleted tasks for project ${projectId}`);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      channel.ack(msg);
-    }
-  });})
- 
-}
-
-start();

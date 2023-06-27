@@ -28,3 +28,14 @@ exports.isAuth = async (req, res, next) => {
     res.json({ success: false, message: 'unauthorized access!' });
   }
 };
+
+exports.isGuest = async(req, res, next)=> {
+  const token = req.headers.authorization;
+  if (token) {
+    // User is already authenticated, redirect to home page
+    res.redirect('/');
+  } else {
+    // User is a guest, continue to login route
+    next();
+  }
+}

@@ -11,11 +11,15 @@ exports.createTeam = async(req,res)=>{
     users
   })
   await newTeam.save()
-  return res.status(200).send(newTeam)
-  }
+  .then((newTeam)=>{
+      return res.status(200).json(newTeam)  
+  }).catch((err)=>{
+      return res.status(500).json({message:err.message})
+  })
+}
 
   exports.addMembers = async(req,res)=>{
-    const userToAdd = req.body.users || []
+    const usersToAdd = req.body.users || []
     const teamId = req.params.teamId
     await Team.findById(teamId, (err, team) => {
       if (err) {
@@ -25,16 +29,16 @@ exports.createTeam = async(req,res)=>{
         usersToAdd.forEach(userToAdd => {
           const newUser = {
             userId: userToAdd.userId,
-            role: userToAdd.roleId
+            role: userToAdd.role._id
           };
           team.users.push(newUser);
         });
         team.save((err, savedTeam) => {
           if (err) {
-            console.error(err);
-            // handle error
+            res.status(500).json({message:err.message});
+            
           } else {
-            // users added to team successfully
+            res.status(200).json(savedTeam)
           }
         });
       }

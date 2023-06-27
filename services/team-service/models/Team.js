@@ -6,13 +6,12 @@ const teamSchema = new Schema({
         type: String
     },
     users:[{
-      type:String,
+      userId:String,
       role:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Role'
       },
-      default:[],
-      required:true
+      default:[]
     }],
     projectId:{
         type:String,

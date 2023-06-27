@@ -3,8 +3,51 @@ const passport = require("passport");
 const jwt = require('jsonwebtoken');
 const User = require('../User');
 const mongoose = require("mongoose");
-const { isAuth } = require('../../auth');
+const { isAuth,isGuest } = require('../../isAuthenticated');
+
 const CLIENT_URL = "/";
+
+//Registering User
+
+router.post("auth/register",isGuest,async (req, res) => {
+  const { email, password, firstname,lastname } = req.body;
+  const username = `@${firstname.slice(0,4)}${lastname.slice(0,4)}${Math.floor(Math.random()*10000)}`
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+      return res.json({ message: "User already exists" });
+  } else {
+      const newUser = new User({
+          email:email,
+          firstname:firstname,
+          lastname:lastname,
+          acc_password:password,
+          username:username
+      });
+      await newUser.save(); 
+const userRegisteredEvent = {
+   userId:newUser._id,
+   username,
+   email,
+   firstname,
+   lastname,
+};
+
+const payloads = [
+  { topic: 'userEvents', messages: JSON.stringify(userRegisteredEvent) }
+];
+
+producer.send(payloads, (err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('User registered event published');
+  }
+});
+ 
+      return res.json(newUser);
+      
+  }
+});
 
 //Login Success Status Route
 router.get("/login/success", (req, res) => {
@@ -27,25 +70,7 @@ router.get("/login/failed", (req, res) => {
   });
 });
 
-//Logout
 
-router.get("/logout", isAuth, async (req, res) => {
-  if (req.headers && req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: 'Authorization fail!' });
-    }
-
-    const tokens = req.user.tokens;
-
-    const newTokens = tokens.filter(t => t.token !== token);
-
-    await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
-    res.json({ success: true, message: 'Sign out successfully!' });
-  }
-});
 
 //Google Auth
 
@@ -88,7 +113,7 @@ router.get(
 
 //Login User
 
-router.post("/login", async (req, res) => {
+router.post("/login",isGuest, async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
@@ -119,6 +144,26 @@ router.post("/login", async (req, res) => {
       res.json({user,token}) 
       res.end();
     
+  }
+});
+
+//Logout
+
+router.get("/logout", isAuth, async (req, res) => {
+  if (req.headers && req.headers.authorization) {
+    const token = req.headers.authorization.split(' ')[1];
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authorization fail!' });
+    }
+
+    const tokens = req.user.tokens;
+
+    const newTokens = tokens.filter(t => t.token !== token);
+
+    await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
+    res.json({ success: true, message: 'Sign out successfully!' });
   }
 });
 

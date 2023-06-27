@@ -5,6 +5,9 @@ const TaskSchema = new mongoose.Schema({
     type:String,
     required:true
   },
+  projectId:{
+    type:String, 
+  },  
  startDate:{
     type:Date,
     default:Date.now,
@@ -15,13 +18,20 @@ const TaskSchema = new mongoose.Schema({
     default:Date.now,
     required:true
   },
-  userId:[{
-    type:mongoose.Schema.Types.ObjectId, ref:'User'
-  }],
+  duration:{
+    type:Number,
+  },
+  percentComplete:{
+    type:Number,
+  },
   description:{
     type:String,
     default:""
   },
+  depedencies:[{
+      taskId:String
+    }],
+  
   toBeApproved:{
     type:Boolean,
     default:false
@@ -29,9 +39,6 @@ const TaskSchema = new mongoose.Schema({
   isApproved:{
     type:Boolean,
     default:false
-  },
-  projectId:{
-    type:mongoose.Schema.Types.ObjectId, ref:'Project'
   },
   created_at: {
     type: Date,

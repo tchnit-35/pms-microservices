@@ -1,13 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT =  4040;
+const PORT =  5050;
 const mongoose = require("mongoose");
-const File = require("./File");
-const fileRoute = require('./routes/file')
 
-// Set up GridFS storage for file uploads
 const mongoURI = 'mongodb://127.0.0.1/file-service';
-const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.createConnection(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 // Set up multer storage engine
 const storage = multer.diskStorage({
   destination: './uploads/',

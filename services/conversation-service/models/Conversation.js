@@ -5,22 +5,18 @@ const schema = mongoose.Schema;
 // Conversation  Schema
 
 const conversationSchema = new schema({
-    firstUser:{
-        user_id:String
-    },
-    secondUser:{
-        user_id:String
-    },
     state:{
         type:String,
+        enum:['closed','active'],
         default:"active"
     },
     lastMessage:{
-        type:String,
-        default:""
+        messageId:String,
+        time:Date
     },
-    dateTime:{
-        type: Date, default: Date.now 
+    createdAt:{
+      type:Date,
+      default:Date.now()
     }
 })
 module.exports = mongoose.model('Conversation',conversationSchema);

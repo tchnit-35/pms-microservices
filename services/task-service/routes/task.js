@@ -1,16 +1,12 @@
 const express = require('express')
-const { createTask,updateTask,deleteTask, getByProjectId } = require('../controllers/tasks')
-const { isAuth } = require('../../../shared/middlewares/auth');
-const Task = require('../models/Task')
+const { createTask,updateTask,deleteTask, getByProjectId, getByUserId } = require('../controllers/tasks')
+const { isAuth } = require('../../isAuthenticated');
 const router = express.Router()
-const amqp = require('amqplib')
 
+router.get('/user/tasks',isAuth,getByUserId)
 router.get('/projects/:pid/tasks',isAuth,getByProjectId)
 router.post('/projects/:pid/tasks',isAuth,createTask)
-router.patch('/projects/:pid/tasks',isAuth,updateTask) 
-router.delete('/projects/:pid/tasks',isAuth,deleteTask)
-
-
-
+router.patch('/task/:taskId',isAuth,updateTask) 
+router.delete('/task/:taskId',isAuth,deleteTask)
 
 module.exports = router

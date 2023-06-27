@@ -3,28 +3,34 @@ const express = require("express");
 const cors = require("cors"); 
 const connectDb = require("./config/db");
 const authRoute = require("./routes/auth");
-const User = require('./models/User')
+const User = require('./User')
 const app = express();
-const amqp = require('amqplib/callback_api')
+const kafka = require('kafka-node');
+
+const Producer = kafka.Producer;
+const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
+const producer = new Producer(client);
+const userRegisteredEvent = {
+   
+};
+
+const payloads = [
+  { topic: 'userEvents', messages: JSON.stringify(userRegisteredEvent) }
+];
+
+producer.send(payloads, (err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('User registered event published');
+  }
+});
 
 //json parsing middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-//amqp connection 
-// amqp.connect("amqp:admin:admin@localhost", async (err,connection)=>{
-// try{
-//   await connection.createChannel(async (err,channel)=>{
-//     try{
-//      await channel.assertQueue("AUTH")
-//     }catch{
-//       console.log(err.message)
-//     }
-//   })}
-//   catch{
-//     console.log(err.message)
-//   }
-// })
+
 
 //cors middleware
 
@@ -43,42 +49,7 @@ app.listen("4000", () => {
 });
 
 
-//Registering User
 
-app.post("auth/register", async (req, res) => {
-  const { email, password, firstname,lastname } = req.body;
-  const username = `@${firstname.slice(0,4)}${lastname.slice(0,4)}${Math.floor(Math.random()*10000)}`
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-      return res.json({ message: "User already exists" });
-  } else {
-      const newUser = new User({
-          email:email,
-          firstname:firstname,
-          lastname:lastname,
-          acc_password:password,
-          username:username
-      });
-      newUser.save(); 
-    //   channel.sendToQueue(
-    //     "ORDER",
-    //     Buffer.from(
-    //         JSON.stringify({
-    //             userId:newUser._id,
-    //             firstname,
-    //             lastname,
-    //             userEmail:email
-    //         })
-    //     )
-    // );
-    //  channel.consume("AUTH", (data) => {
-    //     const userProfile = JSON.parse(data.content);
-    // });
-      return res.json(newUser);
-      
-      
-  }
-});
  //Load db
  connectDb()
 

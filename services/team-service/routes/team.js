@@ -6,3 +6,5 @@ const router = express.Router()
 router.post('/project/:projectId/teams',isAuth,createTeam)
 router.post('/team/:teamId/newMember',isAuth,addMembers)
 router.post('/team/:teamId/removeMember',isAuth,removeMembers)
+
+module.exports = router

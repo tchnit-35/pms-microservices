@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const UserProfileSchema = new mongoose.Schema({
   userId:String,
+  username:{
+    type:String,
+    required:true
+  },
   email:{
     type:String,
     required:true,
@@ -44,7 +48,7 @@ const UserProfileSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  tokens: [{ type: Object }],
+  
 })
 
 
