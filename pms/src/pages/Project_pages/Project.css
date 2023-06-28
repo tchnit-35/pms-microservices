@@ -1,3 +1,10 @@
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none;
+}
+
 body {
   min-height: 100vh;
   display: flex;
@@ -5,9 +12,7 @@ body {
 }
 
 .the-container {
-  padding-top: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-top: 25px;
   margin-left: 0;
   transition: margin-left 0.3s ease;
 }
@@ -16,13 +21,13 @@ body {
   margin-left: 260px;
 }
 
-.p-name{
+.p-name {
   font-size: 25px;
   font-weight: 500;
-  mix-blend-mode:multiply;
+  mix-blend-mode: multiply;
 }
 
-.share{
+.share {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,4 +39,69 @@ body {
   border-radius: 7px;
   font-size: 14px;
   cursor: pointer;
+}
+
+.heading {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.views {
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
+
+.views-container {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.overview{
+  font-weight: normal;
+  border-bottom: 0px solid black;
+  cursor: pointer;
+}
+
+.list{
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+  cursor: pointer;
+}
+
+.gantt{
+  font-weight: normal;
+  border-bottom: 0px solid black;
+  cursor: pointer;
+}
+
+.kanban{
+  font-weight: normal;
+  border-bottom: 0px solid black;
+  cursor: pointer;
+}
+
+.views-container div:hover {
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+}
+
+.views-container .list:hover {
+  font-weight: bolder;
+}
+
+.views-container .gantt:hover {
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+}
+
+.views-container .list.active:hover {
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+}
+
+.views-container .gantt.active:hover {
+  font-weight: normal;
+  border-bottom: 0px solid black;
 }
