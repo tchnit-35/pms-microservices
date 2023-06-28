@@ -11,10 +11,10 @@ import Stack from "react-bootstrap/Stack";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col";
 
-import google from "../images/google.png";
-import github from "../images/github.png";
-import facebook from "../images/facebook.png";
-import logo from "../images/logo.png";
+import google from "../../images/google.png";
+import github from "../../images/github.png";
+import facebook from "../../images/facebook.png";
+import logo from "../../images/logo.png";
 
 import axios from "axios";
 
@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-import AuthLink from "../components/auth_links/AuthLink";
+import AuthLink from "../../components/auth_links/AuthLink";
 
 function Login() {
   const navigate = useNavigate();

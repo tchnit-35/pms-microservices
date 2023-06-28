@@ -1,0 +1,89 @@
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none;
+  }
+
+.sidemenu {
+  position: fixed;
+  top: 45px;
+  left: -200px;
+  width: 260px;
+  height: 100%;
+  background-color: #12664f;
+  transition: left 0.2s ease-in-out;
+}
+
+.sidemenu-open {
+  left: 0;
+}
+
+.sidemenu.closed {
+  left: -260px;
+}
+
+.sidebar-about{
+    margin-top: 5%;
+    margin-left: 17px;
+    color: white;
+    font-size: 35px;
+    font-weight: lighter;
+    width: 220px;
+    mix-blend-mode:overlay;
+    border-bottom: 1px solid rgb(176, 176, 176);
+}
+
+.sidebar-content{
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sb{
+    height: 90%;
+    overflow-y: auto;
+}
+
+.sb::-webkit-scrollbar {
+    display: none;
+  }
+
+.current-project{
+    color: #FBE5A2;
+    font-size: 19px;
+    margin-top: 3px;
+}
+
+.future-project{
+    color: #CEA8BC;
+    font-size: 19px;
+    margin-top: 3px;
+}
+
+.legacy-project{
+    color: #DF8C85;
+    font-size: 19px;
+    margin-top: 3px;
+}
+
+.folder{
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.project{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 17px;
+    cursor: pointer;
+}
+
+.project-name{
+    color: white;
+    padding-left: 7px;
+}

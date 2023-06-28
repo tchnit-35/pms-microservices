@@ -4,11 +4,11 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 import LandingPage from './pages/LandingPage';
-import Signup from './pages/Signup'
-import Login from './pages/Login';
-import CreateWorkspace from './pages/CreateWorkspace';
-import Confirm from './pages/Confirm';
-import Project from './pages/Project';
+import Signup from './pages/auth_pages/Signup'
+import Login from './pages/auth_pages/Login';
+import CreateWorkspace from './pages/auth_pages/CreateWorkspace';
+import Confirm from './pages/auth_pages/Confirm';
+import Project from './pages/Project_pages/Project';
 
 import {
   createBrowserRouter,

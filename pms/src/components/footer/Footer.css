@@ -1,0 +1,22 @@
+.custom-footer{
+    background-color: #12664f;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.copy-right{
+    color: white;
+    font-size: 14px;
+}
+
+.invite-user{
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}

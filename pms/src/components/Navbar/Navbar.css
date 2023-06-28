@@ -3,15 +3,17 @@
   max-height: 60px;
 }
 
-.custon-imput {
+.custon-input {
   background-color: #034e3b;
   border: 0px solid #034e3b;
   height: 35px;
   width: 300px;
+  
 }
 
-.custom-input::placeholder {
-  color: rgb(150, 133, 133) !important;
+.custon-input::placeholder {
+  color: white;
+  mix-blend-mode:overlay;
 }
 
 .profile {
@@ -45,4 +47,14 @@
   border: 1px solid #7a82ab;
   border-radius: 30px;
   background-color: #7a82ab;
+}
+
+.custom-bars{
+  cursor: pointer;
+  margin-right: 35px;
+}
+
+.custon-icon{
+  background-color: #034e3b;
+  border: 0px solid #034e3b;
 }
