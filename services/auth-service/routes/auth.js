@@ -4,13 +4,18 @@ const jwt = require('jsonwebtoken');
 const User = require('../User');
 const mongoose = require("mongoose");
 const { isAuth,isGuest } = require('../../isAuthenticated');
-
 const CLIENT_URL = "/";
+const kafka = require('kafka-node');
+const Producer = kafka.Producer;
+const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
+const producer = new Producer(client);
 
 //Registering User
 
-router.post("auth/register",isGuest,async (req, res) => {
+router.post("/register",isGuest,async (req, res) => {
   const { email, password, firstname,lastname } = req.body;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) return res.status(400).json({message:'Incorrect email format'})
   const username = `@${firstname.slice(0,4)}${lastname.slice(0,4)}${Math.floor(Math.random()*10000)}`
   const userExists = await User.findOne({ email });
   if (userExists) {
@@ -21,11 +26,11 @@ router.post("auth/register",isGuest,async (req, res) => {
           firstname:firstname,
           lastname:lastname,
           acc_password:password,
-          username:username
+          username:username  
       });
       await newUser.save(); 
 const userRegisteredEvent = {
-   userId:newUser._id,
+   userId:newUser._id, 
    username,
    email,
    firstname,
@@ -33,7 +38,7 @@ const userRegisteredEvent = {
 };
 
 const payloads = [
-  { topic: 'userEvents', messages: JSON.stringify(userRegisteredEvent) }
+  { topic: 'user-creation', messages: JSON.stringify(userRegisteredEvent) }
 ];
 
 producer.send(payloads, (err, data) => {
@@ -122,10 +127,15 @@ router.post("/login",isGuest, async (req, res) => {
       if (password !== user.acc_password) {
           return res.json({ message: "Password Incorrect" });
       }
-      const token = jwt.sign({ userId: user._id }, "secret", {
-        expiresIn: '1d',
-      });
-    
+      const payload = { 
+        _id: user._id,
+        email:user.email,
+        firstname:user.firstname,
+        lastname:user.lastname,
+        username:user.username ,
+        tokens:user.tokens,
+      };
+    const token=jwt.sign(payload, "secret",{expiresIn: '1d'});    
       let oldTokens = user.tokens || [];
 
       if (oldTokens.length) {
@@ -134,8 +144,7 @@ router.post("/login",isGuest, async (req, res) => {
           if (timeDiff < 86400) {
             return t;
           }
-        }); 
-        
+        });   
       }
       await User.findByIdAndUpdate(user._id, {
         tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
@@ -145,7 +154,7 @@ router.post("/login",isGuest, async (req, res) => {
       res.end();
     
   }
-});
+}); 
 
 //Logout
 

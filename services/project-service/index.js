@@ -1,4 +1,4 @@
-const amqp = require('amqplib')
+const kafka = require('kafka-node')
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
@@ -6,31 +6,20 @@ const connectDb = require("./config/db");
 const projectRoute = require("./routes/Project");
 const app = express();
 const PORT  = 3002
+const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
+// const topicsToCreate = [
+//   { topic: 'getUserProject', partitions: 1, replicationFactor: 1 },
+//   { topic: 'isAdmin', partitions: 1, replicationFactor: 1 },
+// ];
 
-// Publish project delete event to RabbitMQ
-async function publishEvent(event) {
-  const connection = await amqp.connect('amqp://localhost',async()=>{  
-    const channel = await connection.createChannel()
-
-  const exchangeName = 'project'
-  const routingKey = 'project.change'
-
-  await channel.assertExchange(exchangeName, 'topic', {
-    durable: true
-  });
-
-  const message = JSON.stringify(event);
-
-  channel.publish(exchangeName, routingKey, Buffer.from(message), {
-    persistent: true
-  });
-
-  console.log(`Published event: ${message}`);
-
-  await channel.close();
-  await connection.close();})
-
-}
+// client.createTopics(topicsToCreate, (error, result) => {
+//   if (error) {
+//     console.error('Error creating topics:', error);
+//   } else {
+//     console.log('Topics created successfully:', result);
+//   }
+// });
+// require('./controllers/permission')
 
 
 //json parsing middleware

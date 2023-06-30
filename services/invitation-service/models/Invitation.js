@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const conversationInvitationSchema = new mongoose.Schema({
+const invitationSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -19,6 +19,6 @@ const conversationInvitationSchema = new mongoose.Schema({
   }
 });
 
-const Invitation = mongoose.model('ConversationInvitation', conversationInvitationSchema);
+const Invitation = mongoose.model('Invitation', invitationSchema);
 
 module.exports = Invitation;

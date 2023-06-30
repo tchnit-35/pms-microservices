@@ -5,11 +5,11 @@ const TaskSchema = new mongoose.Schema({
     type:String,
     required:true
   },
-  project:{
+  project:{ 
     projectTitle:String,
     projectId:String, 
   },  
- startDate:{
+ startDate:{ 
     type:Date,
     default:Date.now,
     required:true
@@ -26,7 +26,7 @@ const TaskSchema = new mongoose.Schema({
     type:Number,
   },
   description:{
-    type:String,
+    type:String, 
     default:""
   },
   depedencies:[{
@@ -45,6 +45,9 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  masterTaskId:{
+    type:String
+  }
 })
 
 module.exports = mongoose.model("Task",TaskSchema)

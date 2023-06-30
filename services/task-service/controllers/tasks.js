@@ -3,12 +3,15 @@ const UserTask = require('../models/UserTask')
 
 const mongoose = require('mongoose')
 
-function allocateTask([],taskId){
-  try{[].forEach(userToAdd=>{
+function allocateTask(users,taskId){
+  try{
+    console.log(users)
+    users.forEach(userToAdd=>{
     const newUserTask = new UserTask({
-      userToAdd,
+      userId:userToAdd,
       taskId
     })
+    console.log(newUserTask)
     newUserTask.save()
   })}
   catch(err){
@@ -37,7 +40,11 @@ function deallocateTask([],taskId){
 exports.createTask = async (req,res)=>{
   const projectId = req.params.pid
       const {name,startDate,endDate} = req.body
-      const {users} = req.body.users || []
+      const users = []
+      if(req.body.users!=undefined)
+      users.push(req.body.users)
+
+
       const newTask = new Task({
         name,
         startDate,
@@ -130,30 +137,21 @@ exports.getByProjectId = async(req,res)=>{
   });
 }
 
-exports.getByUserId = async(req,res)=>{
-  const id = req.user._id
-  const allTasks = []
-  await UserTask.find({userId :id})
-  .then((allTaskRecords) => {
-    allTaskRecords.forEach(async taskRecord=>{
-      const task = await Task.findById(taskRecord.taskId)
-      allTasks.push(task)
-    })
-    try{(allTasks)=>{
-        return res.status(200).json({
-        success: true,
-        message: 'A list of all tasks',
-        Tasks: allTasks,
-      });
-    }}
-    catch{(err) => {
-      res.status(500).json({
-        success: false,
-        message: 'Server error. Please try again.',
-        error: err.message,
-      });
+exports.getByUserId = async (req, res) => {
+  const id = req.user._id;
+  const allTasks = [];
+  try {
+    const allTaskRecords = await UserTask.find({ userId: id });
+    for (const taskRecord of allTaskRecords) {
+      const task = await Task.findById(taskRecord.taskId);
+      allTasks.push(task);
     }
-      }
-    })
-
-}
+    res.status(200).json(allTasks);
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again.',
+      error: err.message,
+    });
+  }
+};

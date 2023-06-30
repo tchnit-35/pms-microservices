@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 
 const userProjectSchema = new mongoose.Schema({
-  user: {
+  userId: {
     type:String,
     required: true
   },
   projectId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project',
+    type: String,
     required: true
   },
   permission: {
     type: String,
-    enum: ['read', 'write', 'admin'],
-    default: 'read'
+    default: 'admin'
   }
 });
 
