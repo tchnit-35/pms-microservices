@@ -8,11 +8,15 @@ import SideMenu from "../../components/Navbar/Sidebar";
 import Footer from "../../components/footer/Footer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+
+import ListView from "../../components/List_view/ListView";
+import { Process } from "../../components/Timeline_view/Process";
 
 function Project() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeView, setActiveView] = useState("list");
+  const [activeView, setActiveView] = useState("grant");
+  const [viewContent, setViewContent] = useState("list");
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -20,10 +24,22 @@ function Project() {
 
   const handleViewClick = (view) => {
     setActiveView(view);
+    switch (view) {
+      case "list":
+        setViewContent("list");
+        break;
+      case "timeline":
+        setViewContent("timeline");
+        break;
+      default:
+        console.log("Unknown view selected:", view);
+        setViewContent("list");
+    }
+    console.log("viewContent:", viewContent);
   };
 
   const getViewClass = (view) => {
-    return activeView === view ? "list active" : "gantt";
+    return activeView === view ? "grant active" : "revoke";
   };
 
   return (
@@ -45,7 +61,7 @@ function Project() {
 
           {/*Different Views*/}
 
-          <div className="views unselectable">
+          <div className="views mb-2 unselectable">
             <div className="views-container">
               <div
                 className={`${getViewClass("overview")} me-4`}
@@ -54,22 +70,28 @@ function Project() {
                 Overview
               </div>
               <div
-                className={`${getViewClass("list")} me-4`}
-                onClick={() => handleViewClick("list")}
+                className={`${getViewClass("grant")} me-4`}
+                onClick={() => handleViewClick("grant")}
               >
                 List
               </div>
               <div
-                className={`${getViewClass("gantt")} me-4`}
-                onClick={() => handleViewClick("gantt")}
+                className={`${getViewClass("revoke")} me-4`}
+                onClick={() => handleViewClick("revoke")}
               >
-                Gantt
+                Timeline
               </div>
               <div
                 className={`${getViewClass("kanban")} me-4`}
                 onClick={() => handleViewClick("kanban")}
               >
-                Kanban
+                Board
+              </div>
+              <div
+                className={`${getViewClass("dashbord")} me-4`}
+                onClick={() => handleViewClick("dashbord")}
+              >
+                Dashboard
               </div>
               <div
                 className={`${getViewClass("files")} me-4`}
@@ -78,22 +100,28 @@ function Project() {
                 Files
               </div>
               <div
-                className={`${getViewClass("more")} me-4`}
-                onClick={() => handleViewClick("more")}
+                className={`${getViewClass("teams")} me-4`}
+                onClick={() => handleViewClick("teams")}
               >
-                More...
+                Teams
               </div>
             </div>
+          </div>
 
-            {/*add task, filter, sort*/}
+          <div className="view-content">
 
+            {/*list body*/}
 
-            <div>
-              <div>
-                <FontAwesomeIcon icon={faPlus} />
-                <span>Add Task</span>
-              </div>
-            </div>
+            {viewContent === "list" && <ListView />}
+
+            {/*Timeline body*/}
+
+            {viewContent === "timeLine" && <Process />}
+
+            {!viewContent && <p>No view content selected.</p>}
+
+            
+
           </div>
         </div>
         <Footer />

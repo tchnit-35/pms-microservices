@@ -1,6 +1,6 @@
 .custom-footer{
     background-color: #12664f;
-    height: 40px;
+    height: 35px;
     display: flex;
     align-items: center;
     padding-left: 20px;
@@ -8,15 +8,15 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+    font-size: 11px;
 }
 
 .copy-right{
     color: white;
-    font-size: 14px;
 }
 
 .invite-user{
     color: white;
-    font-size: 12px;
+    
     cursor: pointer;
 }

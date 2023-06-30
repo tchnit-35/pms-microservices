@@ -1,0 +1,147 @@
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none;
+  }
+
+.actions{
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 14px;
+  }
+  
+  .add-task{
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 85px;
+    cursor: pointer;
+  }
+  
+  .add-task:hover{
+    background-color: rgb(249, 249, 249);
+    border: 1px solid rgb(249, 249, 249);
+  }
+  
+  .filter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    height: 30px;
+    width: 65px;
+    cursor: pointer;
+  }
+  
+  .filter:hover{
+    background-color: rgb(249, 249, 249);
+    border: 1px solid rgb(249, 249, 249);
+  }
+  
+  .sort{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    height: 30px;
+    width: 60px;
+    cursor: pointer;
+  }
+  
+  .sort:hover{
+    background-color: rgb(249, 249, 249);
+    border: 1px solid rgb(249, 249, 249);
+  }
+  
+  .headers{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    border-top: 1px solid rgb(224, 224, 224);
+    border-bottom: 1px solid rgb(224, 224, 224);
+    height: 35px;
+  
+  }
+  
+   
+  .task-name{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-right: 1px solid rgb(224, 224, 224);
+    cursor: pointer;
+  
+  
+  }
+  
+  .task-name:hover{
+    background-color: rgb(249, 249, 249);
+  }
+  
+  .assignee{
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-right: 1px solid rgb(224, 224, 224);
+    cursor: pointer;
+  }
+  
+  .assignee:hover{
+    background-color: rgb(249, 249, 249);
+  }
+  
+  .time-frame{
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-right: 1px solid rgb(224, 224, 224);
+    cursor: pointer;
+  }
+  
+  .time-frame:hover{
+    background-color: rgb(249, 249, 249);
+  }
+  
+  .priority{
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-right: 1px solid rgb(224, 224, 224);
+    cursor: pointer;
+  }
+  
+  .priority:hover{
+    background-color: rgb(249, 249, 249);
+  }
+  
+  .status{
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-right: 1px solid rgb(224, 224, 224);
+    cursor: pointer;
+  }
+  
+  .status:hover{
+    background-color: rgb(249, 249, 249);
+  }
+  
+  
+  .state {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }

@@ -19,7 +19,7 @@ import {
 
 function NavigationBar({ handleClick }) {
   return (
-    <Navbar bg="light" expand="lg" className="custom-navbar p-2" style={{ maxHeight: "70px" }}>
+    <Navbar bg="light" expand="lg" className="custom-navbar p-2 sticky-top" style={{ maxHeight: "70px" }}>
       <Container fluid style={{ maxHeight: "30px" }}>
         <Navbar.Brand className="custom-bars" onClick={handleClick}>
           <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff" }} />
