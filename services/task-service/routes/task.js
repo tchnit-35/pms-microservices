@@ -1,5 +1,5 @@
 const express = require('express')
-const { createTask,updateTask,deleteTask, getByProjectId, getByUserId } = require('../controllers/tasks')
+const { createTask,createSubTask,updateTask,deleteTask, getByProjectId, getByUserId } = require('../controllers/tasks')
 const { isAuth } = require('../../isAuthenticated'); 
 const router = express.Router()
 const Task = require('../models/Task');
@@ -8,6 +8,7 @@ const kafka = require('kafka-node');
 router.get('/user/tasks',isAuth,getByUserId)
 router.get('/projects/:projectId/tasks',isAuth,getByProjectId)
 router.post('/projects/:projectId/tasks',isAuth,createTask)
+router.post('/task/:taskId',isAuth,createSubTask)
 router.patch('/task/:taskId',isAuth,updateTask) 
 router.delete('/task/:taskId',isAuth,deleteTask)
  

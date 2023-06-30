@@ -4,7 +4,7 @@ const UserConversation = require("../models/UserConversation")
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const consumer = new kafka.Consumer(
   client,
-  [{ topic: 'project-create', partition: 0 },{ topic: 'project-deletion', partition: 0 },{ topic: 'project-update', partition: 0 },{ topic: 'join-project', partition: 0 }],
+  [{ topic: 'project-create', partition: 0 },{ topic: 'project-deletion', partition: 0 },{ topic: 'project-update', partition: 0 },{ topic: 'join-project', partition: 0 },{ topic: 'message-sent', partition: 0 }],
   { autoCommit: true }
 );
 
@@ -83,6 +83,9 @@ consumer.on('message', async function(message) {
       console.log({ message: err.message });
     });
     break
+    case 'message-sent':
+
+      break
 }
 
 })

@@ -37,14 +37,45 @@ function deallocateTask([],taskId){
   }
 }
 
+exports.createSubTask = async(req,res)=>{
+  const masterTaskId = req.params.taskId
+  const {name,startDate,endDate} = req.body
+  const master =  await Task.findById(masterTaskId)
+  const users = []
+  if(req.body.users!=undefined)
+  users.push(req.body.users)
+  const newTask = new Task({
+    name,
+    startDate,
+    endDate,
+    projectId:master.projectId,
+    masterTaskId
+  })
+  newTask
+  .save()
+  .then(async () => {
+  allocateTask(users,newTask._id)
+  return res.status(200).json({
+      success: true,
+      message: 'Task is created',
+      CreatedTask: newTask,
+    });
+  })
+  .catch((err) => {
+    res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again.',
+      error:err.message
+    });
+  });
+}
+
 exports.createTask = async (req,res)=>{
-  const projectId = req.params.pid
+  const projectId = req.params.projectId
       const {name,startDate,endDate} = req.body
       const users = []
       if(req.body.users!=undefined)
       users.push(req.body.users)
-
-
       const newTask = new Task({
         name,
         startDate,
@@ -68,8 +99,7 @@ exports.createTask = async (req,res)=>{
           error:err.message
         });
       });
-    }
-
+}
 
 exports.updateTask = async (req, res)=> {
   const id = req.params.taskId;
@@ -118,24 +148,34 @@ exports.deleteTask = async (req,res)=>{
   });
 }
 
-exports.getByProjectId = async(req,res)=>{
-  const id = req.params.pid
-  await Task.find({projectId :id})
-  .then((allTasks) => {
+exports.getByProjectId = async (req, res) => {
+  const projectId = req.params.projectId;
+
+  try {
+    // Fetch all the master tasks for the project
+    const masterTasks = await Task.find({ projectId: projectId, masterTaskId: null });
+
+    // Fetch all the subtasks for each master task and group them under their respective master task
+    const tasks = await Promise.all(
+      masterTasks.map(async (masterTask) => {
+        const subTasks = await Task.find({ projectId: projectId, masterTaskId: masterTask._id });
+        return { ...masterTask._doc, subTasks };
+      })
+    );
+
     return res.status(200).json({
       success: true,
       message: 'A list of all tasks',
-      Cause: allTasks,
+      Cause: tasks,
     });
-  })
-  .catch((err) => {
-    res.status(500).json({
+  } catch (err) {
+    return res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',
       error: err.message,
     });
-  });
-}
+  }
+};
 
 exports.getByUserId = async (req, res) => {
   const id = req.user._id;
