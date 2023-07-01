@@ -151,6 +151,7 @@
   margin-left: 20px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .contact-name{
@@ -160,5 +161,11 @@
 .last-message{
   color: rgb(166, 166, 166);
   font-size: 12px;
+  width: 200px;
   opacity: 0.7;
+  overflow: hidden;
+}
+
+.msg{
+  white-space: nowrap;
 }

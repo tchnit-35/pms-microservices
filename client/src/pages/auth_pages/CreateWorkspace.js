@@ -18,11 +18,11 @@ function CreateWorkspace() {
       <Container className='p-4'>
                 <Container className='p-4 d-flex flex-column align-items-center'>
                     <div className='text-center mb-4'>
-                        <h3 className='mb-3'>Wellcome to TaskAID</h3>
-                        <p>Let's create your workspace</p>
+                        <h3 className='mb-3'>Wellcome to Taskid</h3>
+                        <p>Let's create your first project</p>
                     </div>
                     <div>
-                        <Form.Label>Name your workspace</Form.Label>
+                        <Form.Label>Name your project name</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Control className="" type="text" placeholder="(Project or Team name)" />
                         </Form.Group>

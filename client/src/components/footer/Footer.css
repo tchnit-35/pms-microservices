@@ -1,34 +1,109 @@
-.custom-footer{
-    background-color: transparent;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    font-size: 11px;
+.custom-footer {
+  background-color: transparent;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 11px;
 }
 
-.copy-right{
-    color: rgb(0, 0, 0);
+.copy-right {
+  color: rgb(0, 0, 0);
 }
 
-.invite-user{
+.invite-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  background-color: rgba(67, 99, 90, 0.5);
+  transition: 0.5s;
+  border-radius: 20px;
+  height: 30px;
+  width: 130px;
+}
+
+.invite-user:hover {
+  background-color: #12664f;
+  border: 2px solid #12664f;
+}
+
+.custom-title {
+  background-color: #12664f;
+  color: white;
+  font-size: 10px !important;
+  height: 50px;
+}
+
+.custom-modal-body{
+    height: 80px;
+}
+
+.cf {
+  font-size: 15px;
+}
+
+/*.custom-modal-footer{
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    cursor: pointer; 
-    background-color: rgba(67,99,90,0.5);   
-    transition: 0.5s;
-    border-radius: 20px;
-    height: 30px;
-    width: 130px;
+    height: 35px;
+}*/
+
+.custom-modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: gray;
+  background-color: transparent;
+  font-size: 15px;
+  height: 30px;
+  width: 120px;
+  border: 2px solid #7a82ab;
 }
 
-.invite-user:hover{
-    background-color: #12664f;
-    border: 2px solid #12664f;
+.copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 82px;
+  font-size: 15px;
+  color: gray;
+  cursor: pointer;
+}
+
+.copy:hover{
+    color: #7a82ab;
+}
+
+.modal-custom-input {
+  border: none;
+  border-bottom: 1px solid #707070;
+  width: 350px;
+  border-radius: none;
+}
+
+.modal-custom-input:focus {
+  border: none;
+  border-bottom: 2px solid #12664f;
+}
+
+.modal-invite-user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.invite-more{
+    font-size: 14px;
+    font-weight: 500;
+    color: #7a82ab;
+    cursor: pointer;
 }

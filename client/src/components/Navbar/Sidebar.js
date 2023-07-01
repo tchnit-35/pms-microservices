@@ -213,7 +213,7 @@ const SideMenu = ({ isOpen }) => {
               <span className="contact-name">Leanna Yonsi</span>
               <div className="last-message">
               <span className="me-3">17:41</span>
-              <span>Check this out. What do you think ?</span>
+              <span className="msg">Check this out. What do you think ?</span>
               </div>
             </div>
           </div>
