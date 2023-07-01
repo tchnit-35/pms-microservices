@@ -1,10 +1,31 @@
 const express = require('express')
-const { createTask,updateTask,deleteTask, getByProjectId } = require('../controllers/tasks')
-const { isAuth } = require('../../../shared/middlewares/auth');
+const { createTask,createSubTask,updateTask,deleteTask, getByProjectId, getByUserId } = require('../controllers/tasks')
+const { isAuth } = require('../../isAuthenticated'); 
 const router = express.Router()
-router.get('/projects/:pid/tasks',isAuth,getByProjectId)
-router.post('/projects/:pid/tasks',isAuth,createTask)
-router.patch('/projects/:pid/tasks',isAuth,updateTask)
-router.delete('/projects/:pid/tasks',isAuth,deleteTask)
+const Task = require('../models/Task');
+const kafka = require('kafka-node');
+
+router.get('/user/tasks',isAuth,getByUserId)
+router.get('/projects/:projectId/tasks',isAuth,getByProjectId)
+router.post('/projects/:projectId/tasks',isAuth,createTask)
+router.post('/task/:taskId',isAuth,createSubTask)
+router.patch('/task/:taskId',isAuth,updateTask) 
+router.delete('/task/:taskId',isAuth,deleteTask)
+ 
+// Task deletion (consumer)
+const consumer = new kafka.ConsumerGroup({
+  kafkaHost: 'localhost:9092',
+  groupId: 'task-deletion-group',
+}, ['project-deletion']);
+
+consumer.on('message', async function(message) {
+  const { projectId } = JSON.parse(message.value);
+  try {
+    await Task.deleteMany({ 'project.projectId': projectId });
+    console.log('Tasks associated with project deleted:', projectId);
+  } catch (err) {
+    console.error('Error deleting tasks associated with project:', err);
+  }
+});
 
 module.exports = router

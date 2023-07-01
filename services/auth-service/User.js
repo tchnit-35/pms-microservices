@@ -17,16 +17,11 @@ const UserSchema = new mongoose.Schema({
   lastname:{
     type:String,
     required:true
-  },  
-  image:{
-    type:String,
-    required:false,
   },
-  address:{
-    country:String,
-    city:String,
-    street:String,
-    phoneNumber:String
+  username:{
+    type:String,
+    required:true,
+    default:'@'
   },
   created_at: {
     type: Date,

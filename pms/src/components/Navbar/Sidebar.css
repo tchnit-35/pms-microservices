@@ -1,15 +1,15 @@
 .unselectable {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none;
-  }
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none;
+}
 
 .sidemenu {
   position: fixed;
   top: 45px;
   left: -200px;
-  width: 260px;
+  width: 240px;
   height: 100%;
   background-color: #12664f;
   transition: left 0.2s ease-in-out;
@@ -20,70 +20,145 @@
 }
 
 .sidemenu.closed {
-  left: -260px;
+  left: -240px;
 }
 
-.sidebar-about{
-    margin-top: 5%;
-    margin-left: 17px;
-    color: white;
-    font-size: 35px;
-    font-weight: lighter;
-    width: 220px;
-    mix-blend-mode:overlay;
-    border-bottom: 1px solid rgb(176, 176, 176);
+.sidebar-about {
+  margin-top: 5%;
+  margin-left: 17px;
+  color: white;
+  font-size: 25px;
+  font-weight: lighter;
+  width: 220px;
+  mix-blend-mode: overlay;
+  border-bottom: 1px solid rgb(176, 176, 176);
 }
 
-.sidebar-content{
-    margin-top: 10%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.sidebar-content {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.sb{
-    height: 90%;
-    overflow-y: auto;
+.sb {
+  height: 90%;
+  overflow-y: auto;
 }
 
 .sb::-webkit-scrollbar {
-    display: none;
-  }
-
-.current-project{
-    color: #FBE5A2;
-    font-size: 19px;
-    margin-top: 3px;
+  display: none;
 }
 
-.future-project{
-    color: #CEA8BC;
-    font-size: 19px;
-    margin-top: 3px;
+.navigate {
+  margin-top: 1px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-bottom: 1px solid rgb(176, 176, 176, 0.3);
+  border-top: 1px solid rgb(176, 176, 176, 0.3);
+  padding: 5px;
+  padding-left: 20px;
+  color: rgb(200, 200, 200);
+  font-weight: 200;
 }
 
-.legacy-project{
-    color: #DF8C85;
-    font-size: 19px;
-    margin-top: 3px;
+.current-project {
+  color: #fbe5a2;
+  font-size: 15px;
+  margin-top: 3px;
 }
 
-.folder{
-    width: 200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+.future-project {
+  color: #cea8bc;
+  font-size: 15px;
+  margin-top: 3px;
 }
 
-.project{
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 17px;
-    cursor: pointer;
+.legacy-project {
+  color: #df8c85;
+  font-size: 15px;
+  margin-top: 3px;
 }
 
-.project-name{
-    color: white;
-    padding-left: 7px;
+.folder {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.project {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 17px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.project-name {
+  color: white;
+  padding-left: 7px;
+}
+
+
+.home{
+  cursor: pointer;
+}
+
+.home:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+.my-task{
+  cursor: pointer;
+}
+
+.my-task:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+.inbox{
+  cursor: pointer;
+}
+
+.inbox:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+.public-stream{
+  font-size: 15px;
+  margin-left: 7px;
+  color: #fbe5a2;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.private-stream{
+  font-size: 15px;
+  margin-left: 7px;
+  color: #cea8bc;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.streams{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-name{
+  color: white;
+}
+
+.last-message{
+  color: rgb(166, 166, 166);
+  font-size: 12px;
+  opacity: 0.7;
 }

@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
-const TaskSchema = new mongoose.Schema({
 
+const TaskSchema = new mongoose.Schema({
   name:{
     type:String,
     required:true
   },
- startDate:{
+    projectId:String,  
+ startDate:{ 
     type:Date,
     default:Date.now,
     required:true
@@ -15,17 +16,20 @@ const TaskSchema = new mongoose.Schema({
     default:Date.now,
     required:true
   },
-  
-  project:{
-    project_id:String,
+  duration:{
+    type:Number,
   },
-  users:[{
-    user_id:String,
-  }],
+  percentComplete:{
+    type:Number,
+  },
   description:{
-    type:String,
+    type:String, 
     default:""
   },
+  depedencies:[{
+      taskId:String
+    }],
+  
   toBeApproved:{
     type:Boolean,
     default:false
@@ -38,6 +42,9 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  masterTaskId:{
+    type:String
+  }
 })
 
-module.exports = mongoose.model('Task',TaskSchema)
+module.exports = mongoose.model("Task",TaskSchema)

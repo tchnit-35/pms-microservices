@@ -6,8 +6,9 @@
 .custon-input {
   background-color: #034e3b;
   border: 0px solid #034e3b;
-  height: 35px;
-  width: 300px;
+  border-radius: 20px;
+  height: 34px;
+  width: 350px !important;
   
 }
 
@@ -57,4 +58,5 @@
 .custon-icon{
   background-color: #034e3b;
   border: 0px solid #034e3b;
+  border-radius: 20px;
 }

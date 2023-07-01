@@ -1,8 +1,8 @@
-
+const amqp = require('amqplib')
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
-const connectDb = require("../../shared/config/db");
+const connectDb = require("./config/db");
 const taskRoute = require("./routes/task");
 const Task = require('./models/Task');
 const app = express();
@@ -31,3 +31,5 @@ app.listen(PORT, () => {
 
  //Load db
  connectDb()
+
+

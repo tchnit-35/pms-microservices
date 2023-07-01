@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/db");
-const messageRoute = require("./routes/Message");
+const messageRoute = require("./routes/Messages");
 const app = express();
 const PORT  = 3005
 
@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-app.use("/conversation/:cid", messageRoute);
+app.use("/", messageRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running at %d!",PORT);

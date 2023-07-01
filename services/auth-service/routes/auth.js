@@ -1,10 +1,58 @@
 const router = require("express").Router();
 const passport = require("passport");
 const jwt = require('jsonwebtoken');
-const User = require('../../../shared/models/User');
+const User = require('../User');
 const mongoose = require("mongoose");
-const { isAuth } = require('../../../shared/middlewares/auth');
+const { isAuth,isGuest } = require('../../isAuthenticated');
 const CLIENT_URL = "/";
+const kafka = require('kafka-node');
+const Producer = kafka.Producer;
+const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
+const producer = new Producer(client);
+
+//Registering User
+
+router.post("/register",isGuest,async (req, res) => {
+  const { email, password, firstname,lastname } = req.body;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) return res.status(400).json({message:'Incorrect email format'})
+  const username = `@${firstname.slice(0,4)}${lastname.slice(0,4)}${Math.floor(Math.random()*10000)}`
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+      return res.json({ message: "User already exists" });
+  } else {
+      const newUser = new User({
+          email:email,
+          firstname:firstname,
+          lastname:lastname,
+          acc_password:password,
+          username:username  
+      });
+      await newUser.save(); 
+const userRegisteredEvent = {
+   userId:newUser._id, 
+   username,
+   email,
+   firstname,
+   lastname,
+};
+
+const payloads = [
+  { topic: 'user-creation', messages: JSON.stringify(userRegisteredEvent) }
+];
+
+producer.send(payloads, (err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('User registered event published');
+  }
+});
+ 
+      return res.json(newUser);
+      
+  }
+});
 
 //Login Success Status Route
 router.get("/login/success", (req, res) => {
@@ -27,25 +75,7 @@ router.get("/login/failed", (req, res) => {
   });
 });
 
-//Logout
 
-router.get("/logout", isAuth, async (req, res) => {
-  if (req.headers && req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: 'Authorization fail!' });
-    }
-
-    const tokens = req.user.tokens;
-
-    const newTokens = tokens.filter(t => t.token !== token);
-
-    await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
-    res.json({ success: true, message: 'Sign out successfully!' });
-  }
-});
 
 //Google Auth
 
@@ -84,42 +114,28 @@ router.get(
   })
 );
 
-//Registering User
 
-router.post("/register", async (req, res) => {
-  const { email, password, firstname,lastname } = req.body;
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-      return res.status(401).json({ message: "User already exists" });
-  } else {
-      const newUser = new User({
-          email:email,
-          firstname:firstname,
-          lastname:lastname,
-          acc_password:password,
-      });
-      newUser.save(); 
-      return res.json(newUser);
-      
-      
-  }
-});
 
 //Login User
 
-router.post("/login", async (req, res) => {
+router.post("/login",isGuest, async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-      return res.status(401).json({ message: "Email or password is incorrect" });
+      return res.json({ message: "User doesn't exist" });
   } else {
       if (password !== user.acc_password) {
-          return res.status(401).json({ message: "Email or password is incorrect" });
+          return res.json({ message: "Password Incorrect" });
       }
-      const token = jwt.sign({ userId: user._id }, "secret", {
-        expiresIn: '1d',
-      });
-    
+      const payload = { 
+        _id: user._id,
+        email:user.email,
+        firstname:user.firstname,
+        lastname:user.lastname,
+        username:user.username ,
+        tokens:user.tokens,
+      };
+    const token=jwt.sign(payload, "secret",{expiresIn: '1d'});    
       let oldTokens = user.tokens || [];
 
       if (oldTokens.length) {
@@ -128,8 +144,7 @@ router.post("/login", async (req, res) => {
           if (timeDiff < 86400) {
             return t;
           }
-        }); 
-        
+        });   
       }
       await User.findByIdAndUpdate(user._id, {
         tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
@@ -138,6 +153,26 @@ router.post("/login", async (req, res) => {
       res.json({user,token}) 
       res.end();
     
+  }
+}); 
+
+//Logout
+
+router.get("/logout", isAuth, async (req, res) => {
+  if (req.headers && req.headers.authorization) {
+    const token = req.headers.authorization.split(' ')[1];
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authorization fail!' });
+    }
+
+    const tokens = req.user.tokens;
+
+    const newTokens = tokens.filter(t => t.token !== token);
+
+    await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
+    res.json({ success: true, message: 'Sign out successfully!' });
   }
 });
 

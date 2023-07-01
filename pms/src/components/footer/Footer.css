@@ -1,10 +1,10 @@
 .custom-footer{
-    background-color: #12664f;
+    background-color: transparent;
     height: 35px;
     display: flex;
     align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -12,11 +12,23 @@
 }
 
 .copy-right{
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .invite-user{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    
-    cursor: pointer;
+    cursor: pointer; 
+    background-color: rgba(67,99,90,0.5);   
+    transition: 0.5s;
+    border-radius: 20px;
+    height: 30px;
+    width: 130px;
+}
+
+.invite-user:hover{
+    background-color: #12664f;
+    border: 2px solid #12664f;
 }

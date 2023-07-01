@@ -19,7 +19,7 @@ function Footer() {
     <>
       <div className="custom-footer">
         <div className="me-auto copy-right">
-          <FontAwesomeIcon icon={faCopyright} style={{ color: "#ffffff" }} size="xs" />
+          <FontAwesomeIcon icon={faCopyright} style={{ color: "#000000" }} size="xs" />
           <span>TaskId v1.0.0</span>
         </div>
 

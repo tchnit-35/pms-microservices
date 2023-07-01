@@ -6,18 +6,19 @@ const teamSchema = new Schema({
         type: String
     },
     users:[{
-      user_id:String,
-      r
+      userId:String,
+      role:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Role'
+      },
+      default:[]
     }],
-    industry:{
-        type: String, 
-        default:""
+    projectId:{
+        type:String,
+        required:true
     },
-    website:{
-        type: String, 
-        default:""
-    },
-    date_time:{
+
+    created_at:{
         type: Date, default: Date.now 
     }
     
