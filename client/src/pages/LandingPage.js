@@ -12,13 +12,8 @@ function LandingPage() {
         <div className="content p-6 d-flex flex-column align-items-center">
         <img src={logo} alt="logo"  className="logo mb-5" />
           <p className="text-center mb-5 my-text">Have your tasks, team and tools together at one place</p>
-          <div>
-          <span className="u-t">New User</span>
-          <Link className="ctm-link" to="/Signup">Signup</Link>
-          </div>
-          <div>
-          <span className="u-t">Old user</span>
-          <Link className="ctm-link" to="/Login">Login</Link>
+          <div className="ctm-button">
+          <Link className="ctm-link" to="/Signup">Get Started</Link>
           </div>
         </div>
       </Container>

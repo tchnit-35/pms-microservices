@@ -6,7 +6,7 @@ const authRoute = require("./routes/auth");
 const User = require('./User')
 const app = express();
 const kafka = require('kafka-node');
-
+const jwt = require('jsonwebtoken');
 
 
 
@@ -25,17 +25,34 @@ app.use(
     credentials: true,
   })
 );
-
+ 
 app.use("/auth", authRoute);
 
 app.listen("4000", () => {
   console.log("Server is running at %d!",4000);
 });
 
-module.exports = {
-  User,
-};
 
+
+// Function to remove expired tokens
+async function removeExpiredTokens() {
+  const users = await User.find();
+  for (const user of users) {
+    const newTokens = user.tokens.filter(token => {
+      const decoded = jwt.decode(token.token);
+      if (decoded && decoded.exp && decoded.exp > Date.now()) {
+        return true;
+      }
+      return false;
+    });
+    user.tokens = newTokens;
+    await user.save();
+  }
+}
+
+// Schedule the job to run every hour
+setInterval(removeExpiredTokens, 60 * 60 * 1000);
+ 
  //Load db
  connectDb()
 

@@ -7,12 +7,14 @@ const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
 async function getUsernames(convo,username){
-  const allConvoUsers = (await UserConversation.find({conversationId:convo._id,username:{$ne:username}}))
-  const names = ""
+  const allConvoUsers = await UserConversation.find({conversationId:convo._id,username:{$ne:username}})
+  let names = ""
   allConvoUsers.forEach(user=>{
-    names.concat(user.username)
+    names=+user.username
   })
-  return names
+  if(names!=="") {return names}
+  else{return "New Inbox"}
+
 }
 exports.getProjectConversation = async (req, res) => {
   const projectTitle = req.params.project_title;
@@ -55,6 +57,54 @@ exports.getUserConversations = async (req, res) => {
       }
     }
     res.status(200).json({ public: publicConversations, private: privateConversations });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error. Please try again.",
+      error: err.message,
+    });
+  }
+};
+exports.getMostRecentConversations = async (req, res) => {
+  const username = req.user.username;
+
+  try {
+    const userConvos = await UserConversation.find({ username });
+    const publicConversations = [];
+    const privateConversations = [];
+
+    for (const userConvo of userConvos) {
+      const convo = await Conversation.findById(userConvo.conversationId);
+      const topic = convo.topic || await getUsernames(convo,req.user.username); 
+      const conversation = { _id: convo._id, topic };
+      if (convo.lastMessage) {
+        conversation.message = convo.lastMessage.message;
+        conversation.time = new Date(convo.lastMessage.time).toLocaleString(undefined, {hour: 'numeric', minute: 'numeric'});
+      }
+      if (conversation.type === "public") {
+        publicConversations.push(conversation);
+      } else {
+        privateConversations.push(conversation);
+      }
+    }
+
+    // Sort conversations by last message time
+    publicConversations.sort((a, b) => {
+      const aTime = a.time ? new Date(a.time) : new Date(a.createdAt);
+      const bTime = b.time ? new Date(b.time) : new Date(b.createdAt);
+      return bTime - aTime;
+    });
+    privateConversations.sort((a, b) => {
+      const aTime = a.time ? new Date(a.time) : new Date(a.createdAt);
+      const bTime = b.time ? new Date(b.time) : new Date(b.createdAt);
+      return bTime - aTime;
+    });
+
+    // Get the most recent conversation for each type
+    const mostRecentPublicConversation = publicConversations.slice(0,3);
+    const mostRecentPrivateConversation = privateConversations.slice(0,3);
+
+    res.status(200).send({ publicConversations: mostRecentPublicConversation, privateConversations: mostRecentPrivateConversation });
   } catch (err) {
     res.status(500).json({
       success: false,

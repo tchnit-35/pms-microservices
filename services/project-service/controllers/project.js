@@ -22,11 +22,7 @@ exports.getFutureProjects = async (req, res) => {
         futureProjects.push(futureProject);
       }
     }
-    return res.status(200).json({
-      success: true,
-      message: 'A list of all future projects',
-      projects: futureProjects,
-    });
+    return res.status(200).send(futureProjects)
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -42,7 +38,6 @@ exports.getCurrentProjects = async (req, res) => {
     const userProjects = await UserProject.find({ userId: req.user._id });
     for (const project of userProjects) {
       const currentProject = await Project.findOne({ 
-        _id: project.projectId, 
         startDate: { $lt: Date.now() },
         endDate: { $gt: Date.now() } 
       }).select('project_title');
@@ -50,11 +45,7 @@ exports.getCurrentProjects = async (req, res) => {
         currentProjects.push(currentProject);
       }
     }
-    return res.status(200).json({
-      success: true,
-      message: 'A list of all current projects',
-      projects: currentProjects,
-    });
+    return res.status(200).send(currentProjects)
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -77,11 +68,7 @@ exports.getOldProjects = async (req, res) => {
         oldProjects.push(oldProject);
       }
     }
-    return res.status(200).json({
-      success: true,
-      message: 'A list of all old projects',
-      projects: oldProjects,
-    });
+    return res.status(200).send(oldProjects)
   } catch (err) {
     res.status(500).json({
       success: false,
