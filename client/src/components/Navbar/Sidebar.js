@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sidebar.css";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -26,6 +27,7 @@ const SideMenu = ({ isOpen }) => {
   const [legacyProjects, setLegacyProjects] = useState([]);
 
   const token = localStorage.getItem("token");
+  console.log(token)
 
   useEffect(() => {
     // Fetch current projects from backend
@@ -55,6 +57,8 @@ const SideMenu = ({ isOpen }) => {
       })
       .then((response) => setLegacyProjects(response.data));
   }, []);
+
+  console.log(legacyProjects)
 
   const handleCurrentProjectsClick = () => {
     setIsProjectOneVisible(!isProjectOneVisible);
@@ -175,10 +179,24 @@ const SideMenu = ({ isOpen }) => {
                   </tbody>
                 </table>
               </div>
-              {isProjectOneVisible &&
-                currentProjects.map((project) => (
-                  <Project icon={faClipboardList} color="9DC284" projectName={project.name} />
-                ))}
+              {isProjectOneVisible && (
+  <>
+    {currentProjects.length === 0 ? (
+      <span className="project-name">No Current project found</span>
+    ) : (
+      <ul style={{listStyle:'none'}}>
+        {currentProjects.map((project) => (
+          <li key={project._id} >
+            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
+            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
+              {project.project_title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
             </div>
 
             {/*future projects*/}
@@ -206,10 +224,24 @@ const SideMenu = ({ isOpen }) => {
                   </tbody>
                 </table>
               </div>
-              {isFutureProjectsVisible &&
-                futureProjects.map((project) => (
-                  <Project icon={faClipboardList} color="9DC284" projectName={project.name} />
-                ))}
+              {isFutureProjectsVisible && (
+  <>
+    {futureProjects.length === 0 ? (
+      <span className="project-name">No Future project found</span>
+    ) : (
+      <ul style={{listStyle:'none'}}>
+        {futureProjects.map((project) => (
+          <li key={project._id} >
+            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
+            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
+              {project.project_title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
             </div>
 
             {/*legacy projects*/}
@@ -237,10 +269,24 @@ const SideMenu = ({ isOpen }) => {
                   </tbody>
                 </table>
               </div>
-              {isLegacyProjectsVisible &&
-                legacyProjects.map((project) => (
-                  <Project icon={faClipboardList} color="9DC284" projectName={project.name} />
-                ))}
+              {isLegacyProjectsVisible && (
+  <>
+    {legacyProjects.length === 0 ? (
+      <span style={{marginLeft:'10px'}} className="project-name">No Legacy project found</span>
+    ) : (
+      <ul style={{listStyle:'none'}}>
+        {legacyProjects.map((project) => (
+          <li key={project._id} >
+            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
+            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
+              {project.project_title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
             </div>
           </div>
 

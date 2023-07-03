@@ -111,9 +111,8 @@
 
 .project-name {
   color: white;
-  padding-left: 7px;
+  font-size: 13px;
 }
-
 .cr{
   cursor: pointer;
   border: 1px solid gray;
