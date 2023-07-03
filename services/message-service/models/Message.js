@@ -16,7 +16,15 @@ const messageSchema = new Schema({
     },
     mention:[{
         username:String
-    }]
+    }],
+    sent:{
+        type:Boolean,
+        default:false
+    },
+    seen:{
+        type:Boolean,
+        default:false
+    }
 })
 
 module.exports = mongoose.model('Message',messageSchema);
