@@ -1,4 +1,7 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 
@@ -8,6 +11,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
+
+import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,9 +26,35 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function NavigationBar({ handleClick }) {
+  const navigate = useNavigate();
   const [showUser, setShowUser] = React.useState(false); // state for showing/hiding the popover
 
   const handleUserClick = () => setShowUser(!showUser); // function for showing/hiding the popover
+
+  const handleLogout = () => {
+    // Get the JWT token from local storage
+    const token = localStorage.getItem("token");
+
+    // Make a GET request to the backend logout route
+    axios
+    .get("http://localhost:4000/auth/logout", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        // Logout successful
+        console.log("jwt  token:",  token);
+
+        navigate("/");
+      })
+      .catch((error) => {
+        // Logout failed
+        console.log(error);
+      
+      });
+  };
   
 
   const popover = (
@@ -49,7 +80,7 @@ function NavigationBar({ handleClick }) {
           <span>Settings</span>
           <FontAwesomeIcon icon={faGear} />
         </div>
-        <div className="logout">
+        <div className="logout" onClick={handleLogout}>
           <span>log out</span>
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </div>

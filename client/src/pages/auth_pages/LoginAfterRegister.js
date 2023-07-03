@@ -24,7 +24,7 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import AuthLink from "../../components/auth_links/AuthLink";
 
-function Login() {
+function LoginAfterRegister() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,7 +68,7 @@ function Login() {
 
         localStorage.setItem("token", response.data.token);
 
-        navigate("/Project");
+        navigate("/Createproject");
       } catch (error) {
         // Handle the registration error
         console.log("Registration error:", error.message);
@@ -171,4 +171,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginAfterRegister;

@@ -19,7 +19,7 @@ router.post("/register",isGuest,async (req, res) => {
   const username = `@${firstname.slice(0,4)}${lastname.slice(0,4)}${Math.floor(Math.random()*10000)}`
   const userExists = await User.findOne({ email });
   if (userExists) {
-      return res.json({ message: "User already exists" });
+      return res.status(401).json({ message: "User already exists" });
   } else {
       const newUser = new User({
           email:email,
@@ -122,10 +122,10 @@ router.post("/login",isGuest, async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-      return res.json({ message: "User doesn't exist" });
+      return res.status(401).json({ message: "User doesn't exist" });
   } else {
       if (password !== user.acc_password) {
-          return res.json({ message: "Password Incorrect" });
+          return res.status(401).json({ message: "Password Incorrect" });
       }
       const payload = { 
         _id: user._id,

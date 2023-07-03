@@ -27,24 +27,27 @@ exports.getFutureProjects = async (req,res)=>{
   });
 }
 
-exports.getCurrentProjects = async (req,res)=>{
-  await Project.find({endDate:{$gt:Date.now()}})
-  .select('project_title')
-  .then((allProjects) => {
-    return res.status(200).json({
-      success: true,
-      message: 'A list of all projects',
-      Cause: allProjects,
-    });
+exports.getCurrentProjects = async (req, res) => {
+  await Project.find({
+    startDate: { $lte: Date.now() }, // start date is less than or equal to current date
+    endDate: { $gt: Date.now() }, // end date is greater than current date
   })
-  .catch((err) => {
-    res.status(500).json({
-      success: false,
-      message: 'Server error. Please try again.',
-      error: err.message,
+    .select("project_title")
+    .then((allProjects) => {
+      return res.status(200).json({
+        success: true,
+        message: "A list of all current projects",
+        Cause: allProjects,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error. Please try again.",
+        error: err.message,
+      });
     });
-  });
-}
+};
 
 exports.getOldProjects = async (req,res)=>{  
   await Project.find({endDate:{$ls:Date.now()}})
@@ -102,39 +105,39 @@ exports.findProject = async (req, res) => {
     });
 };
 
-exports.createProject = async (req,res)=>{
-  const { project_title, startDate, endDate } = req.body
-  const project_master = req.user.username
-  const userId = req.user._id
-  if(await Project.findOne({project_title,project_master})){
-    return res.status(200).json({message:'Project Already Exist'})
-  }
-  try {
-    const project = new Project({ project_title,endDate,startDate,project_master })
-    await project.save()
-    const userProject = new UserProject({userId:userId,projectId:project._id,permission:'admin'})
-    await userProject.save()
-    const payload = {
-      topic: 'project-create',
-      messages: JSON.stringify(
-        {
-          topic:project.project_title,
-          username:req.user.username,
+  exports.createProject = async (req,res)=>{
+    const { project_title, startDate, endDate, description } = req.body
+    const project_master = req.user.username
+    const userId = req.user._id
+    if(await Project.findOne({project_title,project_master})){
+      return res.status(200).json({message:'Project Already Exist'})
+    }
+    try {
+      const project = new Project({ project_title,endDate,startDate,project_master,description })
+      await project.save()
+      const userProject = new UserProject({userId:userId,projectId:project._id,permission:'admin'})
+      await userProject.save()
+      const payload = {
+        topic: 'project-create',
+        messages: JSON.stringify(
+          {
+            topic:project.project_title,
+            username:req.user.username,
+          }
+          ),
+      };
+      producer.send([payload], function(err, data) {
+        if (err) {
+        res.status(400).json(err)
+        } else {
+          res.status(200).json({project:project,message:'Conversation Message sent ',data})
         }
-        ),
-    };
-    producer.send([payload], function(err, data) {
-      if (err) {
-       res.status(400).json(err)
-      } else {
-        res.status(200).json({project:project,message:'Conversation Message sent ',data})
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
-  }
-}; 
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  }; 
 
 exports.updateProject = async (req, res)=> {
   const projectId = req.params.projectId;

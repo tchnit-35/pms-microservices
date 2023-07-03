@@ -6,9 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/auth_pages/Signup'
 import Login from './pages/auth_pages/Login';
-import CreateWorkspace from './pages/auth_pages/CreateWorkspace';
+import CreateProject from './pages/auth_pages/CreateProject';
 import Confirm from './pages/auth_pages/Confirm';
 import Project from './pages/Project_pages/Project';
+import LoginAfterRegister from './pages/auth_pages/LoginAfterRegister';
 
 import {
   createBrowserRouter,
@@ -29,8 +30,8 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/CreateWorkspace",
-    element: <CreateWorkspace />,
+    path: "/CreateProject",
+    element: <CreateProject />,
   },
   {
     path: "/Confirm",
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/Project",
     element: <Project />,
+  },
+  {
+    path: "/LoginAfterRegister",
+    element: <LoginAfterRegister />,
   },
 ]);
 

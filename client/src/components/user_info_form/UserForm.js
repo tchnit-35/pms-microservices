@@ -67,7 +67,7 @@ const UserForm = ({ to, icon, text }) => {
         setEmail("");
         setPassword("");
 
-        navigate("/Confirm");
+        navigate("/LoginAfterRegister");
         
       } catch (error) {
 
