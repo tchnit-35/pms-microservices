@@ -10,6 +10,7 @@ import CreateProject from './pages/auth_pages/CreateProject';
 import Confirm from './pages/auth_pages/Confirm';
 import Project from './pages/Project_pages/Project';
 import LoginAfterRegister from './pages/auth_pages/LoginAfterRegister';
+import HomePage from './pages/Home_page/HomePage';
 
 import {
   createBrowserRouter,
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/LoginAfterRegister",
     element: <LoginAfterRegister />,
+  },
+  {
+    path: "/HomePage",
+    element: <HomePage />,
   },
 ]);
 
