@@ -8,62 +8,89 @@ const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
 
-exports.getFutureProjects = async (req,res)=>{
-  await Project.find({startDate:{$gt:Date.now()}})
-  .select('project_title')
-  .then((allProjects) => {
+exports.getFutureProjects = async (req, res) => {
+  try {
+    const futureProjects = [];
+    const userProjects = await UserProject.find({ userId: req.user._id });
+    for (const project of userProjects) {
+      const futureProject = await Project.findOne({ 
+        _id: project.projectId, 
+        startDate: { $gt: Date.now() },
+        endDate: { $gt: Date.now() } 
+      }).select('project_title');
+      if (futureProject) {
+        futureProjects.push(futureProject);
+      }
+    }
     return res.status(200).json({
       success: true,
-      message: 'A list of all projects',
-      Cause: allProjects,
+      message: 'A list of all future projects',
+      projects: futureProjects,
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',
       error: err.message,
     });
-  });
+  }
 }
 
-exports.getCurrentProjects = async (req,res)=>{
-  await Project.find({endDate:{$gt:Date.now()}})
-  .select('project_title')
-  .then((allProjects) => {
+exports.getCurrentProjects = async (req, res) => {
+  try {
+    const currentProjects = [];
+    const userProjects = await UserProject.find({ userId: req.user._id });
+    for (const project of userProjects) {
+      const currentProject = await Project.findOne({ 
+        _id: project.projectId, 
+        startDate: { $lt: Date.now() },
+        endDate: { $gt: Date.now() } 
+      }).select('project_title');
+      if (currentProject) {
+        currentProjects.push(currentProject);
+      }
+    }
     return res.status(200).json({
       success: true,
-      message: 'A list of all projects',
-      Cause: allProjects,
+      message: 'A list of all current projects',
+      projects: currentProjects,
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',
       error: err.message,
     });
-  });
+  }
 }
 
-exports.getOldProjects = async (req,res)=>{  
-  await Project.find({endDate:{$ls:Date.now()}})
-  .select('project_title')
-  .then((allProjects) => {
+exports.getOldProjects = async (req, res) => { 
+  try {
+    const oldProjects = [];
+    const userProjects = await UserProject.find({ userId: req.user._id });
+    for (const project of userProjects) {
+      const oldProject = await Project.findOne({ 
+        _id: project.projectId, 
+        endDate: { $lt: Date.now() } 
+      }).select('project_title');
+      if (oldProject) {
+        oldProjects.push(oldProject);
+      }
+    }
     return res.status(200).json({
       success: true,
-      message: 'A list of all projects',
-      project: allProjects,
+      message: 'A list of all old projects',
+      projects: oldProjects,
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',
       error: err.message,
     });
-  });
+  }
 }
+
 
 exports.getSingleProject = async (req,res) =>{
 
@@ -73,7 +100,7 @@ exports.getSingleProject = async (req,res) =>{
         res.status(200).json({
           success: true,
           message: `More on ${singleProject.project_title}`,
-          Cause: singleProject,
+          project: singleProject,
         });
       })
       .catch((err) => {
@@ -88,29 +115,27 @@ exports.getSingleProject = async (req,res) =>{
 
 exports.findProject = async (req, res) => {
   const project_title = req.query.project_title;
-  var condition = project_title ? { project_title: { $regex: new RegExp(project_title), $options: "i" } } : {};
-
-  await Project.find(condition)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
+  const condition = project_title ? { project_title: { $regex: new RegExp(project_title), $options: "i" } } : {};
+  try {
+    const projects = await UserProject.find({ userId: req.user._id });
+    const data = projects.filter(condition);
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message || "Some error occurred while retrieving projects."
     });
+  }
 };
 
 exports.createProject = async (req,res)=>{
-  const { project_title, startDate, endDate } = req.body
+  const { project_title, startDate, endDate ,description} = req.body
   const project_master = req.user.username
   const userId = req.user._id
   if(await Project.findOne({project_title,project_master})){
     return res.status(200).json({message:'Project Already Exist'})
   }
   try {
-    const project = new Project({ project_title,endDate,startDate,project_master })
+    const project = new Project({ project_title,endDate,startDate,project_master,description })
     await project.save()
     const userProject = new UserProject({userId:userId,projectId:project._id,permission:'admin'})
     await userProject.save()
@@ -130,8 +155,8 @@ exports.createProject = async (req,res)=>{
         res.status(200).json({project:project,message:'Conversation Message sent ',data})
       }
     });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     res.status(500).send('Server error');
   }
 }; 

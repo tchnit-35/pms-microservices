@@ -8,9 +8,9 @@ const kafka = require('kafka-node');
 router.get('/user/tasks',isAuth,getByUserId)
 router.get('/projects/:projectId/tasks',isAuth,getByProjectId)
 router.post('/projects/:projectId/tasks',isAuth,createTask)
-router.post('/task/:taskId',isAuth,createSubTask)
-router.patch('/task/:taskId',isAuth,updateTask) 
-router.delete('/task/:taskId',isAuth,deleteTask)
+router.post('/tasks/:taskId',isAuth,createSubTask)
+router.patch('/tasks/:taskId',isAuth,updateTask) 
+router.delete('/tasks/:taskId',isAuth,deleteTask)
  
 // Task deletion (consumer)
 const consumer = new kafka.ConsumerGroup({
