@@ -22,7 +22,7 @@ function allocateTask(users,taskId){
     }
   }
 }
-function deallocateTask([],taskId){
+function deallocateTask(users,taskId){
   try{[].forEach(userToRemove=>{
     UserTask.findOneAndRemove({userId:userToRemove,taskId})
     })

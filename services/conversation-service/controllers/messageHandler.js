@@ -84,8 +84,19 @@ consumer.on('message', async function(message) {
     });
     break
     case 'message-sent':
-
+      const {messageUsername,message,time,convoId} = JSON.parse(message.value)
+      await Conversation.updateOne({_id:convoId},{$set:{lastMessage:{
+        username:messageUsername,
+        message,time
+      }}})
+      .then(() => {
+        console.log({ message: `Conversation updated` });
+      })
+      .catch((err) => {
+        console.log({ message: err.message });
+      });
       break
+
 }
 
 })

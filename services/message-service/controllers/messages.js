@@ -20,8 +20,10 @@ exports.sendMessage = async(req,res)=>{
       topic: 'message-sent',
       messages: JSON.stringify(
         {
+          Messageusername:req.user.username,
           message:newMessage.message,
-          sentAt:newMessage.sentAt,
+          time:newMessage.sentAt,
+          convoId:conversationId
         }
         ),
     };
@@ -29,6 +31,7 @@ exports.sendMessage = async(req,res)=>{
       if (err) {
        res.status(400).json(err)
       } else {
+        Message.UpdateeOne({_id:newMessage._id},{$set:{sent:true}})
         res.status(200).json({message:'Conversation Message sent ',data})
       }
     });
@@ -48,6 +51,7 @@ exports.getMessages = async (req, res) => {
   try {
     const userMessages = await Message.find({ conversationId,  senderUsername: userId } );
     const receivedMessages = await Message.find({ conversationId,   senderUsername: { $ne: userId } } );
+    await Message.find({ conversationId,   senderUsername: { $ne: userId } },{$set:{seen:true}} )
     res.status(200).json({ Usermessages:userMessages,receivedMessages:receivedMessages });
   } catch (err) {
     res.status(401).json({ error: err.message });

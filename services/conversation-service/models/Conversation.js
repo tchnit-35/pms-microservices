@@ -14,7 +14,8 @@ const conversationSchema = new schema({
         default:"inactive"
     },
     lastMessage:{
-        messageId:String,
+        username:String,
+        message:String,
         time:Date
     },
     createdBy:{
