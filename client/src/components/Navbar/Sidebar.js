@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, } from "react";
+import { useNavigate } from 'react-router-dom'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sidebar.css";
@@ -68,6 +69,12 @@ const SideMenu = ({ isOpen }) => {
     setIsLegacyProjectsVisible(!isLegacyProjectsVisible);
   };
 
+  const navigate  = useNavigate();
+
+  function moveToHome() {
+    navigate('/HomePage');
+  }
+
   const Project = ({ icon, color, projectName }) => {
     return (
       <div className="project unselectable current-project-folder">
@@ -99,7 +106,7 @@ const SideMenu = ({ isOpen }) => {
               </table>
             </div>
 
-            <div className="home">
+            <div className="home" onClick={moveToHome}>
               <table>
                 <tbody>
                   <tr>
