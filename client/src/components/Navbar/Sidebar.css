@@ -177,6 +177,8 @@
 }
 
 .contact-name{
+  text-decoration: none;
+  font-size: 15px;
   color: white;
 }
 
@@ -188,6 +190,12 @@
   overflow: hidden;
 }
 
+.message {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .msg{
   white-space: nowrap;
 }

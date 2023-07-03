@@ -25,6 +25,8 @@ const SideMenu = ({ isOpen }) => {
   const [currentProjects, setCurrentProjects] = useState([]);
   const [futureProjects, setFutureProjects] = useState([]);
   const [legacyProjects, setLegacyProjects] = useState([]);
+  const [publicConversations, setPublicConversations] = useState([]);
+  const [privateConversations, setPrivateConversations] = useState([]);
 
   const token = localStorage.getItem("token");
   console.log(token)
@@ -56,8 +58,23 @@ const SideMenu = ({ isOpen }) => {
         },
       })
       .then((response) => setLegacyProjects(response.data));
+    
+      //Fetch Conversations from backend
+      axios
+      .get("http://localhost:3006/conversations/recent", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const { publicConversations, privateConversations } = response.data;
+        
+        setPublicConversations(publicConversations);
+        setPrivateConversations(privateConversations);
+      });
+  
   }, []);
-
+  console.log(privateConversations)
   console.log(legacyProjects)
 
   const handleCurrentProjectsClick = () => {
@@ -71,15 +88,18 @@ const SideMenu = ({ isOpen }) => {
   const handleLegacyProjectsClick = () => {
     setIsLegacyProjectsVisible(!isLegacyProjectsVisible);
   };
+  function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
 
-  const Project = ({ icon, color, projectName }) => {
-    return (
-      <div className="project unselectable current-project-folder">
-        <FontAwesomeIcon icon={icon} style={{ color: color }} size="lg" />
-        <span className="project-name">{projectName}</span>
-      </div>
-    );
-  };
+  // const Project = ({ icon, color, projectName }) => {
+  //   return (
+  //     <div className="project unselectable current-project-folder">
+  //       <FontAwesomeIcon icon={icon} style={{ color: color }} size="lg" />
+  //       <span className="project-name">{projectName}</span>
+  //     </div>
+  //   );
+  // };
 
   return (
     <>
@@ -293,19 +313,24 @@ const SideMenu = ({ isOpen }) => {
           <div className="sidebar-about mb-4">
             <span>Streams</span>
           </div>
-
+<>
+          
           <div className="public-stream">
             <span>Public</span>
           </div>
 
           <div>
-            <div className="streams mb-4">
-              <span className="contact-name">Ashlyn Lee</span>
-              <div className="last-message">
-                <span className="me-3">10:15</span>
-                <span>Good job here!</span>
-              </div>
+          {publicConversations.map((conversation) => (
+            !isEmptyObject(conversation)&&(
+          <div className="streams mb-4"  key={conversation._id}>
+            <Link className="contact-name" to={`/conversations/${conversation._id}`}>{conversation.topic}</Link>
+            <div className="last-message" >
+              <span className="me-3">{conversation.time}</span>
+              <span>{conversation.message}</span>
             </div>
+          </div>
+            )
+      ))}
           </div>
 
           <div className="private-stream">
@@ -313,16 +338,22 @@ const SideMenu = ({ isOpen }) => {
           </div>
 
           <div>
-            <div className="streams mb-4">
-              <span className="contact-name">Leanna Yonsi</span>
-              <div className="last-message">
-                <span className="me-3">17:41</span>
-                <span className="msg">Check this out. What do you think ?</span>
-              </div>
-            </div>
-          </div>
+  {privateConversations.map((conversation) => (
+    !isEmptyObject(conversation) && (
+      <div className="streams mb-4" key={conversation._id}>
+        <Link className="contact-name" to={`/conversations/${conversation._id}`}>{conversation.topic}</Link>
+        <div className="last-message">
+          <span className="me-3">{conversation.time}</span>
+          <span className="message">{conversation.message.length > 20 ? conversation.message.substring(0, 17) + '...' : conversation.message}</span>
         </div>
       </div>
+    )
+  ))}
+</div>
+    </>
+        </div>
+      </div>
+      
     </>
   );
 };
