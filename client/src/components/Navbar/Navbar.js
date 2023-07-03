@@ -98,7 +98,7 @@ function NavigationBar({ handleClick }) {
       >
         <Container fluid style={{ maxHeight: "30px" }}>
           <Navbar.Brand className="custom-bars" onClick={handleClick}>
-            <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff" }} />
+            <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff" }} size="sm"/>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
 

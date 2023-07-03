@@ -18,13 +18,13 @@ app.use(express.urlencoded({extended:true}))
 
 app.use(  
   cors({
-    origin: "http://localhost:"+PORT.toString(),
-    methods: "GET,POST,PUT,DELETE",
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   })
 );
 
-app.use("/conversation", conversationRoute);
+app.use("/conversations", conversationRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running at %d!",PORT);

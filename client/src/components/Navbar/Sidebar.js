@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sidebar.css";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,8 +26,11 @@ const SideMenu = ({ isOpen }) => {
   const [currentProjects, setCurrentProjects] = useState([]);
   const [futureProjects, setFutureProjects] = useState([]);
   const [legacyProjects, setLegacyProjects] = useState([]);
+  const [publicConversations, setPublicConversations] = useState([]);
+  const [privateConversations, setPrivateConversations] = useState([]);
 
   const token = localStorage.getItem("token");
+  console.log(token)
 
   useEffect(() => {
     // Fetch current projects from backend
@@ -55,7 +59,24 @@ const SideMenu = ({ isOpen }) => {
         },
       })
       .then((response) => setLegacyProjects(response.data));
+    
+      //Fetch Conversations from backend
+      axios
+      .get("http://localhost:3006/conversations/recent", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const { publicConversations, privateConversations } = response.data;
+        
+        setPublicConversations(publicConversations);
+        setPrivateConversations(privateConversations);
+      });
+  
   }, []);
+  console.log(privateConversations)
+  console.log(legacyProjects)
 
   const handleCurrentProjectsClick = () => {
     setIsProjectOneVisible(!isProjectOneVisible);
@@ -68,7 +89,11 @@ const SideMenu = ({ isOpen }) => {
   const handleLegacyProjectsClick = () => {
     setIsLegacyProjectsVisible(!isLegacyProjectsVisible);
   };
+  function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
 
+<<<<<<< HEAD
   const navigate  = useNavigate();
 
   function moveToHome() {
@@ -83,6 +108,16 @@ const SideMenu = ({ isOpen }) => {
       </div>
     );
   };
+=======
+  // const Project = ({ icon, color, projectName }) => {
+  //   return (
+  //     <div className="project unselectable current-project-folder">
+  //       <FontAwesomeIcon icon={icon} style={{ color: color }} size="lg" />
+  //       <span className="project-name">{projectName}</span>
+  //     </div>
+  //   );
+  // };
+>>>>>>> 8a316de4f50c175564a3b8a53b03d70f0ac24db1
 
   return (
     <>
@@ -182,10 +217,24 @@ const SideMenu = ({ isOpen }) => {
                   </tbody>
                 </table>
               </div>
-              {isProjectOneVisible &&
-                currentProjects.map((project) => (
-                  <Project icon={faClipboardList} color="9DC284" projectName={project.name} />
-                ))}
+              {isProjectOneVisible && (
+  <>
+    {currentProjects.length === 0 ? (
+      <span className="project-name">No Current project found</span>
+    ) : (
+      <ul style={{listStyle:'none'}}>
+        {currentProjects.map((project) => (
+          <li key={project._id} >
+            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
+            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
+              {project.project_title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
             </div>
 
             {/*future projects*/}
@@ -213,10 +262,24 @@ const SideMenu = ({ isOpen }) => {
                   </tbody>
                 </table>
               </div>
-              {isFutureProjectsVisible &&
-                futureProjects.map((project) => (
-                  <Project icon={faClipboardList} color="9DC284" projectName={project.name} />
-                ))}
+              {isFutureProjectsVisible && (
+  <>
+    {futureProjects.length === 0 ? (
+      <span className="project-name">No Future project found</span>
+    ) : (
+      <ul style={{listStyle:'none'}}>
+        {futureProjects.map((project) => (
+          <li key={project._id} >
+            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
+            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
+              {project.project_title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
             </div>
 
             {/*legacy projects*/}
@@ -244,29 +307,48 @@ const SideMenu = ({ isOpen }) => {
                   </tbody>
                 </table>
               </div>
-              {isLegacyProjectsVisible &&
-                legacyProjects.map((project) => (
-                  <Project icon={faClipboardList} color="9DC284" projectName={project.name} />
-                ))}
+              {isLegacyProjectsVisible && (
+  <>
+    {legacyProjects.length === 0 ? (
+      <span style={{marginLeft:'10px'}} className="project-name">No Legacy project found</span>
+    ) : (
+      <ul style={{listStyle:'none'}}>
+        {legacyProjects.map((project) => (
+          <li key={project._id} >
+            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
+            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
+              {project.project_title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
             </div>
           </div>
 
           <div className="sidebar-about mb-4">
             <span>Streams</span>
           </div>
-
+<>
+          
           <div className="public-stream">
             <span>Public</span>
           </div>
 
           <div>
-            <div className="streams mb-4">
-              <span className="contact-name">Ashlyn Lee</span>
-              <div className="last-message">
-                <span className="me-3">10:15</span>
-                <span>Good job here!</span>
-              </div>
+          {publicConversations.map((conversation) => (
+            !isEmptyObject(conversation)&&(
+          <div className="streams mb-4"  key={conversation._id}>
+            <Link className="contact-name" to={`/conversations/${conversation._id}`}>{conversation.topic}</Link>
+            <div className="last-message" >
+              <span className="me-3">{conversation.time}</span>
+              <span>{conversation.message}</span>
             </div>
+          </div>
+            )
+      ))}
           </div>
 
           <div className="private-stream">
@@ -274,16 +356,22 @@ const SideMenu = ({ isOpen }) => {
           </div>
 
           <div>
-            <div className="streams mb-4">
-              <span className="contact-name">Leanna Yonsi</span>
-              <div className="last-message">
-                <span className="me-3">17:41</span>
-                <span className="msg">Check this out. What do you think ?</span>
-              </div>
-            </div>
-          </div>
+  {privateConversations.map((conversation) => (
+    !isEmptyObject(conversation) && (
+      <div className="streams mb-4" key={conversation._id}>
+        <Link className="contact-name" to={`/conversations/${conversation._id}`}>{conversation.topic}</Link>
+        <div className="last-message">
+          <span className="me-3">{conversation.time}</span>
+          <span className="message">{conversation.message.length > 20 ? conversation.message.substring(0, 17) + '...' : conversation.message}</span>
         </div>
       </div>
+    )
+  ))}
+</div>
+    </>
+        </div>
+      </div>
+      
     </>
   );
 };
