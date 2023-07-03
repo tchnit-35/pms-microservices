@@ -1,0 +1,201 @@
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none;
+}
+
+.sidemenu {
+  position: fixed;
+  top: 45px;
+  left: -200px;
+  width: 240px;
+  height: 100%;
+  background-color: #12664f;
+  transition: left 0.2s ease-in-out;
+}
+
+.sidemenu-open {
+  left: 0;
+}
+
+.sidemenu.closed {
+  left: -240px;
+}
+
+.sidebar-about {
+  margin-top: 5%;
+  margin-left: 17px;
+  color: white;
+  font-size: 25px;
+  font-weight: lighter;
+  width: 220px;
+  mix-blend-mode: overlay;
+  border-bottom: 1px solid rgb(176, 176, 176);
+}
+
+.sidebar-content {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sb {
+  height: 90%;
+  overflow-y: auto;
+}
+
+.sb::-webkit-scrollbar {
+  display: none;
+}
+
+.navigate {
+  margin-top: 1px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-bottom: 1px solid rgb(176, 176, 176, 0.3);
+  border-top: 1px solid rgb(176, 176, 176, 0.3);
+  padding: 5px;
+  padding-left: 20px;
+  color: rgb(200, 200, 200);
+  font-weight: 200;
+}
+
+.create{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: #df8c85;
+  cursor: pointer;
+}
+
+.current-project {
+  color: #fbe5a2;
+  font-size: 15px;
+  margin-top: 3px;
+}
+
+.future-project {
+  color: #cea8bc;
+  font-size: 15px;
+  margin-top: 3px;
+}
+
+.legacy-project {
+  color: #df8c85;
+  font-size: 15px;
+  margin-top: 3px;
+}
+
+.folder {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.project {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 17px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.project-name {
+  color: white;
+  font-size: 13px;
+}
+.cr{
+  cursor: pointer;
+  border: 1px solid gray;
+  width: 75px;
+  border-radius: 20px;
+}
+
+.cr:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+
+.home{
+  cursor: pointer;
+}
+
+.home:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+.my-task{
+  cursor: pointer;
+}
+
+.my-task:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+.inbox{
+  cursor: pointer;
+}
+
+.inbox:hover{
+  color: white;
+  transition: 0.4s;
+}
+
+.public-stream{
+  font-size: 15px;
+  margin-left: 7px;
+  color: #fbe5a2;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.private-stream{
+  font-size: 15px;
+  margin-left: 7px;
+  color: #cea8bc;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.streams{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.contact-name{
+  text-decoration: none;
+  font-size: 15px;
+  color: white;
+}
+
+.last-message{
+  color: rgb(166, 166, 166);
+  font-size: 12px;
+  width: 200px;
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+.message {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.msg{
+  white-space: nowrap;
+}

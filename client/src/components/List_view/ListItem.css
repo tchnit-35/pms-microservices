@@ -1,0 +1,171 @@
+.view-content {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+
+
+.arrow {
+  cursor: pointer;
+}
+
+.arrow:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+/*css of the actual list*/
+
+.list {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  border-top: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgb(224, 224, 224);
+  height: 35px;
+}
+
+.task-name {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-right: 1px solid rgb(224, 224, 224);
+  cursor: pointer;
+}
+
+.task-name:hover {
+  background-color: rgb(249, 249, 249);
+}
+
+.assignee {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-right: 1px solid rgb(224, 224, 224);
+  cursor: pointer;
+}
+
+.assignee:hover {
+  background-color: rgb(249, 249, 249);
+}
+
+.due-date {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-right: 1px solid rgb(224, 224, 224);
+  cursor: pointer;
+}
+
+.due-date:hover {
+  background-color: rgb(249, 249, 249);
+}
+
+.priority {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-right: 1px solid rgb(224, 224, 224);
+  cursor: pointer;
+}
+
+.the-priority-low {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 40px;
+  border-radius: 25px;
+  background-color: #7cc4cb;
+}
+
+.the-priority-medium {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 65px;
+  border-radius: 25px;
+  background-color: rgb(232, 190, 112);
+}
+
+.the-priority-high {
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 45px;
+  border-radius: 25px;
+  background-color: rgb(158, 125, 231);
+}
+
+.priority:hover {
+  background-color: rgb(249, 249, 249);
+}
+
+.status {
+  font-size: 12px;
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-right: 1px solid rgb(224, 224, 224);
+  cursor: pointer;
+}
+
+.the-status-ontrack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 60px;
+  border-radius: 25px;
+  background-color: #7ccbb2;
+}
+
+.the-status-atrisk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 50px;
+  border-radius: 25px;
+  background-color: rgb(248, 218, 51);
+}
+
+.the-status-offtrack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 60px;
+  border-radius: 25px;
+  background-color: rgb(251, 109, 109);
+}
+
+.status:hover {
+  background-color: rgb(249, 249, 249);
+}
+
+.user {
+  background-color: #7a82ab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #7a82ab;
+  border-radius: 50%;
+}
