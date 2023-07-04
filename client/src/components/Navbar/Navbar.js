@@ -73,11 +73,7 @@ function NavigationBar({ handleClick }) {
             <span>user@gmail.com</span>
           </div>
         </div>
-        <div className="manage-account">
-          <span>Manage account</span>
-          <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-        </div>
-        <div className="settings">
+        <div className="settings" onClick={() => navigate('/settings')}>
           <span>Settings</span>
           <FontAwesomeIcon icon={faGear} />
         </div>
@@ -127,7 +123,7 @@ function NavigationBar({ handleClick }) {
               rootClose
               onHide={() => setShowUser(false)}
             >
-              <Nav.Link href="#action5" onClick={handleUserClick}>
+              <Nav.Link onClick={handleUserClick}>
                 <div className="profile">
                   <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff" }} size="sm" />
                 </div>

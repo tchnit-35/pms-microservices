@@ -11,6 +11,7 @@ import Confirm from './pages/auth_pages/Confirm';
 import Project from './pages/Project_pages/Project';
 import LoginAfterRegister from './pages/auth_pages/LoginAfterRegister';
 import HomePage from './pages/Home_page/HomePage';
+import Settings from './pages/Settings_pages/Settings';
 
 import {
   createBrowserRouter,
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/HomePage",
     element: <HomePage />,
+  },
+  {
+    path: "/Settings",
+    element: <Settings />,
   },
 ]);
 
