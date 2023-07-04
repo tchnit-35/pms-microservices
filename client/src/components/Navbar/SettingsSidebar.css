@@ -1,0 +1,83 @@
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none;
+}
+
+.sidemenu {
+  position: fixed;
+  top: 45px;
+  left: -200px;
+  width: 240px;
+  height: 100%;
+  background-color: #12664f;
+  transition: left 0.2s ease-in-out;
+}
+
+.sidemenu-open {
+  left: 0;
+}
+
+.sidemenu.closed {
+  left: -240px;
+}
+
+.sb {
+  height: 90%;
+  overflow-y: auto;
+}
+
+.sb::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-navigate {
+  margin-top: 1px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px;
+  padding-left: 20px;
+  color: rgb(239, 239, 239);
+  font-weight: 200;
+}
+
+.home {
+  cursor: pointer;
+}
+
+.home:hover {
+  color: white;
+  transition: 0.4s;
+}
+
+.sidebar-profile {
+  cursor: pointer;
+}
+
+.sidebar-profile:hover {
+  color: white;
+  transition: 0.4s;
+}
+
+.Preferences {
+  cursor: pointer;
+}
+
+.Preferences:hover {
+  color: white;
+  transition: 0.4s;
+}
+
+.sidebar-about {
+  margin-top: 5%;
+  margin-left: 17px;
+  color: white;
+  font-size: 25px;
+  font-weight: lighter;
+  width: 220px;
+  mix-blend-mode: overlay;
+  border-bottom: 1px solid rgb(176, 176, 176);
+}
