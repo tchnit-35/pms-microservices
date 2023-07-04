@@ -18,7 +18,7 @@ body {
 }
 
 .part-1 {
-  height: 550px;
+  height: 500px;
   width: 30%;
 }
 
@@ -31,7 +31,9 @@ body {
   height: 100%;
   width: 100%;
   padding-top: 20px;
+  padding-bottom: 13px;
   padding-left: 15px;
+  padding-right: 15px;
   border-radius: 15px;
   -webkit-box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
   box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
@@ -40,9 +42,157 @@ body {
 .home-task {
   height: 100%;
   width: 100%;
+  padding-top: 20px;
+  padding-bottom: 13px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .the-title {
   font-size: 23px;
   font-weight: 500;
+}
+
+.home-stream {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.for-line {
+  border-bottom: 1px solid rgba(215, 215, 215, 0.5);
+}
+
+.home-private {
+  border-bottom: 1.5px solid black;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.home-private {
+  font-weight: 500;
+}
+
+.home-public {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.home-public {
+  font-weight: 500;
+}
+
+.mark-read {
+  font-size: 12px;
+}
+
+.delete-all {
+  font-size: 12px;
+}
+
+.home-profile-pic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(156, 156, 156);
+  height: 35px;
+  width: 35px;
+  border-radius: 20px;
+}
+
+.home-contact-name {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.msg {
+  font-size: 13px;
+}
+
+.unread {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  height: 15px;
+  width: 15px;
+  border-radius: 8px;
+  background-color: #7d95e5;
+}
+
+.actual-date-time {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.high-priority-task {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  width: 63%;
+  padding-bottom: 80px;
+}
+
+.the-task {
+  font-weight: 500;
+}
+
+.from-project {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 30px;
+  background-color: #95e0dd;
+  border-radius: 10px;
+  color: rgb(42, 46, 51);
+}
+
+.task-state {
+  color: #7a82ab;
+}
+
+.home-team-memebers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 67%;
+}
+
+.team-member-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 65px;
+    border-radius: 17px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+    box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+}
+
+.team-member-name{
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.team-member-role{
+    font-size: 9px;
+}
+
+.mb-x{
+    padding-bottom: 65px;
+}
+
+.bx{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #95e0dd;
+    border-radius: 4px;
+    width: 45px;
+    height: 14px;
+    color: rgb(62, 65, 69);
 }
