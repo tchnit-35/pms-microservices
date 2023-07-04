@@ -7,7 +7,18 @@ const User = require('./User')
 const app = express();
 const kafka = require('kafka-node');
 const jwt = require('jsonwebtoken');
+const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
+const topicsToCreate = [
+  { topic: 'user-creation', partition: 0 }
+];
 
+client.createTopics(topicsToCreate, (error, result) => {
+  if (error) {
+    console.error('Error creating topics:', error);
+  } else {
+    console.log('Topics created successfully:', result);
+  }
+});
 
 
 //json parsing middleware
