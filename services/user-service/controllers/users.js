@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const UserProfile = require('../UserProfile')
+const stringSimilarity = require('string-similarity')
 
 //Get User's Profile information
 exports.getUserProfile = async(req,res)=>{
@@ -39,4 +40,21 @@ exports.updateUserProfile = async(req,res)=>{
         message: 'Server error. Please try again.'
       });
     });
+}
+
+exports.searchByEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const users = await UserProfile.find();
+    console.log(users)
+    const matches = stringSimilarity.findBestMatch(email, users.map(user => user.email));
+    console.log(matches)
+    const matchedUsers = matches.ratings
+      .filter(rating => rating.rating >= 0.5)
+      .map(rating => users.find(user => user.email === rating.target));
+    res.json(matchedUsers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 }

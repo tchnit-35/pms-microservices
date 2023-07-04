@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Project.css";
@@ -12,11 +13,27 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 import ListView from "../../components/List_view/ListView";
 import { Process } from "../../components/Timeline_view/Process";
+import axios from "axios";
 
 function Project() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeView, setActiveView] = useState("grant");
   const [viewContent, setViewContent] = useState("list");
+  const { projectId } = useParams();  
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    // Fetch current projects from backend
+    axios
+      .get(`http://localhost:3002/projects/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => console.log(response.data));
+    }
+  ,[])
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

@@ -30,7 +30,7 @@ const SideMenu = ({ isOpen }) => {
   const [privateConversations, setPrivateConversations] = useState([]);
 
   const token = localStorage.getItem("token");
-  console.log(token);
+  console.log(token)
 
   useEffect(() => {
     // Fetch current projects from backend

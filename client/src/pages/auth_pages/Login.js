@@ -58,17 +58,17 @@ function Login() {
 
         // Handle the successful login
         const userId = response.data.userId;
-        document.cookie = `userId=${userId}; path=/Project`;
+        document.cookie = `userId=${userId}; path=/HomePage`;
 
         setEmail("");
         setPassword("");
 
-        console.log("Registration successful");
+        console.log("Login successful");
         console.log(response.data);
 
         localStorage.setItem("token", response.data.token);
 
-        navigate("/Project");
+        navigate("/HomePage");
       } catch (error) {
         // Handle the registration error
         console.log("Registration error:", error.message);
@@ -136,7 +136,7 @@ function Login() {
                     type="submit"
                     className="form-control mt-3 mb-3 btn-custom"
                   >
-                    Sign up
+                    Sign In 
                   </Button>
 
                   {/* Error */}

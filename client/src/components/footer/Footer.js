@@ -1,6 +1,6 @@
 import "./Footer.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,12 +9,33 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopyright, faUserPlus, faClone, faPlus } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+
 
 function Footer() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [email,setInput] = useState("")
+  const token = localStorage.getItem("token");
+
+  useEffect(()=>{  
+    console.log(token)
+      axios
+      .post(`http://localhost:9000/user/search`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => console.log(response.data));
+  },[])
+
+  
+const handleChange =(value)=>{
+  setInput(value)
+}
+
 
   return (
     <>
@@ -44,6 +65,8 @@ function Footer() {
                 <Form.Control
                   type="email"
                   placeholder="name@example.com"
+                  value = {email}
+                  onChange={(e)=>{handleChange(e.target.value)}}
                   className="modal-custom-input me-3 mb-2"
                   autoFocus
                 />

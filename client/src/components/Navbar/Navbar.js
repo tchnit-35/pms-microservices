@@ -34,25 +34,26 @@ function NavigationBar({ handleClick }) {
   const handleLogout = () => {
     // Get the JWT token from local storage
     const token = localStorage.getItem("token");
-
+  
     // Make a GET request to the backend logout route
     axios
-    .get("http://localhost:4000/auth/logout", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+      .get("http://localhost:4000/auth/logout", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         // Logout successful
-        console.log("jwt  token:",  token);
-
+        console.log("jwt token:", token);
+  
+        // Delete the token from local storage
+        localStorage.removeItem("token");
+  
         navigate("/");
       })
       .catch((error) => {
         // Logout failed
         console.log(error);
-      
       });
   };
   
