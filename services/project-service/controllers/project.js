@@ -135,7 +135,7 @@ exports.createProject = async (req,res)=>{
         }
         ),
     };
-    producer.send([payload], function(err, data) {
+    await producer.send([payload], function(err, data) {
       if (err) {
        res.status(400).json(err)
       } else {
