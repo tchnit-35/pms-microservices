@@ -1,84 +1,87 @@
-.update-project-modal{
-    padding: 100px;
-    border-radius: 30px !important;
+.update-project-modal {
+  padding: 100px;
+  border-radius: 30px !important;
 }
 .modal-content {
-    width: 600px;
-    height: 500px;
-    padding: 30px;
-    overflow-y: auto;
-    margin: auto;
-  }
-.custom-modal-header{
-    height: 55px;
-    padding: 20px;
+  width: 600px;
+  height: 500px;
+  padding: 30px;
+  overflow-y: scroll;
+  margin: auto;
 }
 
-.custom-modal-form{
-    padding: 20px;
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+.custom-modal-header {
+  height: 55px;
+  padding: 20px;
 }
 
-.custom-modal-title{
-    font-size: 18px;
-    padding-left: 15px;
+.custom-modal-form {
+  padding: 20px;
 }
 
-.modify-date-input{
-    width: 140px;
+.custom-modal-title {
+  font-size: 18px;
+  padding-left: 15px;
 }
 
-.date{
-    display: flex;
-    align-items: center;
-   
+.modify-date-input {
+  width: 140px;
 }
 
-.project-owner{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.date {
+  display: flex;
+  align-items: center;
 }
 
-.user-image{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 30px;
-    width: 30px;
-    border-radius: 15px;
-    background-color: #7A82AB;
+.project-owner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.the-h{
-    font-size: 13px;
-    font-family: 500;
+.user-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  background-color: #7a82ab;
 }
 
-.the-project-owner{
-    height: 50px;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.the-h {
+  font-size: 13px;
+  font-family: 500;
 }
 
-.the-user-name{
-    font-size: 14px;
-    font-weight: 500;
+.the-project-owner {
+  height: 50px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.ctm-btn{
-    width: 140px;
-    height: 40px;
-    border-radius: 7px;
-    background-color: transparent;
-    color: #034e3b;
-    border: 1.5px solid #034e3b;
-    transition: 0.25s;
+.the-user-name {
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.ctm-btn:hover{
-    background-color: #034e3b;
-    color: white;
-    border:2px solid #034e3b ;
+.ctm-btn {
+  width: 140px;
+  height: 40px;
+  border-radius: 7px;
+  background-color: transparent;
+  color: #034e3b;
+  border: 1.5px solid #034e3b;
+  transition: 0.25s;
+}
+
+.ctm-btn:hover {
+  background-color: #034e3b;
+  color: white;
+  border: 2px solid #034e3b;
 }
