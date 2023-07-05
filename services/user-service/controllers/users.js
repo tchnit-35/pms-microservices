@@ -4,14 +4,13 @@ const stringSimilarity = require('string-similarity')
 
 //Get User's Profile information
 exports.getUserProfile = async(req,res)=>{
-  const userId = req.user._Id
-  await UserProfile.findById({userId})
+  const userId = req.user._id
+  await UserProfile.findOne({userId})
   .then((Profile)=>{
     return res.status(200)
-    .json({
-      success:true,
-      Profile:Profile
-    })
+    .json(
+      Profile
+    )
   })
   .catch((err)=>{
     return res.status(500)
