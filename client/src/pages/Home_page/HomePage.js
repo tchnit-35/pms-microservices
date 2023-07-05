@@ -11,48 +11,49 @@ import axios from "axios";
 function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [priorityTasks, setPriorityTasks] = useState([]);
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [recentTasks, setRecentTasks] = useState([]);
+  const [priorityTasks,setPriorityTasks] = useState([])
+  const [teamMembers,setTeamMembers] = useState([])
+  const [privateMessages,setprivateMessages] = useState([])
+  const [recentTasks,setRecentTasks] = useState([])
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   const token = localStorage.getItem("token");
   useEffect(() => {
-    // const interval = setInterval(() => {
-    //   setCurrentDateTime(new Date());
-    // }, 1000);
-    // Fetch tasks from backend
-    axios
-      .get("http://localhost:3003/tasks", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setPriorityTasks(response.data);
-      });
 
-    // Fetch co-team-members from backend
-    // axios
-    //   .get("http://localhost:4040/teams", {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   })
-    //   .then((response) => setFutureProjects(response.data));
-
-    // Fetch legacy projects from backend
-    // axios
-    //   .get("http://localhost:3003/tasks/recent", {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   })
-    //   .then((response) => setRecentTasks(response.data));
-
-    // return () => clearInterval(interval);
-  }, []);
+        // Fetch tasks from backend
+        axios
+        .get("http://localhost:3003/tasks", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log(response.data)
+          setPriorityTasks(response.data)});
+  
+      // Fetch co-team-members from backend
+      // axios
+      //   .get("http://localhost:4040/teams", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   })
+      //   .then((response) => setFutureProjects(response.data));
+  
+      // Fetch legacy projects from backend
+      // axios
+      //   .get("http://localhost:3003/tasks/recent", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   })
+      //   .then((response) => setRecentTasks(response.data));
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+    
+  }, [])
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

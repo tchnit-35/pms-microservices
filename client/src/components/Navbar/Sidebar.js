@@ -216,7 +216,7 @@ const SideMenu = ({ isOpen }) => {
                             size="sm"
                           />
                           <Link
-                            to={`/projects/${project._id}`}
+                            to={`/Project/${project._id}`}
                             style={{ marginLeft: "10px", textDecoration: "none" }}
                             className="project-name"
                           >
@@ -269,7 +269,7 @@ const SideMenu = ({ isOpen }) => {
                             size="sm"
                           />
                           <Link
-                            to={`/projects/${project._id}`}
+                            to={`/Project/${project._id}`}
                             style={{ marginLeft: "10px", textDecoration: "none" }}
                             className="project-name"
                           >
@@ -324,7 +324,7 @@ const SideMenu = ({ isOpen }) => {
                             size="sm"
                           />
                           <Link
-                            to={`/project/${project._id}`}
+                            to={`/Project/${project._id}`}
                             style={{ marginLeft: "10px", textDecoration: "none" }}
                             className="project-name"
                           >

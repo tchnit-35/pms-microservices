@@ -9,7 +9,7 @@ const kafka = require('kafka-node');
 const jwt = require('jsonwebtoken');
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const topicsToCreate = [
-  { topic: 'user-creation', partition: 0 }
+  { topic: 'user-creation', partition: 2, replicationFactor:1 }
 ]; 
 
 client.createTopics(topicsToCreate, (error, result) => {

@@ -28,13 +28,25 @@ import {
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
   const [showUser, setShowUser] = React.useState(false); // state for showing/hiding the popover
-
-  const handleUserClick = () => setShowUser(!showUser); // function for showing/hiding the popover
-
-  const handleLogout = () => {
-    // Get the JWT token from local storage
+  const [userInfo, setUserInfo] = React.useState(null);
+  // Get the JWT token from local storage
     const token = localStorage.getItem("token");
+  const handleUserClick = () => setShowUser(!showUser); // function for showing/hiding the popover
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get('http://localhost:9000/user',{
+        headers: {
+        Authorization: `Bearer ${token}`,
+      },});
+      setUserInfo(response.data);
+      
+    };
+    fetchData();console.log({user:userInfo})
+  }, []);
+  const handleLogout = () => {
   
+  //GET request to obtain user information
+
     // Make a GET request to the backend logout route
     axios
       .get("http://localhost:4000/auth/logout", {
@@ -68,17 +80,21 @@ function NavigationBar({ handleClick }) {
           <div className="profile-pic me-2">
             <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff" }} size="xl" />
           </div>
-          <div className="user-name-email">
-            <span>User Name</span>
-            <span>user@gmail.com</span>
-          </div>
+          {userInfo ? (
+        <div className="user-name-email">
+          <span style={{color: '#824C71' , fontWeight:'bold'}}>{userInfo.username}</span>
+          <span style={{color: '#4A2545',fontWeight:'lighter' }}>{userInfo.email}</span>
+        </div>
+      ) : (
+        <div className="user-name-email">Loading...</div>
+      )}
         </div>
         <div className="settings" onClick={() => navigate('/settings')}>
           <span>Settings</span>
           <FontAwesomeIcon icon={faGear} />
         </div>
         <div className="logout" onClick={handleLogout}>
-          <span>log out</span>
+          <span>Logout</span>
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </div>
       </Popover.Body>

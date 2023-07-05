@@ -45,12 +45,16 @@ const TaskSchema = new mongoose.Schema({
   },
   status:{
     type:String,
-    enum:['In-Progress','On Hold','Completed'],
-    default:'In-Progress'
+    enum:['On-track','At Risk','On-Hold','Off-Track'],
+    default:'On-track'
   },
   created_at: {
     type: Date,
     default: Date.now(),
+  },
+  completed:{
+    type:Boolean,
+    default:false
   },
   masterTaskId:{
     type:String

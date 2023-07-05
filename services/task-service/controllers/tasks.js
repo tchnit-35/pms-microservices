@@ -200,15 +200,23 @@ exports.getByProjectId = async (req, res) => {
     const tasks = await Promise.all(
       masterTasks.map(async (masterTask) => {
         const subTasks = await Task.find({ projectId: projectId, masterTaskId: masterTask._id });
-        return { ...masterTask._doc, subTasks };
+        const userTasks = await UserTask.find({ taskId: { $in: subTasks.map(task => task._id) } });
+        const users = await Promise.all(userTasks.map(async (userTask) => {
+          const user = await User.findById(userTask.userId);
+          return user;
+        }));
+        const assignedTo = users.filter(user => user != null); // remove any null values
+
+        // Format the startDate and endDate fields
+        const options = { month: 'short', day: 'numeric' };
+        const startDate = new Date(masterTask.startDate).toLocaleString('en-US', options);
+        const endDate = new Date(masterTask.endDate).toLocaleString('en-US', options);
+
+        return { ...masterTask._doc, subTasks, assignedTo, startDate, endDate };
       })
     );
 
-    return res.status(200).json({
-      success: true,
-      message: 'A list of all tasks',
-      Cause: tasks,
-    });
+    return res.status(200).json(tasks);
   } catch (err) {
     return res.status(500).json({
       success: false,

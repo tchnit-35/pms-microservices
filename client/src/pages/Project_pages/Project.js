@@ -31,6 +31,7 @@ function Project(props) {
   const [viewContent, setViewContent] = useState("list");
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState(null);
+
   const [show, setShow] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -43,10 +44,11 @@ function Project(props) {
           Authorization: `Bearer ${token}`,
         },
       })
-
       .then((response) => {
         setProjectData(response.data);
       });
+
+    
   }, [projectId]);
 
   const toggleMenu = () => {

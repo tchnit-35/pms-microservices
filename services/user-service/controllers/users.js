@@ -8,7 +8,26 @@ exports.getUserProfile = async(req,res)=>{
   await UserProfile.findOne({userId})
   .then((Profile)=>{
     return res.status(200)
-    .json(Profile
+    .json(
+      Profile
+    )
+  })
+  .catch((err)=>{
+    return res.status(500)
+    .json({
+      success:false,
+      message:err.message
+    })
+  }) 
+}
+//Find User's Profile information
+exports.findUserProfile = async(req,res)=>{
+  const userId = req.query.userId
+  await UserProfile.findOne({userId})
+  .then((Profile)=>{
+    return res.status(200)
+    .json(
+      Profile
     )
   })
   .catch((err)=>{

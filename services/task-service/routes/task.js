@@ -6,8 +6,8 @@ const Task = require('../models/Task');
 const kafka = require('kafka-node');
 
 router.get('/tasks',isAuth,getByUserId)
-router.get('/projects/:projectId/tasks',isAuth,getByProjectId)
-router.post('/projects/:projectId/tasks',isAuth,createTask)
+router.get('/projects/:projectId',isAuth,getByProjectId)
+router.post('/projects/:projectId',isAuth,createTask)
 router.get('/tasks/recent',isAuth,getRecentTask)
 router.get('/tasks/:taskId',isAuth,getTask)
 router.post('/tasks/:taskId',isAuth,createSubTask)

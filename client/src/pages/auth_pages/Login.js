@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,6 +31,13 @@ function Login() {
   const [EmailError, setEmailError] = useState("");
   const [PasswordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+  navigate('/HomePage');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

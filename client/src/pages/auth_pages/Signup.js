@@ -11,12 +11,20 @@ import github from "../../images/github.png"
 import facebook from "../../images/facebook.png"
 import logo from "../../images/logo.png"
 
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link,useNavigate } from "react-router-dom";
 
 import AuthLink from "../../components/auth_links/AuthLink";
 import UserForm from "../../components/user_info_form/UserForm";
 
 function Signup() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+  navigate('/HomePage');
+    }
+  }, [navigate]);
   return (
     <section>
       <div className="wave wave1"></div>
