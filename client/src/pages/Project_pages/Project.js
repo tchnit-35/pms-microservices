@@ -16,6 +16,10 @@ import {
   faChevronDown,
   faArrowUpRightFromSquare,
   faPencil,
+  faClone,
+  faCloudArrowUp,
+  faDownload,
+  faTrash,
   faCopy,
   faFloppyDisk,
 } from "@fortawesome/free-solid-svg-icons";
@@ -111,18 +115,22 @@ function Project(props) {
                     </div>
                     <div className="copy-link-btn">
                     <FontAwesomeIcon icon={faFloppyDisk} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
-                      <span>Save layout as templat</span>
+                      <span>Save as template</span>
                     </div>
                     <div className="duplicate">
+                    <FontAwesomeIcon icon={faClone} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
                       <span>Duplicate</span>
                     </div>
                     <div className="copy-link-btn">
+                    <FontAwesomeIcon icon={faCloudArrowUp} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
                       <span>Import</span>
                     </div>
                     <div className="duplicate">
+                    <FontAwesomeIcon icon={faDownload} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
                       <span>Export</span>
                     </div>
                     <div className="copy-link-btn">
+                    <FontAwesomeIcon icon={faTrash} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
                       <span className="me-2">Delete Project</span>
                       
                     </div>
