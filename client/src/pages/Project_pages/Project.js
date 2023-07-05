@@ -22,11 +22,23 @@ function Project() {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState(null);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     // Fetch project data from backend using projectId
-    axios.get(`http://localhost:3002/projects/${projectId}`).then((response) => {
-      setProjectData(response.data);
-    });
+    console.log("Fetching project data for projectId:", projectId);
+    axios
+      .get(`http://localhost:3002/projects/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      .then((response) => {
+        console.log("response:", response.data);
+
+        setProjectData(response.data);
+      });
   }, [projectId]);
 
   const toggleMenu = () => {
@@ -43,10 +55,10 @@ function Project() {
         setViewContent("timeline");
         break;
       default:
-        console.log("Unknown view selected:", view);
+        //console.log("Unknown view selected:", view);
         setViewContent("list");
     }
-    console.log("viewContent:", viewContent);
+    //console.log("viewContent:", viewContent);
   };
 
   const getViewClass = (view) => {
@@ -54,8 +66,12 @@ function Project() {
   };
 
   if (!projectData) {
+    console.log("projectData is null, returning loading message");
     return <div>Loading...</div>;
   }
+
+  console.log("projectData:", projectData);
+  console.log('projectData.project_title:', projectData.singleProject.project_title);
 
   return (
     <>
@@ -67,7 +83,7 @@ function Project() {
           {/*project name & share botton*/}
 
           <div className="d-flex align-items-center heading">
-            <p className="p-name me-auto">{projectData.name}</p>
+            <p className="p-name me-auto">{projectData.singleProject.project_title}</p>
             <div className="share">
               <span className="me-1">Share</span>
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="sm" />
@@ -86,7 +102,7 @@ function Project() {
               </div>
               <div
                 className={`${getViewClass("timeline")} me-4`}
-                onClick={() =>handleViewClick("timeline")}
+                onClick={() => handleViewClick("timeline")}
               >
                 Timeline
               </div>
@@ -94,7 +110,6 @@ function Project() {
           </div>
 
           <div className="view-content">
-
             {/*list body*/}
 
             {viewContent === "list" && <ListView />}
@@ -104,9 +119,6 @@ function Project() {
             {viewContent === "timeline" && <Process />}
 
             {!viewContent && <p>No view content selected.</p>}
-
-            
-
           </div>
         </div>
         <Footer />

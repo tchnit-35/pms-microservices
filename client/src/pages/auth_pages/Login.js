@@ -63,8 +63,8 @@ function Login() {
         setEmail("");
         setPassword("");
 
-        console.log("Login successful");
-        console.log(response.data);
+       // console.log("Login successful");
+        //console.log(response.data);
 
         localStorage.setItem("token", response.data.token);
 
