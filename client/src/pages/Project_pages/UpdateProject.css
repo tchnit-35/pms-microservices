@@ -1,8 +1,14 @@
 .update-project-modal{
-    padding: 50px;
+    padding: 100px;
     border-radius: 30px !important;
 }
-
+.modal-content {
+    width: 600px;
+    height: 500px;
+    padding: 30px;
+    overflow-y: auto;
+    margin: auto;
+  }
 .custom-modal-header{
     height: 55px;
 }
