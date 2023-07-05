@@ -5,6 +5,11 @@
 
 .custom-modal-header{
     height: 55px;
+    padding: 20px;
+}
+
+.custom-modal-form{
+    padding: 20px;
 }
 
 .custom-modal-title{
@@ -59,7 +64,7 @@
 .ctm-btn{
     width: 140px;
     height: 40px;
-    border-radius: 17px;
+    border-radius: 7px;
     background-color: transparent;
     color: #034e3b;
     border: 1.5px solid #034e3b;
