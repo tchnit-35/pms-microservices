@@ -86,10 +86,12 @@ body {
   border-bottom: 0px solid black;
   cursor: pointer;
 }
-
+.views-container div{
+  transition: 0.25s;
+}
 .views-container div:hover {
-  font-weight: bolder;
-  border-bottom: 2px solid black;
+  font-weight: bold;
+  border-bottom: 1px solid black;
 }
 
 .views-container .grant:hover {

@@ -31,11 +31,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 17px;
-  height: 17px;
-  border: 1px solid #ffffff;
-  border-radius: 30px;
-  background-color: #ffffff;
+  width: fit-content;
+  height: fit-content;
+  background-color: transparent;
 }
 
 .profile {

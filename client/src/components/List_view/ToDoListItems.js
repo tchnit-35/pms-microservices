@@ -43,24 +43,28 @@ const ToDoListItems = () => {
   return (
     <>
       <div className="view-content mb-4">
-        {taskList.map((task, index) => (
-          <div className="list mb-0" key={index}>
-            <div className="task-name">{task.name}</div>
-            <div className="assignee">
-              <div className="user me-1">
-                <FontAwesomeIcon icon={faUser} style={{ color: '#ffffff' }} size="xs" />
+      {taskList.length > 0 ? (
+          taskList.map((task, index) => (
+            <div className="list mb-0" key={index}>
+              <div className="task-name">{task.name}</div>
+              <div className="assignee">
+                <div className="user me-1">
+                  <FontAwesomeIcon icon={faUser} style={{ color: '#ffffff' }} size="xs" />
+                </div>
+                <span>{task.assignedTo}</span>
               </div>
-              <span>{task.assignedTo}</span>
+              <div className="due-date">{task.startDate} - {task.endDate}</div>
+              <div className="priority">
+                <div className="the-priority-low">{task.priority}</div>
+              </div>
+              <div className="status">
+                <div className="the-status-ontrack">{task.status}</div>
+              </div>
             </div>
-            <div className="due-date">{task.startDate} - {task.endDate}</div>
-            <div className="priority">
-              <div className="the-priority-low">{task.priority}</div>
-            </div>
-            <div className="status">
-              <div className="the-status-ontrack">{task.status}</div>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className='none-found'>No tasks found.</div>
+        )}
       </div>
     </>
   );

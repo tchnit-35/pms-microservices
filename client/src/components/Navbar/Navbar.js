@@ -17,6 +17,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
+  faBell,
   faUser,
   faQuestion,
   faSearch,
@@ -127,7 +128,7 @@ function NavigationBar({ handleClick }) {
 
             <Nav.Link>
               <div className="aid me-4">
-                <FontAwesomeIcon icon={faQuestion} style={{ color: "#12664F" }} size="xs" />
+                <FontAwesomeIcon icon={faBell} style={{ color: "#ffF" }} size="lg" />
               </div>
             </Nav.Link>
 
