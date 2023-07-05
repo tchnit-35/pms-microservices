@@ -327,7 +327,7 @@ const SideMenu = ({ isOpen }) => {
                             size="sm"
                           />
                           <Link
-                            to={`/projects/${project._id}`}
+                            to={`/project/${project._id}`}
                             style={{ marginLeft: "10px", textDecoration: "none" }}
                             className="project-name"
                           >
