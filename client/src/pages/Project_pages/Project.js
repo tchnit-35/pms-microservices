@@ -93,7 +93,7 @@ function Project(props) {
           {/*project name & share botton*/}
 
           <div className="heading">
-            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+           
 
             <OverlayTrigger
               trigger="click"
@@ -111,7 +111,7 @@ function Project(props) {
                     </div>
                     <div className="copy-link-btn">
                     <FontAwesomeIcon icon={faFloppyDisk} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
-                      <span>Save layout as templat</span>
+                      <span>Save as template</span>
                     </div>
                     <div className="duplicate">
                       <span>Duplicate</span>
@@ -130,7 +130,12 @@ function Project(props) {
                 </Popover>
               }
             >
-              <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+
+            <div className="d-flex align-items-center me-auto">
+            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+            <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+            </div>
+          
             </OverlayTrigger>
 
             <div className="share">
