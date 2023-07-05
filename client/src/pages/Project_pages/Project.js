@@ -1,5 +1,6 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Project.css";
@@ -13,27 +14,20 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 import ListView from "../../components/List_view/ListView";
 import { Process } from "../../components/Timeline_view/Process";
-import axios from "axios";
 
 function Project() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeView, setActiveView] = useState("grant");
+  const [activeView, setActiveView] = useState("list");
   const [viewContent, setViewContent] = useState("list");
-  const { projectId } = useParams();  
-  const token = localStorage.getItem("token");
+  const { projectId } = useParams();
+  const [projectData, setProjectData] = useState(null);
 
   useEffect(() => {
-    // Fetch current projects from backend
-    axios
-      .get(`http://localhost:3002/projects/${projectId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => console.log(response.data));
-    }
-  ,[])
-
+    // Fetch project data from backend using projectId
+    axios.get(`http://localhost:3002/projects/${projectId}`).then((response) => {
+      setProjectData(response.data);
+    });
+  }, [projectId]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -56,8 +50,12 @@ function Project() {
   };
 
   const getViewClass = (view) => {
-    return activeView === view ? "grant active" : "revoke";
+    return activeView === view ? "active" : "";
   };
+
+  if (!projectData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -69,7 +67,7 @@ function Project() {
           {/*project name & share botton*/}
 
           <div className="d-flex align-items-center heading">
-            <p className="p-name me-auto">Project_one</p>
+            <p className="p-name me-auto">{projectData.name}</p>
             <div className="share">
               <span className="me-1">Share</span>
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="sm" />
@@ -81,46 +79,16 @@ function Project() {
           <div className="views mb-2 unselectable">
             <div className="views-container">
               <div
-                className={`${getViewClass("overview")} me-4`}
-                onClick={() => handleViewClick("overview")}
-              >
-                Overview
-              </div>
-              <div
-                className={`${getViewClass("grant")} me-4`}
-                onClick={() => handleViewClick("grant")}
+                className={`${getViewClass("list")} me-4`}
+                onClick={() => handleViewClick("list")}
               >
                 List
               </div>
               <div
-                className={`${getViewClass("revoke")} me-4`}
-                onClick={() => handleViewClick("revoke")}
+                className={`${getViewClass("timeline")} me-4`}
+                onClick={() =>handleViewClick("timeline")}
               >
                 Timeline
-              </div>
-              <div
-                className={`${getViewClass("kanban")} me-4`}
-                onClick={() => handleViewClick("kanban")}
-              >
-                Board
-              </div>
-              <div
-                className={`${getViewClass("dashbord")} me-4`}
-                onClick={() => handleViewClick("dashbord")}
-              >
-                Dashboard
-              </div>
-              <div
-                className={`${getViewClass("files")} me-4`}
-                onClick={() => handleViewClick("files")}
-              >
-                Files
-              </div>
-              <div
-                className={`${getViewClass("teams")} me-4`}
-                onClick={() => handleViewClick("teams")}
-              >
-                Teams
               </div>
             </div>
           </div>
@@ -133,7 +101,7 @@ function Project() {
 
             {/*Timeline body*/}
 
-            {viewContent === "timeLine" && <Process />}
+            {viewContent === "timeline" && <Process />}
 
             {!viewContent && <p>No view content selected.</p>}
 
