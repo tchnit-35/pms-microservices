@@ -9,7 +9,7 @@ const PORT  = 3006
 
 require('./controllers/messageHandler')
 
-//json parsing middleware
+//json parsing middleware  
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
@@ -21,7 +21,7 @@ app.use(
     origin: "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
-  })
+  }) 
 );
 
 app.use("/conversations", conversationRoute);

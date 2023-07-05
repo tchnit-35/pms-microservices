@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./ListView.css"
+import "./ListView.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -58,7 +58,7 @@ function ListView() {
         <div className="view-content">
           {/*headers*/}
 
-          <div className="headers mb-4">
+          <div className="headers">
             <div className="task-name">Task name</div>
             <div className="assignee">Assignee</div>
             <div className="time-frame">Time frame</div>
@@ -67,42 +67,38 @@ function ListView() {
           </div>
 
           {/*task to be done*/}
-          <div className="state d-flex align-items-center mb-4">
-            <div className="arrow" onClick={handleArrowClick}>
-              <FontAwesomeIcon
-                icon={faSortUp}
-                rotation={isToDoVisible ? 180 : 90}
-                style={{ color: "666666" }}
-                className=" me-2"
-              />
-            </div>
-            <span>To do</span>
+          <div className="state d-flex align-items-center" onClick={handleArrowClick}>
+            <FontAwesomeIcon
+              icon={faSortUp}
+              rotation={isToDoVisible ? 180 : 90}
+              style={{ color: "rgb(0, 0, 0, 0.3)" }}
+              className=" me-2"
+            />
+
+            <span>TO DO</span>
           </div>
 
           {isToDoVisible && <ListItems />}
 
-          <div className="state mb-4">
-            <div className="arrow">
-              <FontAwesomeIcon
-                icon={faSortUp}
-                rotation={90}
-                style={{ color: "666666" }}
-                className=" me-2"
-              />
-            </div>
-            <span>Doing</span>
+          <div className="doing-state">
+            <FontAwesomeIcon
+              icon={faSortUp}
+              rotation={90}
+              style={{ color: "rgb(0, 0, 0, 0.3)" }}
+              className=" me-2"
+            />
+            <span>DOING</span>
           </div>
 
-          <div className="state d-flex align-items-center">
-            <div className="arrow">
-              <FontAwesomeIcon
-                icon={faSortUp}
-                rotation={90}
-                style={{ color: "666666" }}
-                className=" me-2"
-              />
-            </div>
-            <span>Done</span>
+          <div className="done-state d-flex align-items-center">
+            <FontAwesomeIcon
+              icon={faSortUp}
+              rotation={90}
+              style={{ color: "rgb(0, 0, 0, 0.3)" }}
+              className=" me-2"
+            />
+
+            <span>DONE</span>
           </div>
         </div>
       </div>

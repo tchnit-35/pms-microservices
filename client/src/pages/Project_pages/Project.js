@@ -16,6 +16,8 @@ import {
   faChevronDown,
   faArrowUpRightFromSquare,
   faPencil,
+  faCopy,
+  faFloppyDisk,
 } from "@fortawesome/free-solid-svg-icons";
 
 import ListView from "../../components/List_view/ListView";
@@ -95,11 +97,32 @@ function Project(props) {
               trigger="click"
               placement="bottom"
               overlay={
-                <Popover className="update-popover unselectable" onClick={handleShow}>
-                  <Popover.Body>
-                    <div className="update-project-btn">
+                <Popover className="update-popover unselectable">
+                  <Popover.Body className="custom-popover-body">
+                    <div className="update-project-btn" onClick={handleShow}>
                       <span className="me-2">Update Project</span>
                       <FontAwesomeIcon icon={faPencil} />
+                    </div>
+                    <div className="copy-link-btn">
+                    <FontAwesomeIcon icon={faCopy} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <span>Copy project link</span>
+                    </div>
+                    <div className="copy-link-btn">
+                    <FontAwesomeIcon icon={faFloppyDisk} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <span>Save layout as templat</span>
+                    </div>
+                    <div className="duplicate">
+                      <span>Duplicate</span>
+                    </div>
+                    <div className="copy-link-btn">
+                      <span>Import</span>
+                    </div>
+                    <div className="duplicate">
+                      <span>Export</span>
+                    </div>
+                    <div className="copy-link-btn">
+                      <span className="me-2">Delete Project</span>
+                      
                     </div>
                   </Popover.Body>
                 </Popover>
