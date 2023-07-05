@@ -97,7 +97,7 @@ function Project(props) {
           {/*project name & share botton*/}
 
           <div className="heading">
-            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+           
 
             <OverlayTrigger
               trigger="click"
@@ -138,7 +138,12 @@ function Project(props) {
                 </Popover>
               }
             >
-              <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+
+            <div className="d-flex align-items-center me-auto">
+            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+            <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+            </div>
+          
             </OverlayTrigger>
 
             <div className="share">
