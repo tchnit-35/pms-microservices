@@ -63,7 +63,7 @@
 .custom-popover {
   position: fixed;
   height: 250px;
-  width: 220px;
+  width: 250px;
   margin-top: 5px;
   border: none;
   -webkit-box-shadow: 0px 0px 10px 1px rgba(148, 148, 148, 0.66);

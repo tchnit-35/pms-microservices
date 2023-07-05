@@ -10,13 +10,23 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 
-import ListItems from "./ListItems";
+import ToDoListItems from "./ToDoListItems";
+import DoneListItems from "./DoneListItems";
+import DoingListItems from "./DoingListItems";
 
 function ListView() {
   const [isToDoVisible, setToDoVisible] = useState(false);
+  const [isDoingVisible, setDoingVisible] = useState(false);
+  const [isDoneVisible, setDoneVisible] = useState(false);
 
-  const handleArrowClick = () => {
+  const handleToDoArrowClick = () => {
     setToDoVisible(!isToDoVisible);
+  };
+  const handleDoneArrowClick = () => {
+    setDoneVisible(!isDoneVisible);
+  };
+  const handleDoingArrowClick = () => {
+    setDoingVisible(!isDoingVisible);
   };
 
   return (
@@ -67,43 +77,41 @@ function ListView() {
           </div>
 
           {/*task to be done*/}
-          <div className="state d-flex align-items-center mb-4">
-            <div className="arrow" onClick={handleArrowClick}>
+          <div className="state d-flex align-items-center mb-4" onClick={handleToDoArrowClick}>
+            
               <FontAwesomeIcon
                 icon={faSortUp}
                 rotation={isToDoVisible ? 180 : 90}
                 style={{ color: "666666" }}
                 className=" me-2"
               />
-            </div>
+    
             <span>To do</span>
           </div>
 
-          {isToDoVisible && <ListItems />}
+          {isToDoVisible && <ToDoListItems />}
 
-          <div className="state mb-4">
-            <div className="arrow">
+          <div className="state d-flex align-items-center mb-4" onClick={handleDoingArrowClick}>
               <FontAwesomeIcon
                 icon={faSortUp}
-                rotation={90}
+                rotation={isDoingVisible ? 180 : 90}
                 style={{ color: "666666" }}
                 className=" me-2"
               />
-            </div>
+
             <span>Doing</span>
           </div>
-
-          <div className="state d-flex align-items-center">
-            <div className="arrow">
+          {isDoingVisible && <DoingListItems />}
+          <div className="state d-flex align-items-center" onClick={handleDoneArrowClick}>
               <FontAwesomeIcon
                 icon={faSortUp}
-                rotation={90}
+                rotation={isDoneVisible ? 180 : 90}
                 style={{ color: "666666" }}
                 className=" me-2"
               />
-            </div>
             <span>Done</span>
           </div>
+          {isDoneVisible && <DoneListItems />}
         </div>
       </div>
     </>

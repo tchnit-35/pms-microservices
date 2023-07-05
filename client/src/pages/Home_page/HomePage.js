@@ -13,14 +13,13 @@ function HomePage() {
 
   const [priorityTasks,setPriorityTasks] = useState([])
   const [teamMembers,setTeamMembers] = useState([])
+  const [privateMessages,setprivateMessages] = useState([])
   const [recentTasks,setRecentTasks] = useState([])
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   const token = localStorage.getItem("token");
   useEffect(() => {
-    // const interval = setInterval(() => {
-    //   setCurrentDateTime(new Date());
-    // }, 1000);
+
         // Fetch tasks from backend
         axios
         .get("http://localhost:3003/tasks", {
@@ -49,8 +48,10 @@ function HomePage() {
       //     },
       //   })
       //   .then((response) => setRecentTasks(response.data));
-
-    // return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
     
   }, [])
 

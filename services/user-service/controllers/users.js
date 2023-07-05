@@ -20,6 +20,24 @@ exports.getUserProfile = async(req,res)=>{
     })
   }) 
 }
+//Find User's Profile information
+exports.findUserProfile = async(req,res)=>{
+  const userId = req.query.userId
+  await UserProfile.findOne({userId})
+  .then((Profile)=>{
+    return res.status(200)
+    .json(
+      Profile
+    )
+  })
+  .catch((err)=>{
+    return res.status(500)
+    .json({
+      success:false,
+      message:err.message
+    })
+  }) 
+}
 //Update User's Profile Information
 exports.updateUserProfile = async(req,res)=>{
   const id = req.user._id;

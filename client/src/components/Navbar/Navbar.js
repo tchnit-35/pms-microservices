@@ -82,8 +82,8 @@ function NavigationBar({ handleClick }) {
           </div>
           {userInfo ? (
         <div className="user-name-email">
-          <span>{userInfo.name}</span>
-          <span>{userInfo.email}</span>
+          <span style={{color: '#824C71' , fontWeight:'bold'}}>{userInfo.username}</span>
+          <span style={{color: '#4A2545',fontWeight:'lighter' }}>{userInfo.email}</span>
         </div>
       ) : (
         <div className="user-name-email">Loading...</div>
@@ -94,7 +94,7 @@ function NavigationBar({ handleClick }) {
           <FontAwesomeIcon icon={faGear} />
         </div>
         <div className="logout" onClick={handleLogout}>
-          <span>log out</span>
+          <span>Logout</span>
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </div>
       </Popover.Body>
