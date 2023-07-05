@@ -37,7 +37,7 @@ const CreateProject = () => {
       .then((response) => {
         // handle the response from the backend
         console.log(response.data);
-        navigate("/project"); // redirect the user to the projects page
+        navigate("/Project"); // redirect the user to the projects page
       })
       .catch((error) => {
         // handle the error

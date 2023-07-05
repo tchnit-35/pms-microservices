@@ -43,8 +43,23 @@ body {
 }
 
 .heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-left: 30px;
   padding-right: 30px;
+}
+
+.icon{
+  margin-top: -10px;
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  border-radius: 5px;
+}
+
+.icon:hover{
+  background-color: rgb(204, 204, 204, 0.7);
 }
 
 .views {
@@ -235,4 +250,28 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.update-popover{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 154px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.update-popover:hover{
+  background-color: rgb(245, 245, 245);
+}
+
+.update-project-bttn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-input{
+  font-size: 13px;
 }

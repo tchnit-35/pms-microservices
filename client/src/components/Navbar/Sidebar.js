@@ -31,7 +31,6 @@ const SideMenu = ({ isOpen }) => {
   const [privateConversations, setPrivateConversations] = useState([]);
 
   const token = localStorage.getItem("token");
-  console.log(token)
 
   useEffect(() => {
     // Fetch current projects from backend
@@ -95,7 +94,7 @@ const SideMenu = ({ isOpen }) => {
   function moveToHome() {
     navigate("/HomePage");
   }
-  console.log(privateConversations)
+  //console.log(privateConversations)
   const Project = ({ icon, color, projectName }) => {
     return (
       <div className="project unselectable current-project-folder">

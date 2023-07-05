@@ -40,7 +40,7 @@ const router = createBrowserRouter([
     element: <Confirm />,
   },
   {
-    path: "/Project",
+    path: "/Project/:projectId",
     element: <Project />,
   },
   {

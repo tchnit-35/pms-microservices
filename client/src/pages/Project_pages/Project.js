@@ -1,39 +1,51 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Project.css";
+
+import { OverlayTrigger, Popover } from "react-bootstrap";
 
 import NavigationBar from "../../components/Navbar/Navbar";
 import SideMenu from "../../components/Navbar/Sidebar";
 import Footer from "../../components/footer/Footer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faArrowUpRightFromSquare,
+  faPencil,
+} from "@fortawesome/free-solid-svg-icons";
 
 import ListView from "../../components/List_view/ListView";
 import { Process } from "../../components/Timeline_view/Process";
-import axios from "axios";
 
-function Project() {
+import UpdateProject from "./UpdateProject";
+
+function Project(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeView, setActiveView] = useState("grant");
+  const [activeView, setActiveView] = useState("list");
   const [viewContent, setViewContent] = useState("list");
-  const { projectId } = useParams();  
+  const { projectId } = useParams();
+  const [projectData, setProjectData] = useState(null);
+  const [show, setShow] = useState(false);
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    // Fetch current projects from backend
+    // Fetch project data from backend using projectId
     axios
       .get(`http://localhost:3002/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => console.log(response.data));
-    }
-  ,[])
 
+      .then((response) => {
+        setProjectData(response.data);
+      });
+  }, [projectId]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -49,15 +61,23 @@ function Project() {
         setViewContent("timeline");
         break;
       default:
-        console.log("Unknown view selected:", view);
+        //console.log("Unknown view selected:", view);
         setViewContent("list");
     }
-    console.log("viewContent:", viewContent);
+    //console.log("viewContent:", viewContent);
   };
 
   const getViewClass = (view) => {
-    return activeView === view ? "grant active" : "revoke";
+    return activeView === view ? "active" : "";
   };
+
+  if (!projectData) {
+    console.log("projectData is null, returning loading message");
+    return <div>Loading...</div>;
+  }
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
@@ -68,77 +88,63 @@ function Project() {
         <div className="flex-grow-1 the-container">
           {/*project name & share botton*/}
 
-          <div className="d-flex align-items-center heading">
-            <p className="p-name me-auto">Project_one</p>
+          <div className="heading">
+            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+
+            <OverlayTrigger
+              trigger="click"
+              placement="bottom"
+              overlay={
+                <Popover className="update-popover unselectable" onClick={handleShow}>
+                  <Popover.Body>
+                    <div className="update-project-btn">
+                      <span className="me-2">Update Project</span>
+                      <FontAwesomeIcon icon={faPencil} />
+                    </div>
+                  </Popover.Body>
+                </Popover>
+              }
+            >
+              <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+            </OverlayTrigger>
+
             <div className="share">
               <span className="me-1">Share</span>
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="sm" />
             </div>
           </div>
 
+          <UpdateProject show={show} handleShow={handleShow} handleClose={handleClose} />
+
           {/*Different Views*/}
 
           <div className="views mb-2 unselectable">
             <div className="views-container">
               <div
-                className={`${getViewClass("overview")} me-4`}
-                onClick={() => handleViewClick("overview")}
-              >
-                Overview
-              </div>
-              <div
-                className={`${getViewClass("grant")} me-4`}
-                onClick={() => handleViewClick("grant")}
+                className={`${getViewClass("list")} me-4`}
+                onClick={() => handleViewClick("list")}
               >
                 List
               </div>
               <div
-                className={`${getViewClass("revoke")} me-4`}
-                onClick={() => handleViewClick("revoke")}
+                className={`${getViewClass("timeline")} me-4`}
+                onClick={() => handleViewClick("timeline")}
               >
                 Timeline
-              </div>
-              <div
-                className={`${getViewClass("kanban")} me-4`}
-                onClick={() => handleViewClick("kanban")}
-              >
-                Board
-              </div>
-              <div
-                className={`${getViewClass("dashbord")} me-4`}
-                onClick={() => handleViewClick("dashbord")}
-              >
-                Dashboard
-              </div>
-              <div
-                className={`${getViewClass("files")} me-4`}
-                onClick={() => handleViewClick("files")}
-              >
-                Files
-              </div>
-              <div
-                className={`${getViewClass("teams")} me-4`}
-                onClick={() => handleViewClick("teams")}
-              >
-                Teams
               </div>
             </div>
           </div>
 
           <div className="view-content">
-
             {/*list body*/}
 
             {viewContent === "list" && <ListView />}
 
             {/*Timeline body*/}
 
-            {viewContent === "timeLine" && <Process />}
+            {viewContent === "timeline" && <Process />}
 
             {!viewContent && <p>No view content selected.</p>}
-
-            
-
           </div>
         </div>
         <Footer />
