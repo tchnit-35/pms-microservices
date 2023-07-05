@@ -257,22 +257,70 @@ body {
 .update-popover{
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
-  width: 154px;
-  height: 35px;
-  cursor: pointer;
+  width: 180px;
+  height: 300px;
+  padding-top: 10px;
 }
 
-.update-popover:hover{
+.custom-popover-body{
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 2px;
+}
+
+/*.update-popover:hover{
   background-color: rgb(245, 245, 245);
-}
+}*/
 
-.update-project-bttn{
+
+.update-project-btn{
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid rgb(107, 107, 107, 0.3);
+  border-top: 1px solid rgb(107, 107, 107, 0.3);
+  width: 160px;
+  height: 33px;
+  cursor: pointer;
+  font-size: 13px;
 }
+
+.update-project-btn:hover{
+  background-color: rgba(246, 246, 246, 0.5);
+  font-weight: 500;
+}
+
+.copy-link-btn{
+  display: flex;
+  align-items: center;
+ 
+  width: 160px;
+  height: 33px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.copy-link-btn:hover{
+  background-color: rgba(246, 246, 246, 0.5);
+  font-weight: 500;
+}
+
+.duplicate{
+  display: flex;
+  align-items: center;
+  width: 160px;
+  height: 33px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 1px solid rgb(107, 107, 107, 0.3);
+}
+
+.duplicate:hover{
+  background-color: rgba(246, 246, 246, 0.5);
+  font-weight: 500;
+}
+
 
 .custom-input{
   font-size: 13px;

@@ -4,15 +4,6 @@
 }
 
 
-
-.arrow {
-  cursor: pointer;
-}
-
-.arrow:hover {
-  background-color: rgb(245, 245, 245);
-}
-
 /*css of the actual list*/
 
 .list {

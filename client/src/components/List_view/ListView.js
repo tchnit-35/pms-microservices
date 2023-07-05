@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./ListView.css"
+import "./ListView.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -68,7 +68,7 @@ function ListView() {
         <div className="view-content">
           {/*headers*/}
 
-          <div className="headers mb-4">
+          <div className="headers">
             <div className="task-name">Task name</div>
             <div className="assignee">Assignee</div>
             <div className="time-frame">Time frame</div>
