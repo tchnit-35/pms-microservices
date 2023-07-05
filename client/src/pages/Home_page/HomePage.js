@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 import "./HomePage.css";
 import NavigationBar from "../../components/Navbar/Navbar";
@@ -7,9 +7,52 @@ import Footer from "../../components/footer/Footer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faUser, faX } from "@fortawesome/free-solid-svg-icons";
-
+import axios from 'axios'
 function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const [priorityTasks,setPriorityTasks] = useState([])
+  const [teamMembers,setTeamMembers] = useState([])
+  const [recentTasks,setRecentTasks] = useState([])
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    // const interval = setInterval(() => {
+    //   setCurrentDateTime(new Date());
+    // }, 1000);
+        // Fetch tasks from backend
+        axios
+        .get("http://localhost:3003/tasks", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log(response.data)
+          setPriorityTasks(response.data)});
+  
+      // Fetch co-team-members from backend
+      // axios
+      //   .get("http://localhost:4040/teams", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   })
+      //   .then((response) => setFutureProjects(response.data));
+  
+      // Fetch legacy projects from backend
+      // axios
+      //   .get("http://localhost:3003/tasks/recent", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   })
+      //   .then((response) => setRecentTasks(response.data));
+
+    // return () => clearInterval(interval);
+    
+  }, [])
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -69,8 +112,8 @@ function HomePage() {
                 </div>
               </div>
               <div className="actual-date-time ms-auto mt-auto">
-                <span className="me-2">Monday, 04 jul 2020</span>
-                <span>13:50</span>
+              <span className="me-2">{currentDateTime.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "short", day: "numeric" })}</span>
+      <span>{currentDateTime.toLocaleTimeString("en-US")}</span>
               </div>
             </div>
           </div>
@@ -80,20 +123,30 @@ function HomePage() {
               <span className="the-title">High Priority Tasks</span>
             </div>
             <div className="home-task">
-              <div className="d-flex high-priority-task">
-                <span className="the-task me-5">Task_lambda</span>
-                <div className="from-project me-auto">
-                  <span className="the-project">project_X</span>
-                </div>
-                <div>
-                  <span className="me-3">14 jul</span>
-                  <span className="task-state">In Progress</span>
-                </div>
-              </div>
+            <div className="d-flex high-priority-task flex-column">
+            {priorityTasks.length ? (
+    priorityTasks.sort((a, b) => new Date(a.endDate) - new Date(b.endDate)).slice(0, 3).map((task) => (
+      <div className="d-flex high-priority-task" key={task._id}>
+        <span className="the-task me-5">{task.name}</span>
+        <div className="from-project me-auto">
+          <span className="the-project">{task.project}</span>
+        </div>
+        <div>
+          <span className="me-3">{task.startDate}</span>
+          <span className="task-state">{task.status}</span>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="d-flex high-priority-task">
+      <span>No high priority tasks found</span>
+    </div>
+  )}
+</div>
 
               <div>
                 <div className="home-team-memebers mb-4">
-                  <span className="the-title me-auto">Team Memebers</span>
+                  <span className="the-title me-auto">Team Members</span>
                   <FontAwesomeIcon icon={faPlus} size="xl" />
                 </div>
 

@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const topicsToCreate = [
   { topic: 'user-creation', partition: 0 }
-];
+]; 
 
 client.createTopics(topicsToCreate, (error, result) => {
   if (error) {
@@ -19,8 +19,7 @@ client.createTopics(topicsToCreate, (error, result) => {
     console.log('Topics created successfully:', result);
   }
 });
-
-
+ 
 //json parsing middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -42,7 +41,6 @@ app.use("/auth", authRoute);
 app.listen("4000", () => {
   console.log("Server is running at %d!",4000);
 });
-
 
 
 // Function to remove expired tokens

@@ -77,11 +77,11 @@ exports.getMostRecentConversations = async (req, res) => {
       const convo = await Conversation.findById(userConvo.conversationId);
       const topic = convo.topic || await getUsernames(convo,req.user.username); 
       const conversation = { _id: convo._id, topic };
-      if (convo.lastMessage) {
+      if (convo.lastMessage.message) {
         conversation.message = convo.lastMessage.message;
         conversation.time = new Date(convo.lastMessage.time).toLocaleString(undefined, {hour: 'numeric', minute: 'numeric'});
-      }
-      if (conversation.type === "public") {
+      } 
+      if (convo.type === "public") {
         publicConversations.push(conversation);
       } else {
         privateConversations.push(conversation);

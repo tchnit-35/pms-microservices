@@ -38,6 +38,16 @@ const TaskSchema = new mongoose.Schema({
     type:Boolean,
     default:false
   },
+  priority:{
+    type:String,
+    enum:['high','moderate','low'],
+    default:'high'
+  },
+  status:{
+    type:String,
+    enum:['In-Progress','On Hold','Completed'],
+    default:'In-Progress'
+  },
   created_at: {
     type: Date,
     default: Date.now(),
