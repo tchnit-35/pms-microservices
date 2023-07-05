@@ -11,11 +11,11 @@ const teamRoute = require('./routes/team')
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }
-);
+);    
 
 app.use(express.json());
 app.use('/',teamRoute)
 
 app.listen(PORT, () => {
-    console.log(`Team-Service at ${PORT}`);
+    console.log(`Team-Service at ${PORT}`);    
 }); 
