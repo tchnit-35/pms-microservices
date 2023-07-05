@@ -5,28 +5,36 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Project.css";
 
+import { OverlayTrigger, Popover } from "react-bootstrap";
+
 import NavigationBar from "../../components/Navbar/Navbar";
 import SideMenu from "../../components/Navbar/Sidebar";
 import Footer from "../../components/footer/Footer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faArrowUpRightFromSquare,
+  faPencil,
+} from "@fortawesome/free-solid-svg-icons";
 
 import ListView from "../../components/List_view/ListView";
 import { Process } from "../../components/Timeline_view/Process";
 
-function Project() {
+import UpdateProject from "./UpdateProject";
+
+function Project(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeView, setActiveView] = useState("list");
   const [viewContent, setViewContent] = useState("list");
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState(null);
+  const [show, setShow] = useState(false);
 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     // Fetch project data from backend using projectId
-    console.log("Fetching project data for projectId:", projectId);
     axios
       .get(`http://localhost:3002/projects/${projectId}`, {
         headers: {
@@ -35,8 +43,6 @@ function Project() {
       })
 
       .then((response) => {
-        console.log("response:", response.data);
-
         setProjectData(response.data);
       });
   }, [projectId]);
@@ -70,8 +76,8 @@ function Project() {
     return <div>Loading...</div>;
   }
 
-  console.log("projectData:", projectData);
-  console.log('projectData.project_title:', projectData.singleProject.project_title);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
@@ -82,13 +88,33 @@ function Project() {
         <div className="flex-grow-1 the-container">
           {/*project name & share botton*/}
 
-          <div className="d-flex align-items-center heading">
-            <p className="p-name me-auto">{projectData.singleProject.project_title}</p>
+          <div className="heading">
+            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+
+            <OverlayTrigger
+              trigger="click"
+              placement="bottom"
+              overlay={
+                <Popover className="update-popover unselectable" onClick={handleShow}>
+                  <Popover.Body>
+                    <div className="update-project-btn">
+                      <span className="me-2">Update Project</span>
+                      <FontAwesomeIcon icon={faPencil} />
+                    </div>
+                  </Popover.Body>
+                </Popover>
+              }
+            >
+              <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+            </OverlayTrigger>
+
             <div className="share">
               <span className="me-1">Share</span>
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="sm" />
             </div>
           </div>
+
+          <UpdateProject show={show} handleShow={handleShow} handleClose={handleClose} />
 
           {/*Different Views*/}
 
