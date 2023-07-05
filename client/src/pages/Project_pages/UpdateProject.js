@@ -21,35 +21,36 @@ function UpdateProject(props) {
           <Modal.Title className="custom-modal-title">Project details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="the-project-owner mb-4">
-            <span className="the-h mb-2">Owner</span>
-            <div className="d-flex align-items-center">
-              <div className="user-image me-2">
-                <FontAwesomeIcon icon={faUser} style={{color: "#FFFFFF"}}/>
-              </div>
-              <span className="the-user-name">User_name</span>
-            </div>
-          </div>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label className="the-h">name</Form.Label>
-              <Form.Control type="text" placeholder="" className="custom-input"/>
+              <Form.Label className="the-h">Title</Form.Label>
+              <Form.Control type="text" placeholder="" className="custom-input" />
             </Form.Group>
 
             <Stack direction="horizontal" className="date">
+              <div className="the-project-owner mb-4">
+                <span className="the-h mb-2">Owner</span>
+                <div className="d-flex align-items-center">
+                  <div className="user-image me-2">
+                    <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} />
+                  </div>
+                  <span className="the-user-name">User_name</span>
+                </div>
+              </div>
+
               <Form.Group
-                className="modify-date-input mb-3 me-3"
+                className="modify-date-input mb-3 mx-auto me-3"
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label className="the-h">Start date</Form.Label>
-                <Form.Control type="date" placeholder="" className="custom-input"/>
+                <Form.Control type="date" placeholder="" className="custom-input" />
               </Form.Group>
               <Form.Group
                 className="modify-date-input mb-3 mb-3"
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label className="the-h">Due Date</Form.Label>
-                <Form.Control type="date" placeholder="" className="custom-input"/>
+                <Form.Control type="date" placeholder="" className="custom-input" />
               </Form.Group>
             </Stack>
 
@@ -59,7 +60,7 @@ function UpdateProject(props) {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="d-flex align-items-center justify-content-center">
           <Button variant="primary" className="ctm-btn" onClick={props.handleClose}>
             Save Changes
           </Button>

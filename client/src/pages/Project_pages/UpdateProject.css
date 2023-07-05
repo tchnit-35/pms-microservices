@@ -1,5 +1,5 @@
 .update-project-modal{
-    padding-top: 50px;
+    padding: 50px;
     border-radius: 30px !important;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .the-h{
-    font-size: 15px;
+    font-size: 13px;
     font-family: 500;
 }
 
@@ -60,4 +60,14 @@
     width: 140px;
     height: 40px;
     border-radius: 17px;
+    background-color: transparent;
+    color: #034e3b;
+    border: 1.5px solid #034e3b;
+    transition: 0.25s;
+}
+
+.ctm-btn:hover{
+    background-color: #034e3b;
+    color: white;
+    border:2px solid #034e3b ;
 }

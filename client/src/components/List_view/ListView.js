@@ -91,7 +91,7 @@ function ListView() {
 
           {isToDoVisible && <ToDoListItems />}
 
-          <div className="state d-flex align-items-center mb-4" onClick={handleDoingArrowClick}>
+          <div className="doing-state d-flex align-items-center mb-4" onClick={handleDoingArrowClick}>
               <FontAwesomeIcon
                 icon={faSortUp}
                 rotation={isDoingVisible ? 180 : 90}
@@ -102,7 +102,7 @@ function ListView() {
             <span>Doing</span>
           </div>
           {isDoingVisible && <DoingListItems />}
-          <div className="state d-flex align-items-center" onClick={handleDoneArrowClick}>
+          <div className="done-state d-flex align-items-center mb-4" onClick={handleDoneArrowClick}>
               <FontAwesomeIcon
                 icon={faSortUp}
                 rotation={isDoneVisible ? 180 : 90}
