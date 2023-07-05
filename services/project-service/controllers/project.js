@@ -79,26 +79,25 @@ exports.getOldProjects = async (req, res) => {
 }
 
 
-exports.getSingleProject = async (req,res) =>{
-
-    const id = req.params.projectId;
-    await Project.findById(id)
-      .then((singleProject) => {
-        res.status(200).json({
-          success: true,
-          message: `More on ${singleProject.project_title}`,
-          project: singleProject,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: 'This cause does not exist',
-          error: err.message,
-        });
-     });
-  
-}
+exports.getSingleProject = async (req, res) => {
+  const id = req.params.projectId;
+  try {
+    const singleProject = await Project.findById(id, { project_title: 1 });
+    if (!singleProject) {
+      return res.status(404).json({
+        success: false,
+        message: 'This project does not exist'
+      });
+    }
+    return res.status(200).json({ singleProject });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve project',
+      error: err.message
+    });
+  }
+}; 
 
 exports.findProject = async (req, res) => {
   const project_title = req.query.project_title;
@@ -146,8 +145,8 @@ exports.createProject = async (req,res)=>{
     console.error(err);
     res.status(500).send('Server error');
   }
-}; 
-
+}
+ 
 exports.updateProject = async (req, res)=> {
   const projectId = req.params.projectId;
   const updateObject = req.body;

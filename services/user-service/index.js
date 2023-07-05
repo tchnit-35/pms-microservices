@@ -14,7 +14,7 @@ app.use(
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   })
-);
+); 
 
 const consumer = new kafka.ConsumerGroup({
   kafkaHost: 'localhost:9092',

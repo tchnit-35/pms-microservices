@@ -8,6 +8,9 @@ const userTaskSchema = new mongoose.Schema({
   taskId:{
     type:String,
     required:true
+  },
+  lastViewed:{
+    type:Date
   }
 })
 

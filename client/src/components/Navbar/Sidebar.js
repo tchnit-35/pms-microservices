@@ -7,11 +7,12 @@ import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faPeopleGroup,
   faFolder,
   faChevronDown,
   faClipboardList,
   faHouse,
-  faBell,
+  faMessage,
   faTag,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -74,9 +75,6 @@ const SideMenu = ({ isOpen }) => {
         setPrivateConversations(privateConversations);
       });
   }, []);
-  console.log(privateConversations);
-  console.log(legacyProjects);
-
   const handleCurrentProjectsClick = () => {
     setIsProjectOneVisible(!isProjectOneVisible);
   };
@@ -97,7 +95,7 @@ const SideMenu = ({ isOpen }) => {
   function moveToHome() {
     navigate("/HomePage");
   }
-
+  console.log(privateConversations)
   const Project = ({ icon, color, projectName }) => {
     return (
       <div className="project unselectable current-project-folder">
@@ -164,7 +162,7 @@ const SideMenu = ({ isOpen }) => {
                 <tbody>
                   <tr>
                     <td style={{ padding: "3px" }}>
-                      <FontAwesomeIcon icon={faBell} />
+                      <FontAwesomeIcon icon={faMessage} />
                     </td>
                     <td>
                       <span>Inbox</span>
@@ -351,20 +349,37 @@ const SideMenu = ({ isOpen }) => {
             </div>
 
             <div>
-              {publicConversations.map(
-                (conversation) =>
-                  !isEmptyObject(conversation) && (
-                    <div className="streams mb-4" key={conversation._id}>
-                      <Link className="contact-name" to={`/conversations/${conversation._id}`}>
-                        {conversation.topic}
-                      </Link>
-                      <div className="last-message">
-                        <span className="me-3">{conversation.time}</span>
-                        <span>{conversation.message}</span>
-                      </div>
-                    </div>
-                  )
+            {publicConversations.map(
+  (conversation) =>
+    !isEmptyObject(conversation) && (
+      <div className="streams mb-4" key={conversation._id}>
+        <Link className="contact-name" to={`/conversations/${conversation._id}`}>
+        <FontAwesomeIcon icon={faPeopleGroup} size='sm' style={{marginRight:"10px"}}/>
+          {conversation.topic}
+        </Link>
+        <div className="last-message">
+          {conversation.message || conversation.time ? (
+            <>
+              {conversation.time && (
+                <span className="me-3">{conversation.time}</span>
               )}
+              {conversation.message ? (
+                <span className="message">
+                  {conversation.message.length > 20
+                    ? conversation.message.substring(0, 17) + "..."
+                    : conversation.message}
+                </span>
+              ) : (
+                <span>No message sent yet</span>
+              )}
+            </>
+          ) : (
+            <span>No message sent yet</span>
+          )}
+        </div>
+      </div>
+    )
+)}
             </div>
 
             <div className="private-stream">
@@ -372,24 +387,37 @@ const SideMenu = ({ isOpen }) => {
             </div>
 
             <div>
-              {privateConversations.map(
-                (conversation) =>
-                  !isEmptyObject(conversation) && (
-                    <div className="streams mb-4" key={conversation._id}>
-                      <Link className="contact-name" to={`/conversations/${conversation._id}`}>
-                        {conversation.topic}
-                      </Link>
-                      <div className="last-message">
-                        <span className="me-3">{conversation.time}</span>
-                        <span className="message">
-                          {conversation.message.length > 20
-                            ? conversation.message.substring(0, 17) + "..."
-                            : conversation.message}
-                        </span>
-                      </div>
-                    </div>
-                  )
+            {privateConversations.map(
+  (conversation) =>
+    !isEmptyObject(conversation) && (
+      <div className="streams mb-4" key={conversation._id}>
+        <Link className="contact-name" to={`/conversations/${conversation._id}`}>
+        <FontAwesomeIcon icon={faPeopleGroup} size='sm' style={{marginRight:"10px"}}/>
+          {conversation.topic}
+        </Link>
+        <div className="last-message">
+          {conversation.message || conversation.time ? (
+            <>
+              {conversation.time && (
+                <span className="me-3">{conversation.time}</span>
               )}
+              {conversation.message ? (
+                <span className="message">
+                  {conversation.message.length > 20
+                    ? conversation.message.substring(0, 17) + "..."
+                    : conversation.message}
+                </span>
+              ) : (
+                <span>No message sent yet</span>
+              )}
+            </>
+          ) : (
+            <span>No message sent yet</span>
+          )}
+        </div>
+      </div>
+    )
+)}
             </div>
           </>
         </div>

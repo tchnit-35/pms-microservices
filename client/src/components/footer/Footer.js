@@ -20,21 +20,21 @@ function Footer() {
   const [email,setInput] = useState("")
   const token = localStorage.getItem("token");
 
-  useEffect(()=>{  
-    console.log(token)
-      axios
-      .post(`http://localhost:9000/user/search`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => console.log(response.data));
-  },[])
+//   useEffect(()=>{  
+//     console.log(token)
+//       axios
+//       .post(`http://localhost:9000/user/search`, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       })
+//       .then((response) => console.log(response.data));
+//   },[])
 
   
-const handleChange =(value)=>{
-  setInput(value)
-}
+// const handleChange =(value)=>{
+//   setInput(value)
+// }
 
 
   return (
@@ -66,7 +66,7 @@ const handleChange =(value)=>{
                   type="email"
                   placeholder="name@example.com"
                   value = {email}
-                  onChange={(e)=>{handleChange(e.target.value)}}
+                  
                   className="modal-custom-input me-3 mb-2"
                   autoFocus
                 />

@@ -41,9 +41,9 @@ exports.createSubTask = async(req,res)=>{
   const masterTaskId = req.params.taskId
   const {name,startDate,endDate} = req.body
   const master =  await Task.findById(masterTaskId)
-  const users = []
-  if(req.body.users!=undefined)
-  users.push(req.body.users)
+  const users = req.body.users
+  
+  console.log(users)
   const newTask = new Task({
     name,
     startDate,
@@ -54,6 +54,7 @@ exports.createSubTask = async(req,res)=>{
   newTask
   .save()
   .then(async () => {
+    if(users!=undefined)
   allocateTask(users,newTask._id)
   return res.status(200).json({
       success: true,
@@ -73,9 +74,7 @@ exports.createSubTask = async(req,res)=>{
 exports.createTask = async (req,res)=>{
   const projectId = req.params.projectId
       const {name,startDate,endDate} = req.body
-      const users = []
-      if(req.body.users!=undefined)
-      users.push(req.body.users)
+      const users = req.body.users
       const newTask = new Task({
         name,
         startDate,
@@ -85,7 +84,8 @@ exports.createTask = async (req,res)=>{
       newTask
       .save()
       .then(async () => {
-      allocateTask(users,newTask._id)
+        if(users!=undefined)
+        allocateTask(users,newTask._id)
       return res.status(200).json({
           success: true,
           message: 'Task is created',
@@ -100,6 +100,47 @@ exports.createTask = async (req,res)=>{
         });
       });
 }
+exports.getTask = async (req, res) => {
+  const taskId = req.params.taskId;
+  const task = await Task.findById(taskId);
+  const userTask = await UserTask.findOne({ taskId, userId: req.user._id });
+
+  if (userTask) {
+    userTask.lastViewed = Date.now();
+    await userTask.save();
+  }
+
+  const startDate = task.startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+
+  return res.status(200).json({ ...task.toObject(), startDate });
+};
+
+exports.getRecentTask = async (req, res) => {
+  const recentTasks = await UserTask.find({ userId: req.user._id })
+    .sort({ lastViewed: "desc" })
+    .limit(3);
+
+  // Get an array of task IDs from the recentTasks array
+  const taskIds = recentTasks.map(({ taskId }) => taskId);
+
+  // Get an array of tasks with their names and project IDs
+  const tasks = await Task.find({ _id: { $in: taskIds } }, { name: 1, projectId: 1, createdAt: 1 });
+
+  // Map the tasks array to include the lastViewed date for each task
+  const tasksWithLastViewed = tasks.map((task) => {
+    const recentTask = recentTasks.find(({ taskId }) => taskId.match(task._id));
+
+    if (recentTask.lastViewed == undefined) {
+      const lastViewed = new Date(recentTask.lastViewed);
+      return { ...task._doc, lastViewed: lastViewed.toLocaleString("default", { month: "short", day: "numeric" }) };
+    } else {
+      const createdAt = new Date(task.createdAt);
+      return { ...task._doc, lastViewed: createdAt.toLocaleString("default", { month: "short", day: "numeric" }) };
+    }
+  });
+
+  return res.status(200).json({ tasksWithLastViewed });
+};
 
 exports.updateTask = async (req, res)=> {
   const id = req.params.taskId;
@@ -114,7 +155,7 @@ exports.updateTask = async (req, res)=> {
   await Task.update({ _id:id }, { $set:updateObject })
     .exec()
     .then(() => {
-      res.status(200).json({
+      res.status(200).json({ 
         success: true,
         message: 'Task is updated',
         updateProject: updateObject,
@@ -184,7 +225,8 @@ exports.getByUserId = async (req, res) => {
     const allTaskRecords = await UserTask.find({ userId: id });
     for (const taskRecord of allTaskRecords) {
       const task = await Task.findById(taskRecord.taskId);
-      allTasks.push(task);
+      const startDate = task.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      allTasks.push({ ...task.toObject(), startDate });
     }
     res.status(200).json(allTasks);
   } catch (err) {
