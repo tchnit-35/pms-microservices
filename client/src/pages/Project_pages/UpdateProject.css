@@ -2,13 +2,6 @@
   padding: 100px;
   border-radius: 30px !important;
 }
-.modal-content {
-  width: 600px;
-  height: 500px;
-  padding: 30px;
-  overflow-y: scroll;
-  margin: auto;
-}
 
 .modal-content::-webkit-scrollbar {
   display: none;
