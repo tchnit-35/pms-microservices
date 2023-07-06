@@ -12,6 +12,7 @@ import Project from './pages/Project_pages/Project';
 import LoginAfterRegister from './pages/auth_pages/LoginAfterRegister';
 import HomePage from './pages/Home_page/HomePage';
 import Settings from './pages/Settings_pages/Settings';
+import MessagePage from './pages/message_pages/MessagePage';
 
 import {
   createBrowserRouter,
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/Settings",
     element: <Settings />,
+  },
+  {
+    path: "/MessagePage",
+    element: <MessagePage />,
   },
 ]);
 
