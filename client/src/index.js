@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { useEffect,useState } from 'react';
 
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/auth_pages/Signup'
@@ -58,6 +59,18 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+function App(){const [token, setToken] = useState(localStorage.getItem('token'));
+useEffect(() => {
+  const tokenExpirationTime = localStorage.getItem('tokenExpirationTime');
+  if (tokenExpirationTime && Date.now() > tokenExpirationTime) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpirationTime');
+    setToken(null);
+  }
+}, []);
+}
+
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />

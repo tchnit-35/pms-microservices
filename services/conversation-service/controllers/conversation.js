@@ -169,10 +169,10 @@ exports.inviteConversation = async (req,res)=>{
     topic: 'conversation-invite',
     messages: JSON.stringify(
       { 
-        projectId:req.params.convoId, 
-        usernames:req.body.usernames,
-        senderUsername:req.user.username,
-        link:`http://localhost:3002/projects/${req.params.convoId}/join`
+        convoId:req.params.convoId, 
+        targetUsernames:req.body.usernames,
+        originUsername:req.user.username,
+        convoLink:`http://localhost:3002/projects/${req.params.convoId}/join`
       }
       ),
   };

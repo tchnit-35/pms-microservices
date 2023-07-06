@@ -148,8 +148,8 @@ function Project(props) {
           
             </OverlayTrigger>
 
-            <div className="share">
-              <span className="me-1">Share</span>
+            <div className="share" >
+              <span className="me-1" >Share</span>
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="sm" />
             </div>
           </div>

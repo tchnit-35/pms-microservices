@@ -178,7 +178,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80%;
+  width: 97%;
   height: 60px;
   padding-top: 8px;
   border-radius: 5px;
@@ -192,10 +192,11 @@
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  width: 150px;
+  width: 65%;
 }
 
 .accpet-refuse-btn {
+  width: 30%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,13 +204,14 @@
 }
 
 .inviter {
-  font-weight: 500;
-  color: #536def;
+  font-weight: bold;
+  color: #824C71;
 }
 
 .project-invited {
-  font-weight: 500;
-  color: #536def;
+  font-weight: bold;
+  text-transform:uppercase;
+  color: #298b76;
 }
 
 .refuse-invitation {
@@ -256,7 +258,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60%;
+  width: 97%;
   height: 65px;
   padding-top: 8px;
   border-radius: 5px;
@@ -270,7 +272,7 @@
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  width: 200px;
+  width: 97%;
 }
 
 .t-msg{

@@ -9,6 +9,7 @@ const invitationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  content:String,
   senderUsername: {
     type: String,
     required: true,

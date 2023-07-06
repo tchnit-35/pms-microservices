@@ -171,6 +171,7 @@ exports.updateProject = async (req, res)=> {
           {
             oldTopic:project.project_title,
             newTopic:newProject.project_title,
+            updateTarget:projectId,
             creator:req.user.username,
           }
           ),
@@ -223,10 +224,12 @@ exports.deleteProject = async (req,res)=>{
 }
 
 exports.inviteToProject = async (req,res)=>{
+  const project = await Project.findById(req.params.projectId,{project_title:1})
   const payload = {
     topic: 'project-invite',
     messages: JSON.stringify(
       { 
+        project:project.project_title,
         projectId:req.params.projectId, 
         usernames:req.body.usernames,
         senderUsername:req.user.username,
@@ -254,7 +257,8 @@ exports.joinProject = async (req,res)=>{
         { 
           joinTopic:project.project_title, 
           joinCreatedBy:project.project_master,
-          joinUsername:req.user.username
+          joinUsername:req.user.username,
+          joinTarget:req.params.projectId
         }
         ),
     };
@@ -271,3 +275,5 @@ exports.joinProject = async (req,res)=>{
     res.status(400).json(err)
   })
 }
+
+

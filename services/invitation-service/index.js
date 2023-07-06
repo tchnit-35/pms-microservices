@@ -16,5 +16,5 @@ app.use(express.json());
 app.use('/',invitationRoute)
 
 app.listen(PORT, () => {
-    console.log(`User-Service at ${PORT}`);
+    console.log(`Invitation-Service at ${PORT}`);
 }); 

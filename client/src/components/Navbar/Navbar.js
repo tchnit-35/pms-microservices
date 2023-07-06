@@ -37,6 +37,7 @@ function NavigationBar({ handleClick }) {
   const [showUser, setShowUser] = React.useState(false); // state for showing/hiding the popover
   const [showNotif, setShowNotif] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState(null);
+  const [notif,setNotif] = React.useState(null)
   // Get the JWT token from local storage
   const token = localStorage.getItem("token");
 
@@ -44,12 +45,25 @@ function NavigationBar({ handleClick }) {
   const handleNotifClick = () => setShowNotif(!showNotif);
 
   React.useEffect(() => {
+
+    // const fetchNotif = async () => {
+    //   const response = await axios.get("http://localhost:9091/notifications", {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+      
+    //   setUserInfo(response.data);
+    // };
+    // fetchNotif();
+
     const fetchData = async () => {
       const response = await axios.get("http://localhost:9000/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      
       setUserInfo(response.data);
     };
     fetchData();
@@ -119,8 +133,8 @@ function NavigationBar({ handleClick }) {
         <div className="invitation-to-project mb-2">
           <div className="invite-msg me-2">
             <p>
-              <span className="inviter">@User_name</span> has invited you to{" "}
-              <span className="project-invited">@project_name</span>
+              <span className="inviter">@User_name </span> has invited you to{" "}
+              <span className="project-invited">project_name</span>
             </p>
           </div>
           <div className="accpet-refuse-btn">
@@ -135,16 +149,17 @@ function NavigationBar({ handleClick }) {
         </div>
 
         {/*task notification*/}
-
+{/* {notif && notif.map((notif)=>( 
         <div className="task-notification mb-2">
           <div className="task-msg">
             <p className="t-msg">
-              <span className="inviter">@User_name</span>assigned you a new task in project
-              <span className="project-invited">@project_name </span>
+              {notif.content}
             </p>
           </div>
         </div>
-
+        ))
+       
+} */}
       </PopoverBody>
     </Popover>
   );
