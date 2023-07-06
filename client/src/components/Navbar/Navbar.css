@@ -141,3 +141,138 @@
 .logout:hover {
   color: #7a82ab;
 }
+
+.custom-notif-popover {
+  max-width: none !important;
+  width: 380px;
+  /*height: 250px;*/
+  position: fixed;
+  margin-top: 15px;
+  margin-right: 15px;
+  border: none;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(148, 148, 148, 0.66);
+  box-shadow: 0px 0px 10px 1px rgba(148, 148, 148, 0.66);
+}
+
+.custom-poper-head{
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 8px;
+}
+
+.custom-notif-popover .popover-arrow {
+  display: none;
+}
+
+.custom-popover-body {
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+  padding-left: 10px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.invitation-to-project {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 60px;
+  padding-top: 8px;
+  border-radius: 5px;
+  background-color: #f6fae9;
+  -webkit-box-shadow: 0px 0px 5px -1px rgba(171, 171, 171, 0.4);
+  box-shadow: 0px 0px 5px -1px rgba(171, 171, 171, 0.4);
+}
+
+.invite-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  width: 150px;
+}
+
+.accpet-refuse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -10px;
+}
+
+.inviter {
+  font-weight: 500;
+  color: #536def;
+}
+
+.project-invited {
+  font-weight: 500;
+  color: #536def;
+}
+
+.refuse-invitation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(248, 81, 81);
+  border-radius: 3px;
+  color: white;
+  height: 20px;
+  width: 45px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.refuse-invitation:hover {
+  height: 22px;
+  width: 46px;
+  font-weight: 500;
+}
+
+.accept-invitation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(49, 156, 60);
+  border-radius: 3px;
+  color: white;
+  height: 20px;
+  width: 45px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.accept-invitation:hover {
+  height: 22px;
+  width: 46px;
+  font-weight: 500;
+}
+
+.task-notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 65px;
+  padding-top: 8px;
+  border-radius: 5px;
+  background-color: #f6fae9;
+  -webkit-box-shadow: 0px 0px 5px -1px rgba(171, 171, 171, 0.4);
+  box-shadow: 0px 0px 5px -1px rgba(171, 171, 171, 0.4);
+}
+
+.task-msg{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  width: 200px;
+}
+
+.t-msg{
+  width: 100%;
+}

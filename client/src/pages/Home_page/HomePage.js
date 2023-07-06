@@ -127,7 +127,7 @@ function HomePage() {
           </div>
 
           <div className="part-2">
-            <div className="mb-2">
+            <div className="high-priority-task-title mb-3">
               <span className="the-title p-3">High Priority Tasks</span>
             </div>
             <div className="home-task">
@@ -149,7 +149,7 @@ function HomePage() {
                       </div>
                     ))
                 ) : (
-                  <div className="d-flex high-priority-task">
+                  <div className="d-flex high-priority-task mb-3">
                     <span>No high priority tasks found</span>
                   </div>
                 )}
@@ -186,7 +186,7 @@ function HomePage() {
                 </div>
 
                 <div>
-                  <div className="mb-4">
+                  <div className="recent-div mb-4">
                     <span className="the-title">Recent</span>
                   </div>
                 </div>

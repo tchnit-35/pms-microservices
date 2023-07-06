@@ -93,7 +93,7 @@ function UpdateProject(props) {
           <Modal.Title className="custom-modal-title">Project details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form className="custom-modal-form">
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label className="the-h">Title</Form.Label>
               <Form.Control

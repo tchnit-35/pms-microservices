@@ -1,12 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 
 import Container from "react-bootstrap/Container";
-import { Form, InputGroup, FormControl } from "react-bootstrap";
+import {
+  Form,
+  InputGroup,
+  FormControl,
+  PopoverBody,
+  Overlay,
+  PopoverHeader,
+} from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -29,24 +35,27 @@ import {
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
   const [showUser, setShowUser] = React.useState(false); // state for showing/hiding the popover
+  const [showNotif, setShowNotif] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState(null);
   // Get the JWT token from local storage
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+
   const handleUserClick = () => setShowUser(!showUser); // function for showing/hiding the popover
+  const handleNotifClick = () => setShowNotif(!showNotif);
+
   React.useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get('http://localhost:9000/user',{
+      const response = await axios.get("http://localhost:9000/user", {
         headers: {
-        Authorization: `Bearer ${token}`,
-      },});
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUserInfo(response.data);
-      
     };
     fetchData();
   }, []);
   const handleLogout = () => {
-  
-  //GET request to obtain user information
+    //GET request to obtain user information
 
     // Make a GET request to the backend logout route
     axios
@@ -60,7 +69,7 @@ function NavigationBar({ handleClick }) {
   
         // Delete the token from local storage
         localStorage.removeItem("token");
-  
+
         navigate("/");
       })
       .catch((error) => {
@@ -68,7 +77,6 @@ function NavigationBar({ handleClick }) {
         console.log(error);
       });
   };
-  
 
   const popover = (
     <Popover id="popover-user-info" className="custom-popover">
@@ -81,15 +89,15 @@ function NavigationBar({ handleClick }) {
             <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff" }} size="xl" />
           </div>
           {userInfo ? (
-        <div className="user-name-email">
-          <span style={{color: '#824C71' , fontWeight:'bold'}}>{userInfo.username}</span>
-          <span style={{color: '#4A2545',fontWeight:'lighter' }}>{userInfo.email}</span>
+            <div className="user-name-email">
+              <span style={{ color: "#824C71", fontWeight: "bold" }}>{userInfo.username}</span>
+              <span style={{ color: "#4A2545", fontWeight: "light" }}>{userInfo.email}</span>
+            </div>
+          ) : (
+            <div className="user-name-email">Loading...</div>
+          )}
         </div>
-      ) : (
-        <div className="user-name-email">Loading...</div>
-      )}
-        </div>
-        <div className="settings" onClick={() => navigate('/settings')}>
+        <div className="settings" onClick={() => navigate("/settings")}>
           <span>Settings</span>
           <FontAwesomeIcon icon={faGear} />
         </div>
@@ -98,6 +106,46 @@ function NavigationBar({ handleClick }) {
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </div>
       </Popover.Body>
+    </Popover>
+  );
+
+  const notifPopover = (
+    <Popover id="popover-notification" className="custom-notif-popover unselectable">
+      <PopoverHeader className="custom-poper-head">Notifications</PopoverHeader>
+      <PopoverBody className="custom-popover-body">
+
+      {/*invitation notifiction*/}
+
+        <div className="invitation-to-project mb-2">
+          <div className="invite-msg me-2">
+            <p>
+              <span className="inviter">@User_name</span> has invited you to{" "}
+              <span className="project-invited">@project_name</span>
+            </p>
+          </div>
+          <div className="accpet-refuse-btn">
+            <div className="refuse-invitation me-2">
+              <span>Delete</span>
+            </div>
+
+            <div className="accept-invitation">
+              <span>Accept</span>
+            </div>
+          </div>
+        </div>
+
+        {/*task notification*/}
+
+        <div className="task-notification mb-2">
+          <div className="task-msg">
+            <p className="t-msg">
+              <span className="inviter">@User_name</span>assigned you a new task in project
+              <span className="project-invited">@project_name </span>
+            </p>
+          </div>
+        </div>
+
+      </PopoverBody>
     </Popover>
   );
 
@@ -111,7 +159,7 @@ function NavigationBar({ handleClick }) {
       >
         <Container fluid style={{ maxHeight: "30px" }}>
           <Navbar.Brand className="custom-bars" onClick={handleClick}>
-            <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff" }} size="sm"/>
+            <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff" }} size="sm" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
 
@@ -125,11 +173,20 @@ function NavigationBar({ handleClick }) {
               </InputGroup>
             </Form>
 
-            <Nav.Link>
-              <div className="aid me-4">
-                <FontAwesomeIcon icon={faBell} style={{ color: "#ffF" }} size="lg" />
-              </div>
-            </Nav.Link>
+            <OverlayTrigger
+              trigger="click"
+              placement="bottom"
+              show={showNotif}
+              overlay={notifPopover}
+              rootClose
+              onHide={() => setShowNotif(false)}
+            >
+              <Nav.Link onClick={handleNotifClick}>
+                <div className="aid me-4">
+                  <FontAwesomeIcon icon={faBell} style={{ color: "#ffF" }} size="lg" />
+                </div>
+              </Nav.Link>
+            </OverlayTrigger>
 
             <OverlayTrigger
               trigger="click"
