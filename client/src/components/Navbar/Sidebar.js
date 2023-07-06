@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sidebar.css";
+
+import CreateProject from "./CreateProject";
+
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,6 +32,7 @@ const SideMenu = ({ isOpen }) => {
   const [legacyProjects, setLegacyProjects] = useState([]);
   const [publicConversations, setPublicConversations] = useState([]);
   const [privateConversations, setPrivateConversations] = useState([]);
+  const [show, setShow] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -105,12 +109,15 @@ const SideMenu = ({ isOpen }) => {
     );
   };
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       <div className={`sidemenu ${isOpen ? "sidemenu-open" : "closed"}`}>
         <div className="sb">
           <div className="navigate unselectable">
-            <div className="cr">
+            <div className="cr"  onClick={handleShow}>
               <table>
                 <tbody>
                   <tr>
@@ -126,6 +133,8 @@ const SideMenu = ({ isOpen }) => {
                 </tbody>
               </table>
             </div>
+
+            <CreateProject show={show} handleShow={handleShow} handleClose={handleClose} />
 
             <div className="home" onClick={moveToHome}>
               <table>

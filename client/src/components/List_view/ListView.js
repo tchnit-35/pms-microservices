@@ -13,11 +13,14 @@ import {
 import ToDoListItems from "./ToDoListItems";
 import DoneListItems from "./DoneListItems";
 import DoingListItems from "./DoingListItems";
+import CreateTask from "./CreateTask";
 
 function ListView() {
   const [isToDoVisible, setToDoVisible] = useState(false);
   const [isDoingVisible, setDoingVisible] = useState(false);
   const [isDoneVisible, setDoneVisible] = useState(false);
+
+  const [show, setShow] = useState(false);
 
   const handleToDoArrowClick = () => {
     setToDoVisible(!isToDoVisible);
@@ -29,6 +32,9 @@ function ListView() {
     setDoingVisible(!isDoingVisible);
   };
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       {/*list body*/}
@@ -37,7 +43,7 @@ function ListView() {
         {/*add task, filter, sort*/}
 
         <div className="d-flex align-items-center actions mb-2">
-          <div className="add-task me-4">
+          <div className="add-task me-4" onClick={handleShow}>
             <FontAwesomeIcon icon={faPlus} className="me-1" />
             <span>Add Task</span>
           </div>
@@ -62,6 +68,11 @@ function ListView() {
             <span>Sort</span>
           </div>
         </div>
+
+        <CreateTask show={show} handleShow={handleShow} handleClose={handleClose} />
+
+
+        
 
         {/*view content*/}
 
