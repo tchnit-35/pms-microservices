@@ -80,16 +80,25 @@ exports.getOldProjects = async (req, res) => {
 
 
 exports.getSingleProject = async (req, res) => {
-  const id = req.params.projectId;
+  const projectId = req.params.projectId;
+  const userId = req.user._id;
   try {
-    const singleProject = await Project.findById(id, { project_title: 1 });
+    const userProject = await UserProject.findOne({ userId, projectId });
+    if (!userProject) {
+      return res.status(401).json({
+        success: false,
+        message: 'You do not have permission to view this project'
+      });
+    }
+    const singleProject = await Project.findById(projectId);
     if (!singleProject) {
       return res.status(404).json({
         success: false,
         message: 'This project does not exist'
       });
     }
-    return res.status(200).json({ singleProject });
+    const permission = userProject.permission;
+    return res.status(200).json({ ...singleProject._doc, permission });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -97,7 +106,7 @@ exports.getSingleProject = async (req, res) => {
       error: err.message
     });
   }
-}; 
+};
 
 exports.findProject = async (req, res) => {
   const project_title = req.query.project_title;

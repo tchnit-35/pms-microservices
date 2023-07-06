@@ -58,7 +58,8 @@ const SideMenu = ({ isOpen }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => setLegacyProjects(response.data));
+      .then((response) =>{
+        setLegacyProjects(response.data)});
 
     //Fetch Conversations from backend
     axios

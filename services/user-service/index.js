@@ -38,7 +38,7 @@ consumer.on('message', async function(message) {
         useUnifiedTopology: true,
     }
 );
- 
+  
 // Set up multer storage engine
 const storage = multer.diskStorage({
     destination: './public/uploads/',

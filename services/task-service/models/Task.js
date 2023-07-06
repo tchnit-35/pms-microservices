@@ -52,7 +52,7 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  completed:{
+  isCompleted:{
     type:Boolean,
     default:false
   },

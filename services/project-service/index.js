@@ -9,7 +9,7 @@ const PORT  = 3002
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const topicsToCreate = [
   { topic: 'project-create', partitions: 2 , replicationFactor: 1  },{ topic: 'project-deletion', partitions: 2 , replicationFactor: 1},{ topic: 'project-update', partitions: 2, replicationFactor: 1 },{ topic: 'join-project', partitions: 2 , replicationFactor: 1},{ topic: 'message-sent', partitions: 2 , replicationFactor: 1}
-];
+]; 
 
 client.createTopics(topicsToCreate, (error, result) => {
   if (error) {
@@ -17,7 +17,7 @@ client.createTopics(topicsToCreate, (error, result) => {
   } else {
     console.log('Topics created successfully:', result);
   }
-});
+}); 
 // require('./controllers/permission')
 
 

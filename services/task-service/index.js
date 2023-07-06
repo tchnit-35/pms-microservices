@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-//cors middleware
+//cors middleware 
  
 app.use(  
   cors({

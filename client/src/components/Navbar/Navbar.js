@@ -42,7 +42,7 @@ function NavigationBar({ handleClick }) {
       setUserInfo(response.data);
       
     };
-    fetchData();console.log({user:userInfo})
+    fetchData();
   }, []);
   const handleLogout = () => {
   
@@ -56,8 +56,7 @@ function NavigationBar({ handleClick }) {
         },
       })
       .then((response) => {
-        // Logout successful
-        console.log("jwt token:", token);
+        
   
         // Delete the token from local storage
         localStorage.removeItem("token");

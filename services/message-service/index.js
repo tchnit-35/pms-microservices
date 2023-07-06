@@ -26,7 +26,7 @@ app.use("/", messageRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running at %d!",PORT);
-});
+}); 
 
  //Load db
  connectDb()

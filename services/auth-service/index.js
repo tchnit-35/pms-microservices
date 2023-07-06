@@ -41,7 +41,7 @@ app.use("/auth", authRoute);
 app.listen("4000", () => {
   console.log("Server is running at %d!",4000);
 });
-
+ 
 
 // Function to remove expired tokens
 async function removeExpiredTokens() {

@@ -200,12 +200,9 @@ exports.getByProjectId = async (req, res) => {
     const tasks = await Promise.all(
       masterTasks.map(async (masterTask) => {
         const subTasks = await Task.find({ projectId: projectId, masterTaskId: masterTask._id });
-        const userTasks = await UserTask.find({ taskId: { $in: subTasks.map(task => task._id) } });
-        const users = await Promise.all(userTasks.map(async (userTask) => {
-          const user = await User.findById(userTask.userId);
-          return user;
-        }));
-        const assignedTo = users.filter(user => user != null); // remove any null values
+        const userTasks = await UserTask.find({ taskId: masterTask._id}||{taskId: subTask._id} ,{username:1});
+        const assignedTo = userTasks.filter(user => user != null).map(user => user.username); // extract username property and return as an array of strings
+        
 
         // Format the startDate and endDate fields
         const options = { month: 'short', day: 'numeric' };
@@ -245,3 +242,14 @@ exports.getByUserId = async (req, res) => {
     });
   }
 };
+
+exports.completeTasks = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.taskId)
+    await Task.findByIdAndUpdate(req.params.taskId, { $set: { isCompleted:(!task.isCompleted) } }).exec()
+    res.status(200).json('Task updated successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).json('Error updating task');
+  }
+}

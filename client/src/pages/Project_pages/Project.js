@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -39,6 +39,7 @@ function Project(props) {
   const [show, setShow] = useState(false);
 
   const token = localStorage.getItem("token");
+  const popoverRef = useRef(null);
 
   useEffect(() => {
     // Fetch project data from backend using projectId
@@ -80,12 +81,13 @@ function Project(props) {
   };
 
   if (!projectData) {
-    console.log("projectData is null, returning loading message");
+    
     return <div>Loading...</div>;
   }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
 
   return (
     <>
@@ -103,10 +105,10 @@ function Project(props) {
               trigger="click"
               placement="bottom"
               overlay={
-                <Popover className="update-popover unselectable">
+                <Popover className="update-popover unselectable" ref={popoverRef}>
                   <Popover.Body className="custom-popover-body">
                     <div className="update-project-btn" onClick={handleShow}>
-                      <span className="me-2">Update Project</span>
+                      <span className="me-2">Project Details</span>
                       <FontAwesomeIcon icon={faPencil} />
                     </div>
                     <div className="copy-link-btn">
@@ -140,7 +142,7 @@ function Project(props) {
             >
 
             <div className="d-flex align-items-center me-auto">
-            <p className="p-name me-1">{projectData.singleProject.project_title}</p>
+            <p className="p-name me-1">{projectData.project_title}</p>
             <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
             </div>
           
