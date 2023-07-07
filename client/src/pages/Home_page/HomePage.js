@@ -185,9 +185,6 @@ console.log(teamMembers)
               </div>
 
               < div className="messages-box">
-                {
-
-                }
                 <div className="d-flex">
                   <div className="home-profile-pic me-2">
                     <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="xl" />

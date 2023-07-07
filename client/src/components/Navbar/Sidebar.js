@@ -179,7 +179,7 @@ const SideMenu = ({ isOpen }) => {
                       <FontAwesomeIcon icon={faMessage} />
                     </td>
                     <td>
-                      <span>Inbox</span>
+                      <span>Streams</span>
                     </td>
                   </tr>
                 </tbody>
