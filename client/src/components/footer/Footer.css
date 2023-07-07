@@ -109,5 +109,11 @@
 }
 
 .custom-dropdown{
+  font-size: 13px;
   background-color: #12664f;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.custom-dropdown:hover{
+  background-color: #1f735d;
 }

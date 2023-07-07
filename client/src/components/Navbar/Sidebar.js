@@ -104,6 +104,10 @@ const SideMenu = ({ isOpen }) => {
     navigate("/MessagePage");
   }
 
+  function moveToMyTask() {
+    navigate("/MyTask");
+  }
+
   //console.log(privateConversations)
   const Project = ({ icon, color, projectName }) => {
     return (
@@ -156,7 +160,7 @@ const SideMenu = ({ isOpen }) => {
               </table>
             </div>
 
-            <div className="my-task">
+            <div className="my-task" onClick={moveToMyTask}>
               <table>
                 <tbody>
                   <tr>

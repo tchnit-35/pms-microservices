@@ -130,24 +130,20 @@ function MessagePage() {
                     <span className="the-usernName">User_name</span>
                     <span className="message">Done here. Check it out </span>
                   </div>
-                  <div  className="the-time">
+                  <div className="the-time">
                     <span>12:47</span>
                   </div>
                 </div>
               </div>
 
               <div className="my-msg ms-auto">
-                <div className="ctn">
-                  <div className="the-msg me-auto">
-                    <span className="message">Fine Play. let' move on</span>
-                  </div>
-                  <div  className="the-time">
-                    <span>12:52</span>
-                  </div>
+                <div className="the-msg me-auto">
+                  <span className="message">Fine Play. </span>
+                </div>
+                <div className="the-time mx-auto">
+                  <span>12:52</span>
                 </div>
               </div>
-
-
             </div>
 
             <div className="text-area">

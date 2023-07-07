@@ -1,0 +1,23 @@
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none;
+  }
+  
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .Mytask-container {
+    padding-top: 25px;
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidemenu-open + .Mytask-container {
+    margin-left: 230px;
+  }
+  
