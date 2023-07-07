@@ -99,6 +99,11 @@ const SideMenu = ({ isOpen }) => {
   function moveToHome() {
     navigate("/HomePage");
   }
+
+  function moveToInbox() {
+    navigate("/MessagePage");
+  }
+
   //console.log(privateConversations)
   const Project = ({ icon, color, projectName }) => {
     return (
@@ -166,7 +171,7 @@ const SideMenu = ({ isOpen }) => {
               </table>
             </div>
 
-            <div className="inbox">
+            <div className="inbox" onClick={moveToInbox}>
               <table>
                 <tbody>
                   <tr>
