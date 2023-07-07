@@ -236,6 +236,7 @@ body {
 .my-msg {
   margin-left: 17px;
   margin-right: 12px;
+  padding-left: 15px;
   display: flex;
   align-items: center;
   background-color: white;
