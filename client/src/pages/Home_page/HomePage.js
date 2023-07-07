@@ -4,7 +4,7 @@ import "./HomePage.css";
 import NavigationBar from "../../components/Navbar/Navbar";
 import SideMenu from "../../components/Navbar/Sidebar";
 import Footer from "../../components/footer/Footer";
-
+import moment from 'moment';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faUser, faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -13,18 +13,56 @@ function HomePage() {
 
   const [priorityTasks,setPriorityTasks] = useState([])
   const [teamMembers,setTeamMembers] = useState([])
-  const [privateMessages,setprivateMessages] = useState([])
+  const [privateMessages,setPrivateMessages] = useState([])
+  const [publicMessages,setPublicMessages] = useState([])
   const [recentTasks,setRecentTasks] = useState([])
   const [allProjects,setAllProjects] = useState([])
   const [selectedProject, setSelectedProject] = useState('');
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [currentDateTime, setCurrentDateTime] = useState(moment());
  
   const handleSelectChange = (event) => {
     setSelectedProject(event.target.value);
   };
   const token = localStorage.getItem("token");
   useEffect(() => {
-
+    //Fetch Private Message
+    const fetchMessages = async()=>{
+      const response = await   axios
+    .get("http://localhost:3006/conversations", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const publicConvoIds = response.data.public.map(conversation=>conversation._id)
+    const privateConvoIds = response.data.private.map(conversation=>conversation._id)
+    const privateMessages = await Promise.all(
+      privateConvoIds.map(async(privateConvoId)=>{
+        const msgResponse = await axios
+        .get(`http://localhost:3005/conversations/${privateConvoId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        return msgResponse.data.receivedMessages
+      }
+        )
+    )
+    const publicMessages = await Promise.all(
+      publicConvoIds.map(async(publicConvoId)=>{
+        const msgResponse = await axios
+        .get(`http://localhost:3005/conversations/${publicConvoId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        return msgResponse.data.receivedMessages
+      }
+        )
+    )
+    setPrivateMessages(privateMessages)
+    setPublicMessages(publicMessages)
+    }
+fetchMessages()
         // Fetch tasks from backend
         axios
         .get("http://localhost:3003/tasks", {
@@ -49,6 +87,7 @@ function HomePage() {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
+
             });
              
             const userIds = response.data.map((user) => user.userId);
@@ -100,7 +139,7 @@ function HomePage() {
       }
       fetchTaskList()
     const interval = setInterval(() => {
-      setCurrentDateTime(new Date());
+      setCurrentDateTime(moment());
     }, 1000);
     return () => clearInterval(interval);
     
@@ -145,7 +184,10 @@ console.log(teamMembers)
                 </div>
               </div>
 
-              <div className="messages-box">
+              < div className="messages-box">
+                {
+
+                }
                 <div className="d-flex">
                   <div className="home-profile-pic me-2">
                     <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="xl" />
@@ -164,14 +206,9 @@ console.log(teamMembers)
               </div>
               <div className="actual-date-time ms-auto mt-auto">
                 <span className="me-2">
-                  {currentDateTime.toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
+                {currentDateTime.format('MMMM Do YYYY, h:mm:ss a')}
                 </span>
-                <span>{currentDateTime.toLocaleTimeString("en-US")}</span>
+                <span></span>
               </div>
             </div>
           </div>

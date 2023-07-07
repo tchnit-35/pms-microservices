@@ -21,7 +21,7 @@ const messageSchema = new Schema({
         type:Boolean,
         default:false
     },
-    seen:{
+    beenSeen:{
         type:Boolean,
         default:false
     }
