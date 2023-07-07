@@ -41,7 +41,7 @@ consumer.on('message', async function(message) {
       const { oldTopic, creator , newTopic,updateTarget} = JSON.parse(value);
       try {
         if (newTopic!=oldTopic){
-        const newNotification = newNotification({
+        const newNotification = new Notification({
           content:`Project ${oldTopic} changed to ${newTopic}`,
           username:creator,
           target:updateTarget
@@ -76,7 +76,7 @@ consumer.on('error', function (err) {
 exports.getNotifications = async(req,res)=>{
   await Notification.find({username:req.user.username})
   .then((notif)=>{
-    return res.status(200).send(notif)
+    return console.log(notif)
   })
   .catch((err)=>{
     console.error(err)

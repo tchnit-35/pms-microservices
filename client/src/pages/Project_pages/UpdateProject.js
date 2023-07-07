@@ -87,7 +87,7 @@ function UpdateProject(props) {
   };
   const [startDate, setStartDate] = useState(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse());
   const [endDate, setDueDate] = useState(new Date(projectEndDate).toLocaleDateString('en-US').split('/').reverse()); 
-  console.log(startDate)
+  
   return (
     <>
       <Modal

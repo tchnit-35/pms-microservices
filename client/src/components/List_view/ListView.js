@@ -93,7 +93,7 @@ function ListView() {
               <FontAwesomeIcon
                 icon={faSortUp}
                 rotation={isToDoVisible ? 180 : 90}
-                style={{ color: "666666" }}
+                style={{ color: "666666",transition:"0.25s" }}
                 className=" me-2"
               />
     
@@ -106,7 +106,7 @@ function ListView() {
               <FontAwesomeIcon
                 icon={faSortUp}
                 rotation={isDoingVisible ? 180 : 90}
-                style={{ color: "666666" }}
+                style={{ color: "666666",transition:"0.25s" }}
                 className=" me-2"
               />
 
@@ -117,7 +117,7 @@ function ListView() {
               <FontAwesomeIcon
                 icon={faSortUp}
                 rotation={isDoneVisible ? 180 : 90}
-                style={{ color: "666666" }}
+                style={{ color: "666666",transition:"0.25s" }}
                 className=" me-2"
               />
             <span>Done</span>

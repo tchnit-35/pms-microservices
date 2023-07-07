@@ -7,6 +7,15 @@ const Producer = kafka.Producer;
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
+exports.getProjectUsers = async (req,res) =>{
+  await UserProject.find({projectId:req.params.projectId,userId:{$ne:req.user._id}},{userId:1})
+  .then((userIds)=>{
+    return res.status(200).json(userIds)
+  })
+  .catch((err)=>{
+    console.error(err)
+  })
+}
 
 exports.getFutureProjects = async (req, res) => {
   try {
@@ -78,6 +87,33 @@ exports.getOldProjects = async (req, res) => {
   }
 }
 
+exports.getAllUserProjects = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const userProjects = await UserProject.find({ userId });
+    if (!userProjects) {
+      return res.status(401).json({
+        success: false,
+        message: 'You do not have any projects'
+      });
+    }
+    const projectIds = userProjects.map((userProject) => userProject.projectId);
+    const projects = await Project.find({ _id: { $in: projectIds } });
+    if (!projects) {
+      return res.status(404).json({
+        success: false,
+        message: 'No projects found'
+      });
+    }    
+    return res.status(200).json(projects);
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve projects',
+      error: err.message
+    });
+  }
+};
 
 exports.getSingleProject = async (req, res) => {
   const projectId = req.params.projectId;
