@@ -72,8 +72,11 @@ function Login() {
 
        // console.log("Login successful");
         //console.log(response.data);
-
+        
+        const tokenPayload = JSON.parse(atob(response.data.token.split('.')[1])); // decode the token payload from base64
+        const expirationTime = tokenPayload.exp * 1000; // convert the expiration time from seconds to milliseconds
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem('tokenExpirationTime', expirationTime);
 
         navigate("/HomePage");
       } catch (error) {

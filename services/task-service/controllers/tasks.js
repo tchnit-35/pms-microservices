@@ -139,7 +139,7 @@ exports.getRecentTask = async (req, res) => {
     }
   });
 
-  return res.status(200).json({ tasksWithLastViewed });
+  return res.status(200).json(tasksWithLastViewed );
 };
 
 exports.updateTask = async (req, res)=> {

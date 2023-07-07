@@ -7,6 +7,15 @@ const Producer = kafka.Producer;
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
+exports.getProjectUsers = async (req,res) =>{
+  await UserProject.find({projectId:req.params.projectId,userId:{$ne:req.user._id}},{userId:1})
+  .then((userIds)=>{
+    return res.status(200).json(userIds)
+  })
+  .catch((err)=>{
+    console.error(err)
+  })
+}
 
 exports.getFutureProjects = async (req, res) => {
   try {
@@ -78,6 +87,33 @@ exports.getOldProjects = async (req, res) => {
   }
 }
 
+exports.getAllUserProjects = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const userProjects = await UserProject.find({ userId });
+    if (!userProjects) {
+      return res.status(401).json({
+        success: false,
+        message: 'You do not have any projects'
+      });
+    }
+    const projectIds = userProjects.map((userProject) => userProject.projectId);
+    const projects = await Project.find({ _id: { $in: projectIds } });
+    if (!projects) {
+      return res.status(404).json({
+        success: false,
+        message: 'No projects found'
+      });
+    }    
+    return res.status(200).json(projects);
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve projects',
+      error: err.message
+    });
+  }
+};
 
 exports.getSingleProject = async (req, res) => {
   const projectId = req.params.projectId;
@@ -171,6 +207,7 @@ exports.updateProject = async (req, res)=> {
           {
             oldTopic:project.project_title,
             newTopic:newProject.project_title,
+            updateTarget:projectId,
             creator:req.user.username,
           }
           ),
@@ -223,10 +260,12 @@ exports.deleteProject = async (req,res)=>{
 }
 
 exports.inviteToProject = async (req,res)=>{
+  const project = await Project.findById(req.params.projectId,{project_title:1})
   const payload = {
     topic: 'project-invite',
     messages: JSON.stringify(
       { 
+        project:project.project_title,
         projectId:req.params.projectId, 
         usernames:req.body.usernames,
         senderUsername:req.user.username,
@@ -254,7 +293,8 @@ exports.joinProject = async (req,res)=>{
         { 
           joinTopic:project.project_title, 
           joinCreatedBy:project.project_master,
-          joinUsername:req.user.username
+          joinUsername:req.user.username,
+          joinTarget:req.params.projectId
         }
         ),
     };
@@ -271,3 +311,5 @@ exports.joinProject = async (req,res)=>{
     res.status(400).json(err)
   })
 }
+
+

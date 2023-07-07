@@ -11,11 +11,11 @@ function UpdateProject(props) {
 
   const { projectId } = useParams();
   const [project_title, setTitle] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setDueDate] = useState("");
+
   const [description, setDescription] = useState('');
   const [projectMaster, setProjectMaster] = useState(null);
   const [projectTitle, setProjectTitle] = useState(null);
+  const [userPermission, setUserPermssion] = useState(null);
   const [projectDescription, setProjectDescription] = useState(null);
   const [projectStartDate, setProjectStartDate] = useState(null);
   const [projectEndDate, setProjectEndDate] = useState(null);
@@ -31,12 +31,12 @@ function UpdateProject(props) {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        setUserPermssion(response.data.permission)
         setProjectMaster(response.data.project_master);
         setProjectTitle(response.data.project_title);
         setProjectDescription(response.data.description);
         setProjectStartDate(response.data.startDate)
-        setStartDate(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse().join('-'))
+        setStartDate(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse())
         setProjectEndDate(response.data.endDate)
 
       } catch (error) {
@@ -51,11 +51,17 @@ function UpdateProject(props) {
   };
 
   const handleStartDateChange = (event) => {
-    setStartDate(event.target.value);
+    const selectedDate = event.target.value; // this will be in the format of yyyy-MM-dd
+    const dateParts = selectedDate.split("-"); // split the date string into an array of parts
+    const formattedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // create a Date object from the parts
+    setStartDate(formattedDate); // set the state value to the formatted date object
   };
 
   const handleDueDateChange = (event) => {
-    setDueDate(event.target.value);
+    const selectedDate = event.target.value; // this will be in the format of yyyy-MM-dd
+    const dateParts = selectedDate.split("-"); // split the date string into an array of parts
+    const formattedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // create a Date object from the parts
+    setDueDate(formattedDate); // set the state value to the formatted date object
   };
 
   const handleDescriptionChange = (event) => {
@@ -79,8 +85,9 @@ function UpdateProject(props) {
       console.error(error);
     }
   };
- 
-  console.log(startDate)
+  const [startDate, setStartDate] = useState(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse());
+  const [endDate, setDueDate] = useState(new Date(projectEndDate).toLocaleDateString('en-US').split('/').reverse()); 
+  
   return (
     <>
       <Modal
@@ -101,6 +108,7 @@ function UpdateProject(props) {
                 placeholder={projectTitle}
                 className="custom-input"
                 value={project_title}
+                disabled={userPermission !== 'admin'}
                 onChange={handleTitleChange}
               />
             </Form.Group>
@@ -122,10 +130,13 @@ function UpdateProject(props) {
               >
                 <Form.Label className="the-h">Start date</Form.Label>
                 <Form.Control
-                  type="date"
+                  type="text"
                   className="custom-input"
-                  placeholder="yyyy-MM-dd"
+                  placeholder={new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse()}
                   value={startDate}
+                  onFocus={(e) => e.target.type = 'date'} 
+                  onBlur={(e) => e.target.type = 'text'}
+                  disabled={userPermission !== 'admin'}
                   onChange={handleStartDateChange}
                 />
               </Form.Group>
@@ -135,9 +146,13 @@ function UpdateProject(props) {
               >
                 <Form.Label className="the-h">Due Date</Form.Label>
                 <Form.Control
-                  type="date"
+                  type="text"
                   className="custom-input"
+                  placeholder={new Date(projectEndDate).toLocaleDateString('en-US').split('/').reverse()}
                   value={endDate}
+                  disabled={userPermission !== 'admin'}
+                  onFocus={(e) => e.target.type = 'date'} 
+                  onBlur={(e) => e.target.type = 'text'}
                   onChange={handleDueDateChange}
                 />
               </Form.Group>
@@ -151,6 +166,7 @@ function UpdateProject(props) {
                 rows={3}
                 placeholder={projectDescription}
                 value={description}
+                disabled={userPermission !== 'admin'}
                 onChange={handleDescriptionChange}
               />
             </Form.Group>

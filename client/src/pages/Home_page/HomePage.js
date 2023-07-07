@@ -15,8 +15,13 @@ function HomePage() {
   const [teamMembers,setTeamMembers] = useState([])
   const [privateMessages,setprivateMessages] = useState([])
   const [recentTasks,setRecentTasks] = useState([])
+  const [allProjects,setAllProjects] = useState([])
+  const [selectedProject, setSelectedProject] = useState('');
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
+ 
+  const handleSelectChange = (event) => {
+    setSelectedProject(event.target.value);
+  };
   const token = localStorage.getItem("token");
   useEffect(() => {
 
@@ -28,37 +33,82 @@ function HomePage() {
           },
         })
         .then((response) => {
-          console.log(response.data)
           setPriorityTasks(response.data)});
   
       // Fetch co-team-members from backend
-      // axios
-      //   .get("http://localhost:4040/teams", {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   })
-      //   .then((response) => setFutureProjects(response.data));
+      axios
+      .get(`http://localhost:3002/projects`,{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => setAllProjects(response.data));
+        const fetchUserList = async () => {
+          try {
+            const response = await axios.get(`http://localhost:3002/projects/${selectedProject}/users`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+             
+            const userIds = response.data.map((user) => user.userId);
+            const users = await Promise.all(
+              userIds.map(async (userId) => {
+                const userResponse = await axios.get(`http://localhost:9000/user/search?userId=${userId}`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+                return userResponse.data;
+              })
+            );
+            setTeamMembers(users); // Array of user data objects
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        fetchUserList()
+
   
-      // Fetch legacy projects from backend
-      // axios
-      //   .get("http://localhost:3003/tasks/recent", {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   })
-      //   .then((response) => setRecentTasks(response.data));
+      //Fetch recent tasks from backend
+      const fetchTaskList = async()=>{
+        try{
+          const response = await 
+           axios.get("http://localhost:3003/tasks/recent", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      
+
+      const updatedTaskList=await Promise.all(
+        response.data.map(async (task)=>{
+          const project = await axios.get(`http://localhost:3002/projects/${task.projectId}`, {
+            headers: {
+              Authorization: "JWT "+token,
+            }
+          })
+          const projectTitle = project.data.project_title
+          return {...task, projectTitle}
+        })
+      )
+      setRecentTasks(updatedTaskList)
+      
+        }catch(err){
+          console.error(err)
+        }
+      }
+      fetchTaskList()
     const interval = setInterval(() => {
       setCurrentDateTime(new Date());
     }, 1000);
     return () => clearInterval(interval);
     
-  }, [])
-
+  }, [selectedProject]) 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+console.log(teamMembers)
   return (
     <>
       <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
@@ -72,7 +122,7 @@ function HomePage() {
             </div>
 
             <div className="home-inbox d-flex flex-column">
-              <div class="for-line d-flex mb-1">
+              <div className="for-line d-flex mb-1">
                 <div className=" d-flex align-items-center justify-content-center me-auto">
                   <span className="home-stream me-1">Streams</span>
                   <div className="unread">1</div>
@@ -156,33 +206,45 @@ function HomePage() {
               </div>
 
               <div>
-                <div className="home-team-memebers mb-4">
+                <div className="home-team-members mb-4">
                   <span className="the-title me-auto">Team Members</span>
-                  <FontAwesomeIcon icon={faPlus} size="xl" />
+                  <div class="select-box">
+                  <select 
+                  className="select"
+                  value={selectedProject}
+                  onChange={handleSelectChange}
+                   >
+        {allProjects.map((project) => (
+          <option key={project._id} value={project._id}>{project.project_title}</option>
+        ))}
+      </select></div>
                 </div>
 
                 <div className="d-flex mb-x">
-                  <div className="team-member-box me-4">
-                    <div className="home-profile-pic me-3">
-                      <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="lg" />
-                    </div>
-
-                    <div className="d-flex flex-column">
-                      <span className="team-member-name">Ashlyn Lee</span>
-                      <span className="team-member-role">Community Manager</span>
-                    </div>
-                  </div>
-
-                  <div className="team-member-box">
-                    <div className="home-profile-pic me-3">
-                      <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="lg" />
-                    </div>
-
-                    <div className="d-flex flex-column">
-                      <span className="team-member-name">Leanna Yonsi</span>
-                      <span className="team-member-role">Sales Manager</span>
-                    </div>
-                  </div>
+                {teamMembers.length === 0 ? (
+        <div>Oops! Seems Your Alone in this</div>
+      ) : (
+        <div className="d-flex mb-x">
+          {teamMembers.map((member) => (
+            <div className="team-member-box me-4">
+              <div className="home-profile-pic me-3">
+                <FontAwesomeIcon
+                  icon={faUser}
+                  style={{ color: '#FFFFFF' }}
+                  size="lg"
+                />
+              </div>
+              <div className="d-flex flex-column">
+                <span className="team-member-name">
+                  {member.firstname + member.lastname}
+                </span>
+                <span className="team-member-role">{member.username}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+                  
                 </div>
 
                 <div>
@@ -190,19 +252,24 @@ function HomePage() {
                     <span className="the-title">Recent</span>
                   </div>
                 </div>
-
+ {recentTasks && recentTasks.map((task)=>(
                 <div className="team-member-box">
+                 
                   <div className="d-flex flex-column">
-                    <span className="team-member-name">Task_lambda</span>
+                    <span className="team-member-name">{task.name}</span>
 
                     <div className="d-flex align-items-center justify-content-center">
                       <span className="team-member-role me-2">Project</span>
                       <div className="bx">
-                        <span className="team-member-role">Project_X</span>
+                        <span className="team-member-role">{task.projectTitle}</span>
                       </div>
                     </div>
                   </div>
-                </div>
+               
+
+                </div>   
+                ))
+                  }
               </div>
             </div>
           </div>
