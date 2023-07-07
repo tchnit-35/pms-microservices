@@ -3,7 +3,7 @@
   border-radius: 30px !important;
 }
 
-.modal-content {
+.create-task-modal.modal-content {
   width: 400px;
   padding: 30px;
   overflow-y: scroll;
