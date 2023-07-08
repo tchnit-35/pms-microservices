@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sidebar.css";
 
-import CreateProject from "./CreateProject";
+import CreateProject from "../../components/CreateProject/CreateProject";
 
 import { Link } from "react-router-dom";
 

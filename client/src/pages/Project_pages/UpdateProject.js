@@ -11,7 +11,6 @@ function UpdateProject(props) {
 
   const { projectId } = useParams();
   const [project_title, setTitle] = useState("");
-
   const [description, setDescription] = useState('');
   const [projectMaster, setProjectMaster] = useState(null);
   const [projectTitle, setProjectTitle] = useState(null);
@@ -20,7 +19,8 @@ function UpdateProject(props) {
   const [projectStartDate, setProjectStartDate] = useState(null);
   const [projectEndDate, setProjectEndDate] = useState(null);
   const token = localStorage.getItem("token")
-
+  const [startDate, setStartDate] = useState(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse());
+  const [endDate, setDueDate] = useState(new Date(projectEndDate).toLocaleDateString('en-US').split('/').reverse()); 
   
   useEffect(() => {
     const fetchProject = async () => {
@@ -36,8 +36,9 @@ function UpdateProject(props) {
         setProjectTitle(response.data.project_title);
         setProjectDescription(response.data.description);
         setProjectStartDate(response.data.startDate)
-        setStartDate(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse())
         setProjectEndDate(response.data.endDate)
+        setStartDate(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse())
+        setDueDate(new Date(projectEndDate).toLocaleDateString('en-US').split('/').reverse())
 
       } catch (error) {
         console.error(error);
@@ -85,8 +86,7 @@ function UpdateProject(props) {
       console.error(error);
     }
   };
-  const [startDate, setStartDate] = useState(new Date(projectStartDate).toLocaleDateString('en-US').split('/').reverse());
-  const [endDate, setDueDate] = useState(new Date(projectEndDate).toLocaleDateString('en-US').split('/').reverse()); 
+
   
   return (
     <>
@@ -114,10 +114,10 @@ function UpdateProject(props) {
             </Form.Group>
 
             <Stack direction="horizontal" className="date">
-              <div className="the-project-owner mb-4">
+              <div className="the-project-owner me-3 mb-4">
                 <span className="the-h mb-2">Owner</span>
                 <div className="d-flex align-items-center">
-                  <div className="user-image me-2">
+                  <div className="user-image me-1">
                     <FontAwesomeIcon icon={faUser} style={{ color: '#FFFFFF' }} />
                   </div>
                   <span className="the-user-name">{projectMaster}</span>
