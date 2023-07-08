@@ -17,4 +17,4 @@ app.use('/',invitationRoute)
 
 app.listen(PORT, () => {
     console.log(`Invitation-Service at ${PORT}`);
-}); 
+});  

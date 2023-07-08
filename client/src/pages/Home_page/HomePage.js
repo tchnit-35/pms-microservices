@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import "./HomePage.css";
 import NavigationBar from "../../components/Navbar/Navbar";
 import SideMenu from "../../components/Navbar/Sidebar";
@@ -138,10 +137,10 @@ fetchMessages()
         }
       }
       fetchTaskList()
-    const interval = setInterval(() => {
-      setCurrentDateTime(moment());
-    }, 1000);
-    return () => clearInterval(interval);
+    // const interval = setInterval(() => {
+    //   setCurrentDateTime(moment());
+    // }, 1000);
+    // return () => clearInterval(interval);
     
   }, [selectedProject]) 
   const toggleMenu = () => {
@@ -164,12 +163,9 @@ console.log(teamMembers)
               <div className="for-line d-flex mb-1">
                 <div className=" d-flex align-items-center justify-content-center me-auto">
                   <span className="home-stream me-1">Streams</span>
-                  <div className="unread">1</div>
                 </div>
 
-                <span className="home-private  me-4">Private</span>
 
-                <span className="home-public">Public</span>
               </div>
 
               <div className="d-flex align-items center mb-3">
@@ -184,7 +180,7 @@ console.log(teamMembers)
                 </div>
               </div>
 
-              < div className="messages-box">
+              < div className="messages-box" style={{backgroundColor:"#fff"}}>
                 <div className="d-flex">
                   <div className="home-profile-pic me-2">
                     <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="xl" />
@@ -197,7 +193,6 @@ console.log(teamMembers)
 
                   <div className="d-flex flex-column align-items-center">
                     <span>12:47</span>
-                    <div className="unread">1</div>
                   </div>
                 </div>
               </div>

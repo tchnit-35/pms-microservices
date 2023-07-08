@@ -10,9 +10,9 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 function UpdateProject(props) {
 
   const { projectId } = useParams();
-  const [project_title, setTitle] = useState("");
+  const [project_title, setTitle] = useState(null);
 
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(null);
   const [projectMaster, setProjectMaster] = useState(null);
   const [projectTitle, setProjectTitle] = useState(null);
   const [userPermission, setUserPermssion] = useState(null);
