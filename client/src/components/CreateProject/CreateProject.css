@@ -1,0 +1,72 @@
+.update-project-modal {
+  padding: 100px;
+  border-radius: 30px !important;
+}
+
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+.custom-modal-header {
+  height: 55px;
+  padding: 20px;
+}
+
+.custom-modal-form {
+  padding: 20px;
+}
+
+.custom-modal-title {
+  font-size: 18px;
+  padding-left: 15px;
+}
+
+.modify-date-input {
+  width: 140px;
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.the-h {
+  font-size: 13px;
+  font-family: 500;
+}
+
+.the-project-owner {
+  height: 50px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.the-user-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ctm-btn {
+  width: 140px;
+  height: 40px;
+  border-radius: 7px;
+  background-color: transparent;
+  color: #034e3b;
+  border: 1.5px solid #034e3b;
+  transition: 0.25s;
+}
+
+.ctm-btn:hover {
+  background-color: #034e3b;
+  color: white;
+  border: 2px solid #034e3b;
+}
+
+.ctm-btn:focus {
+  background-color: #034e3b;
+  color: white;
+}
+
