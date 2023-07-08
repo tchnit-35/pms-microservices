@@ -20,8 +20,8 @@ function CreateProject(props) {
   const handleCreateProject = () => {
     const projectData = {
       project_title: formData.project_title,
-      start_date: formData.start_date,
-      due_date: formData.due_date,
+      startDate: new Date(formData.start_date),
+      endDate: new Date(formData.due_date),
       description: formData.description,
     };
 
