@@ -41,6 +41,11 @@ function CreateProject(props) {
       });
   };
 
+  const handleCreateAndClose = () => {
+    handleCreateProject();
+    props.handleClose();
+  }
+
   return (
     <>
       <Modal
@@ -131,7 +136,7 @@ function CreateProject(props) {
           </Form>
         </Modal.Body>
         <Modal.Footer className="d-flex align-items-center justify-content-center">
-          <Button className="ctm-btn" onClick={handleCreateProject}>
+          <Button className="ctm-btn" onClick={handleCreateAndClose}>
             Create project
           </Button>
         </Modal.Footer>
