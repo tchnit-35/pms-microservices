@@ -29,6 +29,7 @@ import { Process } from "../../components/Timeline_view/Process";
 
 import UpdateProject from "./UpdateProject";
 import BoardView from "../../components/bord_view/BoardView";
+import Dashboard from "../../components/Dashboard/Dashboard";
 
 function Project(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,8 +79,8 @@ function Project(props) {
       case "Files":
         setViewContent("Files");
         break;
-      case "Reporting":
-        setViewContent("Reporting");
+      case "dashboard":
+        setViewContent("dashboard");
         break;
       default:
         setViewContent("list");
@@ -89,11 +90,13 @@ function Project(props) {
   const getViewClass = (view) => {
     switch (view) {
       case "list":
-        return activeView === "list" ? "active" : "";
+        return activeView === "list" ? "active grant" : "";
       case "timeline":
-        return activeView === "timeline" ? "active" : "";
+        return activeView === "timeline" ? "active grant" : "";
       case "board":
-        return activeView === "board" ? "active" : "";
+        return activeView === "board" ? "active grant" : "";
+      case "dashboard":
+        return activeView === "dashboard" ? "active grant" : "";
       default:
         return "";
     }
@@ -216,17 +219,14 @@ function Project(props) {
                 Board
               </div>
 
-              <div
-                className={`${getViewClass("timeline")} me-4`}
-                onClick={() => handleViewClick("timeline")}
-              >
+              <div className={`${getViewClass("")} me-4`} onClick={() => handleViewClick("")}>
                 Files
               </div>
               <div
-                className={`${getViewClass("timeline")} me-4`}
-                onClick={() => handleViewClick("timeline")}
+                className={`${getViewClass("dashboard")} me-4`}
+                onClick={() => handleViewClick("dashboard")}
               >
-                Reporting
+                Dashboard
               </div>
             </div>
           </div>
@@ -244,6 +244,8 @@ function Project(props) {
             {/*Board body*/}
 
             {viewContent === "board" && <BoardView />}
+
+            {viewContent === "dashboard" && <Dashboard /> }
 
             {!viewContent && <p>No view content selected.</p>}
           </div>
