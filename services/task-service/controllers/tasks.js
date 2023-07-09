@@ -41,8 +41,6 @@ exports.createSubTask = async(req,res)=>{
   const {name,startDate,endDate} = req.body
   const master =  await Task.findById(masterTaskId)
   const users = req.body.users
-  
-  console.log(users)
   const newTask = new Task({
     name,
     startDate,
@@ -200,6 +198,7 @@ exports.getByProjectId = async (req, res) => {
       masterTasks.map(async (masterTask) => {
         const subTasks = await Task.find({ projectId: projectId, masterTaskId: masterTask._id });
         const userTasks = await UserTask.find({ taskId: masterTask._id}||{taskId: subTask._id} ,{userId:1});
+        
         const assignedTo = userTasks.filter(user => user != null).map(user => user.userId); // extract username property and return as an array of strings
         
 
@@ -211,7 +210,7 @@ exports.getByProjectId = async (req, res) => {
         return { ...masterTask._doc, subTasks, assignedTo, startDate, endDate };
       })
     );
-
+    console.log(tasks)
     return res.status(200).json(tasks);
   } catch (err) {
     return res.status(500).json({

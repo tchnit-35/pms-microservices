@@ -44,11 +44,20 @@ const ToDoListItems = () => {
               }
             );
 
-            return {
-              ...task,
-              assignedToUsername:
-                user.data.firstname + ' ' + user.data.lastname,
-            };
+            if (user===null) {
+              return {
+                ...task,
+                assignedToUsername:
+                  user.data.firstname + ' ' + user.data.lastname,
+              };
+            }
+            else {
+              return {
+                ...task,
+                assignedToUsername:
+                'Not Assigned' ,
+              };
+            }
           })
         );
         const filteredTaskList = await Promise.all(

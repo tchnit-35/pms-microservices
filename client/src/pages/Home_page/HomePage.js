@@ -163,6 +163,7 @@ function HomePage() {
     // }, 1000);
     // return () => clearInterval(interval);
   }, [selectedProject]);
+  console.log(publicMessages)
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
