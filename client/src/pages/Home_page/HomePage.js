@@ -1,19 +1,15 @@
 /** @format */
 
-import React, { useState, useEffect } from 'react';
-import './HomePage.css';
-import NavigationBar from '../../components/Navbar/Navbar';
-import SideMenu from '../../components/Navbar/Sidebar';
-import Footer from '../../components/footer/Footer';
-import moment from 'moment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCheck,
-  faPlus,
-  faUser,
-  faX,
-} from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import "./HomePage.css";
+import NavigationBar from "../../components/Navbar/Navbar";
+import SideMenu from "../../components/Navbar/Sidebar";
+import Footer from "../../components/footer/Footer";
+import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faPlus, faUser, faX } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+
 function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,27 +19,23 @@ function HomePage() {
   const [publicMessages, setPublicMessages] = useState([]);
   const [recentTasks, setRecentTasks] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedProject, setSelectedProject] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState(moment());
 
   const handleSelectChange = (event) => {
     setSelectedProject(event.target.value);
   };
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   useEffect(() => {
     //Fetch Private Message
     const fetchMessages = async () => {
-      const response = await axios.get('http://localhost:3006/conversations', {
+      const response = await axios.get("http://localhost:3006/conversations", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const publicConvoIds = response.data.public.map(
-        (conversation) => conversation[0]._id
-      );
-      const privateConvoIds = response.data.private.map(
-        (conversation) => conversation[0]._id
-      );
+      const publicConvoIds = response.data.public.map((conversation) => conversation[0]._id);
+      const privateConvoIds = response.data.private.map((conversation) => conversation[0]._id);
 
       const privateMessages = await Promise.all(
         privateConvoIds.map(async (privateConvoId) => {
@@ -90,7 +82,7 @@ function HomePage() {
     fetchMessages();
     // Fetch tasks from backend
     axios
-      .get('http://localhost:3003/tasks', {
+      .get("http://localhost:3003/tasks", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -108,7 +100,7 @@ function HomePage() {
       })
       .then((response) => setAllProjects(response.data));
     const fetchUserList = async () => {
-      if (selectedProject !== '') {
+      if (selectedProject !== "") {
         try {
           const response = await axios.get(
             `http://localhost:3002/projects/${selectedProject}/users`,
@@ -143,7 +135,7 @@ function HomePage() {
     //Fetch recent tasks from backend
     const fetchTaskList = async () => {
       try {
-        const response = await axios.get('http://localhost:3003/tasks/recent', {
+        const response = await axios.get("http://localhost:3003/tasks/recent", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -151,14 +143,11 @@ function HomePage() {
 
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
-            const project = await axios.get(
-              `http://localhost:3002/projects/${task.projectId}`,
-              {
-                headers: {
-                  Authorization: 'JWT ' + token,
-                },
-              }
-            );
+            const project = await axios.get(`http://localhost:3002/projects/${task.projectId}`, {
+              headers: {
+                Authorization: "JWT " + token,
+              },
+            });
             const projectTitle = project.data.project_title;
             return { ...task, projectTitle };
           })
@@ -179,7 +168,7 @@ function HomePage() {
   };
   return (
     <>
-      <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
         <NavigationBar handleClick={toggleMenu} />
         <SideMenu isOpen={isOpen} />
 
@@ -208,15 +197,11 @@ function HomePage() {
                 </div>
               </div>
 
-              <div className="messages-box" style={{ backgroundColor: '#fff' }}>
+              <div className="messages-box" style={{ backgroundColor: "#fff" }}>
                 {publicMessages.map((message) => (
                   <div className="d-flex">
                     <div className="home-profile-pic me-2">
-                      <FontAwesomeIcon
-                        icon={faUser}
-                        style={{ color: '#FFFFFF' }}
-                        size="xl"
-                      />
+                      <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="xl" />
                     </div>
 
                     <div className="d-flex flex-column me-auto">
@@ -225,15 +210,20 @@ function HomePage() {
                     </div>
 
                     <div className="d-flex flex-column align-items-center">
-                      <span>{message.sentAt.toLocalString('en-US',{hours:'numeric',minute:'numeric'})}</span>
+                      <span>
+                        {message.sentAt
+                          ? message.sentAt.toLocaleString("en-US", {
+                              hour: "numeric",
+                              minute: "numeric",
+                            })
+                          : ""}
+                      </span>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="actual-date-time ms-auto mt-auto">
-                <span className="me-2">
-                  {currentDateTime.format('MMMM Do YYYY, h:mm:ss a')}
-                </span>
+                <span className="me-2">{currentDateTime.format("MMMM Do YYYY, h:mm:ss a")}</span>
                 <span></span>
               </div>
             </div>
@@ -271,11 +261,12 @@ function HomePage() {
               <div>
                 <div className="home-team-members mb-4">
                   <span className="the-title me-auto">Team Members</span>
-                  <div class="select-box">
+                  <div className="select-box">
                     <select
                       className="select"
                       value={selectedProject}
-                      onChange={handleSelectChange}>
+                      onChange={handleSelectChange}
+                    >
                       {allProjects.map((project) => (
                         <option key={project._id} value={project._id}>
                           {project.project_title}
@@ -293,19 +284,13 @@ function HomePage() {
                       {teamMembers.map((member) => (
                         <div className="team-member-box me-4">
                           <div className="home-profile-pic me-3">
-                            <FontAwesomeIcon
-                              icon={faUser}
-                              style={{ color: '#FFFFFF' }}
-                              size="lg"
-                            />
+                            <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="lg" />
                           </div>
                           <div className="d-flex flex-column">
                             <span className="team-member-name">
                               {member.firstname + member.lastname}
                             </span>
-                            <span className="team-member-role">
-                              {member.username}
-                            </span>
+                            <span className="team-member-role">{member.username}</span>
                           </div>
                         </div>
                       ))}
@@ -327,9 +312,7 @@ function HomePage() {
                         <div className="d-flex align-items-center justify-content-center">
                           <span className="team-member-role me-2">Project</span>
                           <div className="bx">
-                            <span className="team-member-role">
-                              {task.projectTitle}
-                            </span>
+                            <span className="team-member-role">{task.projectTitle}</span>
                           </div>
                         </div>
                       </div>

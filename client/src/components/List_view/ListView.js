@@ -1,24 +1,24 @@
 /** @format */
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Tooltip } from 'react-tooltip';
-import './ListView.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Tooltip } from "react-tooltip";
+import "./ListView.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faFilter,
   faArrowDownShortWide,
   faSortUp,
   faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
-import ToDoListItems from './projectListItems/ToDoListItems';
-import DoneListItems from './projectListItems/DoneListItems';
-import DoingListItems from './projectListItems/DoingListItems';
-import CreateTask from './CreateTask';
-import { useParams } from 'react-router-dom';
+import ToDoListItems from "./projectListItems/ToDoListItems";
+import DoneListItems from "./projectListItems/DoneListItems";
+import DoingListItems from "./projectListItems/DoingListItems";
+import CreateTask from "./CreateTask";
+import { useParams } from "react-router-dom";
 
 function ListView() {
   const [isToDoVisible, setToDoVisible] = useState(false);
@@ -26,23 +26,20 @@ function ListView() {
   const [isDoneVisible, setDoneVisible] = useState(false);
   const [editable, setEditable] = useState(false);
   const { projectId } = useParams();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
         // Replace with your actual token
-        const response = await axios.get(
-          `http://localhost:3002/projects/${projectId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`http://localhost:3002/projects/${projectId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setEditable(new Date(response.data.endDate) > Date.now());
-      } catch (error) { 
+      } catch (error) {
         console.error(error);
       }
     };
@@ -82,14 +79,11 @@ function ListView() {
               <FontAwesomeIcon icon={faXmark} className="me-1" />
               <span
                 data-tooltip-id="Unauthorized"
-                data-tooltip-content="You need admin permission to add Tasks">
+                data-tooltip-content="You need admin permission to add Tasks"
+              >
                 Add Task
               </span>
-              <Tooltip
-                id="Unauthorized" 
-                className="tooltip"
-                classNameArrow='tooltip-arrow'
-              />
+              <Tooltip id="Unauthorized" className="tooltip" classNameArrow="tooltip-arrow" />
             </div>
           )}
 
@@ -97,7 +91,7 @@ function ListView() {
             <FontAwesomeIcon
               icon={faFilter}
               size="sm"
-              style={{ color: '#545454' }}
+              style={{ color: "#545454" }}
               className="me-1"
             />
             <span>Filter</span>
@@ -107,18 +101,14 @@ function ListView() {
             <FontAwesomeIcon
               icon={faArrowDownShortWide}
               size="sm"
-              style={{ color: '#545454' }}
+              style={{ color: "#545454" }}
               className="me-1"
             />
             <span>Sort</span>
           </div>
         </div>
 
-        <CreateTask
-          show={show}
-          handleShow={handleShow}
-          handleClose={handleClose}
-        />
+        <CreateTask show={show} handleShow={handleShow} handleClose={handleClose} />
 
         {/*view content*/}
 
@@ -134,13 +124,11 @@ function ListView() {
           </div>
 
           {/*task to be done*/}
-          <div
-            className="state d-flex align-items-center mb-4"
-            onClick={handleToDoArrowClick}>
+          <div className="state d-flex align-items-center mb-4" onClick={handleToDoArrowClick}>
             <FontAwesomeIcon
               icon={faSortUp}
               rotation={isToDoVisible ? 180 : 90}
-              style={{ color: '666666', transition: '0.25s' }}
+              style={{ color: "666666", transition: "0.25s" }}
               className=" me-2"
             />
 
@@ -151,24 +139,23 @@ function ListView() {
 
           <div
             className="doing-state d-flex align-items-center mb-4"
-            onClick={handleDoingArrowClick}>
+            onClick={handleDoingArrowClick}
+          >
             <FontAwesomeIcon
               icon={faSortUp}
               rotation={isDoingVisible ? 180 : 90}
-              style={{ color: '666666', transition: '0.25s' }}
+              style={{ color: "666666", transition: "0.25s" }}
               className=" me-2"
             />
 
             <span>Doing</span>
           </div>
           {isDoingVisible && <DoingListItems />}
-          <div
-            className="done-state d-flex align-items-center mb-4"
-            onClick={handleDoneArrowClick}>
+          <div className="done-state d-flex align-items-center mb-4" onClick={handleDoneArrowClick}>
             <FontAwesomeIcon
               icon={faSortUp}
               rotation={isDoneVisible ? 180 : 90}
-              style={{ color: '666666', transition: '0.25s' }}
+              style={{ color: "666666", transition: "0.25s" }}
               className=" me-2"
             />
             <span>Done</span>
