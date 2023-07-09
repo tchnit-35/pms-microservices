@@ -44,7 +44,8 @@ const SideMenu = ({ isOpen }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => setCurrentProjects(response.data));
+      .then((response) => {
+        setCurrentProjects(response.data)});
 
     // Fetch future projects from backend
     axios
@@ -74,7 +75,6 @@ const SideMenu = ({ isOpen }) => {
       })
       .then((response) => {
         const { publicConversations, privateConversations } = response.data;
-
         setPublicConversations(publicConversations);
         setPrivateConversations(privateConversations);
       });
@@ -108,7 +108,7 @@ const SideMenu = ({ isOpen }) => {
     navigate("/MyTask");
   }
 
-  //console.log(privateConversations)
+
   const Project = ({ icon, color, projectName }) => {
     return (
       <div className="project unselectable current-project-folder">
@@ -213,7 +213,7 @@ const SideMenu = ({ isOpen }) => {
                         <FontAwesomeIcon
                           icon={faChevronDown}
                           rotation={isProjectOneVisible ? 180 : 0}
-                          style={{ color: "#DEDEDE" }}
+                          style={{ color: "#DEDEDE",transition:'0.5s' }}
                           size="sm"
                         />
                       </td>
@@ -226,7 +226,7 @@ const SideMenu = ({ isOpen }) => {
                   {currentProjects.length === 0 ? (
                     <span className="project-name">No Current project found</span>
                   ) : (
-                    <ul style={{ listStyle: "none" }}>
+                    <ul style={{ listStyle: "none",transition:'0.5s'}}>
                       {currentProjects.map((project) => (
                         <li key={project._id}>
                           <FontAwesomeIcon
@@ -266,7 +266,7 @@ const SideMenu = ({ isOpen }) => {
                         <FontAwesomeIcon
                           icon={faChevronDown}
                           rotation={isFutureProjectsVisible ? 180 : 0}
-                          style={{ color: "#DEDEDE" }}
+                          style={{ color: "#DEDEDE" ,transition:'0.5s' }}
                           size="sm"
                         />
                       </td>
@@ -319,7 +319,7 @@ const SideMenu = ({ isOpen }) => {
                         <FontAwesomeIcon
                           icon={faChevronDown}
                           rotation={isLegacyProjectsVisible ? 180 : 0}
-                          style={{ color: "#DEDEDE" }}
+                          style={{ color: "#DEDEDE",transition:'0.5s' }}
                           size="sm"
                         />
                       </td>

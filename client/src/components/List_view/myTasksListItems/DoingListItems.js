@@ -1,54 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import "./ListItem.css"
+import "../ListItem.css"
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser,faCircleCheck,faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCircleCheck,faCircleNotch,faClipboard,faListCheck} from '@fortawesome/free-solid-svg-icons';
 
-const DoneListItems = () => {
+const DoingListItems = () => {
   const { projectId } = useParams();
   const token = localStorage.getItem('token');
   const [taskList, setTaskList] = useState([]);
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
+
 
   const handleCheckClick = async (task) => {
     const taskId = task._id
+    if(new Date(task.projectScope)>new Date(Date.now())){
     setIsChecked(!isChecked);
-    const response = await axios.put(`http://localhost:3003/tasks/${taskId}`, {
+    const response = await axios.put(`http://localhost:3003/tasks/${taskId}/complete`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-      
+    console.log(response.data)
   }
+  }
+
   useEffect(() => {
     const fetchTaskList = async () => {
       try {
-        const response = await axios.get(`http://localhost:3003/projects/${projectId}`, {
+        const response = await axios.get(`http://localhost:3003/tasks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log({tasks:response})
+        
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
-            const user = await axios.get(`http://localhost:9000/user/search?userId=${task.assignedTo}`);
-            return { ...task, assignedToUsername: user.data.username };
+            const project = await axios.get(`http://localhost:3002/projects/${task.projectId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            
+            return { ...task, Project: project.data.project_title, projectScope: project.data.endDate };
           })
         );
-        const filteredTaskList = updatedTaskList.filter((task) => {
-          const endDate = new Date(task.endDate);
-          const currentDate = new Date(Date.now());
-          console.log((task.isCompleted===true)&&(endDate <= currentDate))
-          return (task.isCompleted===true)&&(endDate <= currentDate);
-        }); // filter out tasks that are completed
+        const filteredTaskList = await Promise.all(
+          updatedTaskList.filter((task) => {
+            const startDate = new Date(task.startDate);
+            const currentDate = new Date(Date.now());
+            return (task.toBeApproved===false &&task.isCompleted ===false&& startDate <= currentDate )
+            || (task.toBeApproved===true && task.isCompleted ===true&& startDate <= currentDate )
+            || (task.toBeApproved===true && task.isCompleted ===false&& startDate <= currentDate )
+          })
+        );
         setTaskList(filteredTaskList);
       } catch (error) {
         console.error(error);
       }
     };
     fetchTaskList();
-  }, [projectId, token])
+  }, [projectId])
+
   return (
     <>
       <div className="view-content mb-4">
@@ -66,16 +79,19 @@ const DoneListItems = () => {
         <FontAwesomeIcon
           icon={faCircleNotch}
           style={{ color: "#cccccc" ,marginRight:'10px'}}
-          
+          onClick={()=>{handleCheckClick(task)}}
         />)}
-
+          <FontAwesomeIcon
+          icon={ faClipboard}
+          style={{ color: "#ccccfc"  ,marginRight:'20px'}}
+        />
         {task.name}
       </div>
       <div className="assignee">
-        <div className="user me-1">
-          <FontAwesomeIcon icon={faUser} style={{ color: '#ffffff' }} size="xs" />
+        <div className=" me-1">
+        <FontAwesomeIcon icon={faListCheck} style={{color: "#89e1a8",}} />
         </div>
-        <span>{task.assignedTo}</span>
+        <span style={{color:"#da4da1", fontWeight:'bold'}}>{task.Project}</span>
       </div>
       <div className="due-date">{task.startDate} - {task.endDate}</div>
       <div className="priority">
@@ -94,4 +110,4 @@ const DoneListItems = () => {
   );
 };
 
-export default DoneListItems;
+export default DoingListItems;

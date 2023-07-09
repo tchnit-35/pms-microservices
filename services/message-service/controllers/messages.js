@@ -28,7 +28,6 @@ exports.sendMessage = async (req, res) => {
 
   try {
     await newMessage.save();
-
     const payload = {
       topic: "message-sent",
       messages: JSON.stringify({
@@ -57,12 +56,13 @@ exports.getMessages = async (req, res) => {
   const conversationId = req.params.convoId;
   const userId = req.user.username;
   try {
-    const userMessages = await Message.find({ conversationId,  senderUsername: userId } );
-    console.log(userMessages)
-    const receivedMessages = await Message.find({ conversationId,   senderUsername: { $ne: userId } } );
-    await Message.updateMany({ conversationId,   senderUsername: { $ne: userId } },{$set:{beenSeen:true}} )
-    res.status(200).json({ Usermessages:userMessages,receivedMessages:receivedMessages });
+    const userMessages = await Message.find({ conversationId, senderUsername: userId }).lean();
+    const receivedMessages = await Message.find({ conversationId, senderUsername: { $ne: userId } }).lean();
+    await Message.updateMany({ conversationId, senderUsername: { $ne: userId } }, { $set: { beenSeen: true } });
+    const markedUserMessages = userMessages.map((message) => ({ ...message, mark: "user" }));
+    const markedReceivedMessages = receivedMessages.map((message) => ({ ...message, mark: "else" }));
+    res.status(200).json({ userMessages: markedUserMessages, receivedMessages: markedReceivedMessages });
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
-};
+}

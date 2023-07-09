@@ -121,7 +121,9 @@ body {
   font-size: 16px;
   font-weight: 400;
 }
-
+.msg-box{
+  background-color: white;
+}
 .msg {
   font-size: 13px;
 }

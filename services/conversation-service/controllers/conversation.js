@@ -47,13 +47,28 @@ exports.getUserConversations = async (req, res) => {
   try {
     const userConvos = await UserConversation.find({ username });
     for (const userConvo of userConvos) {
-      const convo = await Conversation.findById(userConvo.conversationId);
-      const topic = convo.topic || getUsernames(convo,req.user.username); 
-      const conversation = [convo, topic];
+      const convo = await Conversation.findById(userConvo.conversationId, { lastMessage: 0 });
+      const lastMessage = await Conversation.findById(userConvo.conversationId, { lastMessage: 1 });
+      const topic = convo.topic || getUsernames(convo, req.user.username);
+      let conversation={}
+      if (!lastMessage.lastMessage.message) {
+        conversation = {
+          ...convo.toObject(),
+          message: "",
+          time: new Date(),
+          username: ""}
+        }else{
+          conversation = {
+            ...convo.toObject(),
+            message: lastMessage.lastMessage.message,
+            time: lastMessage.lastMessage.time.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric'}),
+            username: lastMessage.lastMessage.username}
+      }
+
       if (convo.type === "public" && convo.state === "active") {
-        publicConversations.push(conversation);
+        publicConversations.push([conversation, topic ]);
       } else if ((convo.type === "private" && convo.state === "active") || (convo.type === "private" && convo.createdBy === req.user.username)) {
-        privateConversations.push(conversation);
+        privateConversations.push([conversation, topic ]);
       }
     }
     res.status(200).json({ public: publicConversations, private: privateConversations });
@@ -103,7 +118,7 @@ exports.getMostRecentConversations = async (req, res) => {
     // Get the most recent conversation for each type
     const mostRecentPublicConversation = publicConversations.slice(0,3);
     const mostRecentPrivateConversation = privateConversations.slice(0,3);
-
+    
     res.status(200).send({ publicConversations: mostRecentPublicConversation, privateConversations: mostRecentPrivateConversation });
   } catch (err) {
     res.status(500).json({
