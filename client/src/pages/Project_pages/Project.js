@@ -28,6 +28,7 @@ import ListView from "../../components/List_view/ListView";
 import { Process } from "../../components/Timeline_view/Process";
 
 import UpdateProject from "./UpdateProject";
+import BoardView from "../../components/bord_view/BoardView";
 
 function Project(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +41,10 @@ function Project(props) {
 
   const token = localStorage.getItem("token");
   const popoverRef = useRef(null);
-  
+
+  useEffect(() => {
+    console.log("activeView", activeView);
+  }, [activeView]);
 
   useEffect(() => {
     // Fetch project data from backend using projectId
@@ -53,8 +57,6 @@ function Project(props) {
       .then((response) => {
         setProjectData(response.data);
       });
-
-    
   }, [projectId]);
 
   const toggleMenu = () => {
@@ -70,25 +72,39 @@ function Project(props) {
       case "timeline":
         setViewContent("timeline");
         break;
+      case "board":
+        setViewContent("board");
+        break;
+      case "Files":
+        setViewContent("Files");
+        break;
+      case "Reporting":
+        setViewContent("Reporting");
+        break;
       default:
-        //console.log("Unknown view selected:", view);
         setViewContent("list");
     }
-    //console.log("viewContent:", viewContent);
   };
 
   const getViewClass = (view) => {
-    return activeView === view ? "active" : "";
+    switch (view) {
+      case "list":
+        return activeView === "list" ? "active" : "";
+      case "timeline":
+        return activeView === "timeline" ? "active" : "";
+      case "board":
+        return activeView === "board" ? "active" : "";
+      default:
+        return "";
+    }
   };
 
   if (!projectData) {
-    
     return <div>Loading...</div>;
   }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
 
   return (
     <>
@@ -100,8 +116,6 @@ function Project(props) {
           {/*project name & share botton*/}
 
           <div className="heading">
-           
-
             <OverlayTrigger
               trigger="click"
               placement="bottom"
@@ -114,44 +128,65 @@ function Project(props) {
                       <FontAwesomeIcon icon={faPencil} />
                     </div>
                     <div className="copy-link-btn">
-                    <FontAwesomeIcon icon={faCopy} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <FontAwesomeIcon
+                        icon={faCopy}
+                        className="me-1"
+                        style={{ color: "rgb(18, 18, 18, 0.6)" }}
+                      />
                       <span>Copy project link</span>
                     </div>
                     <div className="copy-link-btn">
-                    <FontAwesomeIcon icon={faFloppyDisk} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <FontAwesomeIcon
+                        icon={faFloppyDisk}
+                        className="me-1"
+                        style={{ color: "rgb(18, 18, 18, 0.6)" }}
+                      />
                       <span>Save as template</span>
                     </div>
                     <div className="duplicate">
-                    <FontAwesomeIcon icon={faClone} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <FontAwesomeIcon
+                        icon={faClone}
+                        className="me-1"
+                        style={{ color: "rgb(18, 18, 18, 0.6)" }}
+                      />
                       <span>Duplicate</span>
                     </div>
                     <div className="copy-link-btn">
-                    <FontAwesomeIcon icon={faCloudArrowUp} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <FontAwesomeIcon
+                        icon={faCloudArrowUp}
+                        className="me-1"
+                        style={{ color: "rgb(18, 18, 18, 0.6)" }}
+                      />
                       <span>Import</span>
                     </div>
                     <div className="duplicate">
-                    <FontAwesomeIcon icon={faDownload} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <FontAwesomeIcon
+                        icon={faDownload}
+                        className="me-1"
+                        style={{ color: "rgb(18, 18, 18, 0.6)" }}
+                      />
                       <span>Export</span>
                     </div>
                     <div className="copy-link-btn">
-                    <FontAwesomeIcon icon={faTrash} className="me-1" style={{color: "rgb(18, 18, 18, 0.6)"}}/>
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className="me-1"
+                        style={{ color: "rgb(18, 18, 18, 0.6)" }}
+                      />
                       <span className="me-2">Delete Project</span>
-                      
                     </div>
                   </Popover.Body>
                 </Popover>
               }
             >
-
-            <div className="d-flex align-items-center me-auto">
-            <p className="p-name me-1">{projectData.project_title}</p>
-            <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
-            </div>
-          
+              <div className="d-flex align-items-center me-auto">
+                <p className="p-name me-1">{projectData.project_title}</p>
+                <FontAwesomeIcon icon={faChevronDown} size="xs" className="icon me-auto" />
+              </div>
             </OverlayTrigger>
 
-            <div className="share" >
-              <span className="me-1" >Share</span>
+            <div className="share">
+              <span className="me-1">Share</span>
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="sm" />
             </div>
           </div>
@@ -167,18 +202,18 @@ function Project(props) {
                 onClick={() => handleViewClick("list")}
               >
                 List
-              </div>              
-              <div
-                className={`${getViewClass("timeline")} me-4`}
-                onClick={() => handleViewClick("timeline")}
-              >
-                Board
               </div>
               <div
                 className={`${getViewClass("timeline")} me-4`}
                 onClick={() => handleViewClick("timeline")}
               >
                 Timeline
+              </div>
+              <div
+                className={`${getViewClass("board")} me-4`}
+                onClick={() => handleViewClick("board")}
+              >
+                Board
               </div>
 
               <div
@@ -196,7 +231,8 @@ function Project(props) {
             </div>
           </div>
 
-          <div className="view-content">
+          {/*deleted css class here "view-content"*/}
+          <div className="">
             {/*list body*/}
 
             {viewContent === "list" && <ListView />}
@@ -204,6 +240,10 @@ function Project(props) {
             {/*Timeline body*/}
 
             {viewContent === "timeline" && <Process />}
+
+            {/*Board body*/}
+
+            {viewContent === "board" && <BoardView />}
 
             {!viewContent && <p>No view content selected.</p>}
           </div>

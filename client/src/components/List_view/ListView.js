@@ -156,7 +156,7 @@ function ListView() {
               icon={faSortUp}
               rotation={isDoneVisible ? 180 : 90}
               style={{ color: "666666", transition: "0.25s" }}
-              className=" me-2"
+              className=" me-"
             />
             <span>Done</span>
           </div>
