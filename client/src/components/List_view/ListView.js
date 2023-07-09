@@ -138,25 +138,25 @@ function ListView() {
           {isToDoVisible && <ToDoListItems />}
 
           <div
-            className="doing-state d-flex align-items-center mb-4"
+            className="doing-state mb-4"
             onClick={handleDoingArrowClick}
           >
             <FontAwesomeIcon
               icon={faSortUp}
               rotation={isDoingVisible ? 180 : 90}
               style={{ color: "666666", transition: "0.25s" }}
-              className=" me-2"
+              className="me-2"
             />
 
             <span>Doing</span>
           </div>
           {isDoingVisible && <DoingListItems />}
-          <div className="done-state d-flex align-items-center mb-4" onClick={handleDoneArrowClick}>
+          <div className="done-state mb-4" onClick={handleDoneArrowClick}>
             <FontAwesomeIcon
               icon={faSortUp}
               rotation={isDoneVisible ? 180 : 90}
               style={{ color: "666666", transition: "0.25s" }}
-              className=" me-"
+              className=" me-2"
             />
             <span>Done</span>
           </div>
