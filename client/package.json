@@ -23,6 +23,7 @@
     "react-google-charts": "^4.0.0",
     "react-router-dom": "^6.14.1",
     "react-scripts": "^5.0.1",
+    "react-tooltip": "^5.18.0",
     "stream-browserify": "^3.0.0",
     "url": "^0.11.1",
     "util": "^0.12.5",

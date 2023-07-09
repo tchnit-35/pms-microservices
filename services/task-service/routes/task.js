@@ -1,5 +1,5 @@
 const express = require('express')
-const { createTask,createSubTask,updateTask,deleteTask, getByProjectId, getByUserId, getTask, getRecentTask, completeTasks } = require('../controllers/tasks')
+const { createTask,createSubTask,updateTask,deleteTask, getByProjectId, getByUserId, getTask, getRecentTask, completeTasks, approveTasks } = require('../controllers/tasks')
 const { isAuth } = require('../../isAuthenticated'); 
 const router = express.Router()
 const Task = require('../models/Task');
@@ -13,7 +13,8 @@ router.get('/tasks/:taskId',isAuth,getTask)
 router.post('/tasks/:taskId',isAuth,createSubTask)
 router.patch('/tasks/:taskId',isAuth,updateTask)
 router.delete('/tasks/:taskId',isAuth,deleteTask)
-router.put('/tasks/:taskId',completeTasks) 
+router.put('/tasks/:taskId/complete',completeTasks) 
+router.put('/tasks/:taskId/approve',isAuth,approveTasks) 
 // Task deletion (consumer)
 const consumer = new kafka.ConsumerGroup({
   kafkaHost: 'localhost:9092',

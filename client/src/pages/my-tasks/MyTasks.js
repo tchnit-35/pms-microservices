@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./MyTasks.css";
-import ListView from "../../components/List_view/ListView";
+import ListView from "../../components/List_view/myTaskListView";
 import { Process } from "../../components/Timeline_view/Process";
 
 import NavigationBar from "../../components/Navbar/Navbar";
@@ -135,7 +135,7 @@ function MyTasks() {
                 className={`${getViewClass("timeline")} me-4`}
                 onClick={() => handleViewClick("timeline")}
               >
-                Timeline
+                Board
               </div>
             </div>
           </div>

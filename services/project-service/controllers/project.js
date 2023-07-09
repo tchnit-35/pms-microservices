@@ -46,11 +46,12 @@ exports.getCurrentProjects = async (req, res) => {
     const currentProjects = [];
     const userProjects = await UserProject.find({ userId: req.user._id });
     for (const project of userProjects) {
-      const currentProject = await Project.findOne({ 
+      const currentProject = await Project.findOne({_id:project.projectId,
         startDate: { $lt: Date.now() },
-        endDate: { $gt: Date.now() } 
+        endDate: { $gt: Date.now() }  
       }).select('project_title');
       if (currentProject) {
+        console.log(userProjects)
         currentProjects.push(currentProject);
       }
     }

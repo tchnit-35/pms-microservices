@@ -34,15 +34,11 @@ import {
 
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
-  const [showUser, setShowUser] = React.useState(false); // state for showing/hiding the popover
-  const [showNotif, setShowNotif] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState(null);
   const [notif,setNotif] = React.useState(null)
   // Get the JWT token from local storage
   const token = localStorage.getItem("token");
 
-  const handleUserClick = () => setShowUser(!showUser); // function for showing/hiding the popover
-  const handleNotifClick = () => setShowNotif(!showNotif);
 
   React.useEffect(() => {
 
@@ -191,12 +187,10 @@ function NavigationBar({ handleClick }) {
             <OverlayTrigger
               trigger="click"
               placement="bottom"
-              show={showNotif}
+              rootClose={true}
               overlay={notifPopover}
-              rootClose
-              onHide={() => setShowNotif(false)}
             >
-              <Nav.Link onClick={handleNotifClick}>
+              <Nav.Link >
                 <div className="aid me-4">
                   <FontAwesomeIcon icon={faBell} style={{ color: "#ffF" }} size="lg" />
                 </div>
@@ -206,12 +200,11 @@ function NavigationBar({ handleClick }) {
             <OverlayTrigger
               trigger="click"
               placement="bottom"
-              show={showUser}
+
               overlay={popover}
-              rootClose
-              onHide={() => setShowUser(false)}
+              rootClose={true}
             >
-              <Nav.Link onClick={handleUserClick}>
+              <Nav.Link >
                 <div className="profile">
                   <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff" }} size="sm" />
                 </div>

@@ -40,6 +40,7 @@ function Project(props) {
 
   const token = localStorage.getItem("token");
   const popoverRef = useRef(null);
+  
 
   useEffect(() => {
     // Fetch project data from backend using projectId
@@ -104,6 +105,7 @@ function Project(props) {
             <OverlayTrigger
               trigger="click"
               placement="bottom"
+              rootClose={true}
               overlay={
                 <Popover className="update-popover unselectable" ref={popoverRef}>
                   <Popover.Body className="custom-popover-body">
@@ -165,12 +167,31 @@ function Project(props) {
                 onClick={() => handleViewClick("list")}
               >
                 List
+              </div>              
+              <div
+                className={`${getViewClass("timeline")} me-4`}
+                onClick={() => handleViewClick("timeline")}
+              >
+                Board
               </div>
               <div
                 className={`${getViewClass("timeline")} me-4`}
                 onClick={() => handleViewClick("timeline")}
               >
                 Timeline
+              </div>
+
+              <div
+                className={`${getViewClass("timeline")} me-4`}
+                onClick={() => handleViewClick("timeline")}
+              >
+                Files
+              </div>
+              <div
+                className={`${getViewClass("timeline")} me-4`}
+                onClick={() => handleViewClick("timeline")}
+              >
+                Reporting
               </div>
             </div>
           </div>

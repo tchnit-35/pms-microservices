@@ -1,155 +1,185 @@
-import React, { useState, useEffect } from "react";
-import "./HomePage.css";
-import NavigationBar from "../../components/Navbar/Navbar";
-import SideMenu from "../../components/Navbar/Sidebar";
-import Footer from "../../components/footer/Footer";
+/** @format */
+
+import React, { useState, useEffect } from 'react';
+import './HomePage.css';
+import NavigationBar from '../../components/Navbar/Navbar';
+import SideMenu from '../../components/Navbar/Sidebar';
+import Footer from '../../components/footer/Footer';
 import moment from 'moment';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus, faUser, faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCheck,
+  faPlus,
+  faUser,
+  faX,
+} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [priorityTasks,setPriorityTasks] = useState([])
-  const [teamMembers,setTeamMembers] = useState([])
-  const [privateMessages,setPrivateMessages] = useState([])
-  const [publicMessages,setPublicMessages] = useState([])
-  const [recentTasks,setRecentTasks] = useState([])
-  const [allProjects,setAllProjects] = useState([])
+  const [priorityTasks, setPriorityTasks] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [privateMessages, setPrivateMessages] = useState([]);
+  const [publicMessages, setPublicMessages] = useState([]);
+  const [recentTasks, setRecentTasks] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
   const [currentDateTime, setCurrentDateTime] = useState(moment());
- 
+
   const handleSelectChange = (event) => {
     setSelectedProject(event.target.value);
   };
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   useEffect(() => {
     //Fetch Private Message
-    const fetchMessages = async()=>{
-      const response = await   axios
-    .get("http://localhost:3006/conversations", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const publicConvoIds = response.data.public.map(conversation=>conversation._id)
-    const privateConvoIds = response.data.private.map(conversation=>conversation._id)
-    const privateMessages = await Promise.all(
-      privateConvoIds.map(async(privateConvoId)=>{
-        const msgResponse = await axios
-        .get(`http://localhost:3005/conversations/${privateConvoId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        return msgResponse.data.receivedMessages
-      }
-        )
-    )
-    const publicMessages = await Promise.all(
-      publicConvoIds.map(async(publicConvoId)=>{
-        const msgResponse = await axios
-        .get(`http://localhost:3005/conversations/${publicConvoId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        return msgResponse.data.receivedMessages
-      }
-        )
-    )
-    setPrivateMessages(privateMessages)
-    setPublicMessages(publicMessages)
-    }
-fetchMessages()
-        // Fetch tasks from backend
-        axios
-        .get("http://localhost:3003/tasks", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setPriorityTasks(response.data)});
-  
-      // Fetch co-team-members from backend
-      axios
-      .get(`http://localhost:3002/projects`,{
-        headers:{
+    const fetchMessages = async () => {
+      const response = await axios.get('http://localhost:3006/conversations', {
+        headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-        .then((response) => setAllProjects(response.data));
-        const fetchUserList = async () => {
-          try {
-            const response = await axios.get(`http://localhost:3002/projects/${selectedProject}/users`, {
+      });
+      const publicConvoIds = response.data.public.map(
+        (conversation) => conversation[0]._id
+      );
+      const privateConvoIds = response.data.private.map(
+        (conversation) => conversation[0]._id
+      );
+
+      const privateMessages = await Promise.all(
+        privateConvoIds.map(async (privateConvoId) => {
+          const msgResponse = await axios.get(
+            `http://localhost:3005/conversations/${privateConvoId}`,
+            {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
+            }
+          );
 
-            });
-             
-            const userIds = response.data.map((user) => user.userId);
-            const users = await Promise.all(
-              userIds.map(async (userId) => {
-                const userResponse = await axios.get(`http://localhost:9000/user/search?userId=${userId}`, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                return userResponse.data;
-              })
-            );
-            setTeamMembers(users); // Array of user data objects
-          } catch (error) {
-            console.error(error);
-          }
-        };
-        fetchUserList()
+          return msgResponse.data.receivedMessages
+            .sort((a, b) => {
+              return new Date(a.sentAt) - new Date(b.sentAt);
+            })
+            .slice(0, 5)
+            .map(({ conversationId, ...rest }) => rest);
+        })
+      );
 
-  
-      //Fetch recent tasks from backend
-      const fetchTaskList = async()=>{
-        try{
-          const response = await 
-           axios.get("http://localhost:3003/tasks/recent", {
+      const publicMessages = await Promise.all(
+        publicConvoIds.map(async (publicConvoId) => {
+          const msgResponse = await axios.get(
+            `http://localhost:3005/conversations/${publicConvoId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          return msgResponse.data.receivedMessages
+            .sort((a, b) => {
+              return new Date(a.sentAt) - new Date(b.sentAt);
+            })
+            .slice(0, 5)
+            .map(({ conversationId, ...rest }) => rest);
+        })
+      );
+
+      setPrivateMessages(privateMessages);
+      setPublicMessages(publicMessages);
+    };
+    fetchMessages();
+    // Fetch tasks from backend
+    axios
+      .get('http://localhost:3003/tasks', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      
+      .then((response) => {
+        setPriorityTasks(response.data);
+      });
 
-      const updatedTaskList=await Promise.all(
-        response.data.map(async (task)=>{
-          const project = await axios.get(`http://localhost:3002/projects/${task.projectId}`, {
-            headers: {
-              Authorization: "JWT "+token,
+    // Fetch co-team-members from backend
+    axios
+      .get(`http://localhost:3002/projects`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => setAllProjects(response.data));
+    const fetchUserList = async () => {
+      if (selectedProject !== '') {
+        try {
+          const response = await axios.get(
+            `http://localhost:3002/projects/${selectedProject}/users`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          })
-          const projectTitle = project.data.project_title
-          return {...task, projectTitle}
-        })
-      )
-      setRecentTasks(updatedTaskList)
-      
-        }catch(err){
-          console.error(err)
+          );
+          const userIds = response.data.map((user) => user.userId);
+          const users = await Promise.all(
+            userIds.map(async (userId) => {
+              const userResponse = await axios.get(
+                `http://localhost:9000/user/search?userId=${userId}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              return userResponse.data;
+            })
+          );
+          setTeamMembers(users); // Array of user data objects
+        } catch (error) {
+          console.error(error);
         }
       }
-      fetchTaskList()
+    };
+    fetchUserList();
+
+    //Fetch recent tasks from backend
+    const fetchTaskList = async () => {
+      try {
+        const response = await axios.get('http://localhost:3003/tasks/recent', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const updatedTaskList = await Promise.all(
+          response.data.map(async (task) => {
+            const project = await axios.get(
+              `http://localhost:3002/projects/${task.projectId}`,
+              {
+                headers: {
+                  Authorization: 'JWT ' + token,
+                },
+              }
+            );
+            const projectTitle = project.data.project_title;
+            return { ...task, projectTitle };
+          })
+        );
+        setRecentTasks(updatedTaskList);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchTaskList();
     // const interval = setInterval(() => {
     //   setCurrentDateTime(moment());
     // }, 1000);
     // return () => clearInterval(interval);
-    
-  }, [selectedProject]) 
+  }, [selectedProject]);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-console.log(teamMembers)
   return (
     <>
-      <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
+      <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
         <NavigationBar handleClick={toggleMenu} />
         <SideMenu isOpen={isOpen} />
 
@@ -164,8 +194,6 @@ console.log(teamMembers)
                 <div className=" d-flex align-items-center justify-content-center me-auto">
                   <span className="home-stream me-1">Streams</span>
                 </div>
-
-
               </div>
 
               <div className="d-flex align-items center mb-3">
@@ -180,25 +208,31 @@ console.log(teamMembers)
                 </div>
               </div>
 
-              < div className="messages-box" style={{backgroundColor:"#fff"}}>
-                <div className="d-flex">
-                  <div className="home-profile-pic me-2">
-                    <FontAwesomeIcon icon={faUser} style={{ color: "#FFFFFF" }} size="xl" />
-                  </div>
+              <div className="messages-box" style={{ backgroundColor: '#fff' }}>
+                {publicMessages.map((message) => (
+                  <div className="d-flex">
+                    <div className="home-profile-pic me-2">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        style={{ color: '#FFFFFF' }}
+                        size="xl"
+                      />
+                    </div>
 
-                  <div className="d-flex flex-column me-auto">
-                    <span className="home-contact-name">Ashlyn Lee</span>
-                    <span className="msg">Hey There! Looking great</span>
-                  </div>
+                    <div className="d-flex flex-column me-auto">
+                      <span className="home-contact-name">{message.senderUsername}</span>
+                      <span className="msg">{message.message}</span>
+                    </div>
 
-                  <div className="d-flex flex-column align-items-center">
-                    <span>12:47</span>
+                    <div className="d-flex flex-column align-items-center">
+                      <span>{message.sentAt.toLocalString('en-US',{hours:'numeric',minute:'numeric'})}</span>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
               <div className="actual-date-time ms-auto mt-auto">
                 <span className="me-2">
-                {currentDateTime.format('MMMM Do YYYY, h:mm:ss a')}
+                  {currentDateTime.format('MMMM Do YYYY, h:mm:ss a')}
                 </span>
                 <span></span>
               </div>
@@ -238,42 +272,45 @@ console.log(teamMembers)
                 <div className="home-team-members mb-4">
                   <span className="the-title me-auto">Team Members</span>
                   <div class="select-box">
-                  <select 
-                  className="select"
-                  value={selectedProject}
-                  onChange={handleSelectChange}
-                   >
-        {allProjects.map((project) => (
-          <option key={project._id} value={project._id}>{project.project_title}</option>
-        ))}
-      </select></div>
+                    <select
+                      className="select"
+                      value={selectedProject}
+                      onChange={handleSelectChange}>
+                      {allProjects.map((project) => (
+                        <option key={project._id} value={project._id}>
+                          {project.project_title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div className="d-flex mb-x">
-                {teamMembers.length === 0 ? (
-        <div>Oops! Seems Your Alone in this</div>
-      ) : (
-        <div className="d-flex mb-x">
-          {teamMembers.map((member) => (
-            <div className="team-member-box me-4">
-              <div className="home-profile-pic me-3">
-                <FontAwesomeIcon
-                  icon={faUser}
-                  style={{ color: '#FFFFFF' }}
-                  size="lg"
-                />
-              </div>
-              <div className="d-flex flex-column">
-                <span className="team-member-name">
-                  {member.firstname + member.lastname}
-                </span>
-                <span className="team-member-role">{member.username}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-                  
+                  {teamMembers.length === 0 ? (
+                    <div>Oops! Seems Your Alone in this</div>
+                  ) : (
+                    <div className="d-flex mb-x">
+                      {teamMembers.map((member) => (
+                        <div className="team-member-box me-4">
+                          <div className="home-profile-pic me-3">
+                            <FontAwesomeIcon
+                              icon={faUser}
+                              style={{ color: '#FFFFFF' }}
+                              size="lg"
+                            />
+                          </div>
+                          <div className="d-flex flex-column">
+                            <span className="team-member-name">
+                              {member.firstname + member.lastname}
+                            </span>
+                            <span className="team-member-role">
+                              {member.username}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -281,24 +318,23 @@ console.log(teamMembers)
                     <span className="the-title">Recent</span>
                   </div>
                 </div>
- {recentTasks && recentTasks.map((task)=>(
-                <div className="team-member-box">
-                 
-                  <div className="d-flex flex-column">
-                    <span className="team-member-name">{task.name}</span>
+                {recentTasks &&
+                  recentTasks.map((task) => (
+                    <div className="team-member-box">
+                      <div className="d-flex flex-column">
+                        <span className="team-member-name">{task.name}</span>
 
-                    <div className="d-flex align-items-center justify-content-center">
-                      <span className="team-member-role me-2">Project</span>
-                      <div className="bx">
-                        <span className="team-member-role">{task.projectTitle}</span>
+                        <div className="d-flex align-items-center justify-content-center">
+                          <span className="team-member-role me-2">Project</span>
+                          <div className="bx">
+                            <span className="team-member-role">
+                              {task.projectTitle}
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-               
-
-                </div>   
-                ))
-                  }
+                  ))}
               </div>
             </div>
           </div>

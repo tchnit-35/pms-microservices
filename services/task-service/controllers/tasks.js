@@ -5,13 +5,12 @@ const mongoose = require('mongoose')
 
 function allocateTask(users,taskId){
   try{
-    console.log(users)
     users.forEach(userToAdd=>{
     const newUserTask = new UserTask({
-      userId:userToAdd,
+      userId:userToAdd.userId,
+      username:userToAdd.username,
       taskId
     })
-    console.log(newUserTask)
     newUserTask.save()
   })}
   catch(err){
@@ -24,7 +23,7 @@ function allocateTask(users,taskId){
 }
 function deallocateTask(users,taskId){
   try{[].forEach(userToRemove=>{
-    UserTask.findOneAndRemove({userId:userToRemove,taskId})
+    UserTask.findOneAndRemove({userId:userToRemove.userId,taskId})
     })
   }
   catch(err){
@@ -200,8 +199,8 @@ exports.getByProjectId = async (req, res) => {
     const tasks = await Promise.all(
       masterTasks.map(async (masterTask) => {
         const subTasks = await Task.find({ projectId: projectId, masterTaskId: masterTask._id });
-        const userTasks = await UserTask.find({ taskId: masterTask._id}||{taskId: subTask._id} ,{username:1});
-        const assignedTo = userTasks.filter(user => user != null).map(user => user.username); // extract username property and return as an array of strings
+        const userTasks = await UserTask.find({ taskId: masterTask._id}||{taskId: subTask._id} ,{userId:1});
+        const assignedTo = userTasks.filter(user => user != null).map(user => user.userId); // extract username property and return as an array of strings
         
 
         // Format the startDate and endDate fields
@@ -225,14 +224,20 @@ exports.getByProjectId = async (req, res) => {
 
 exports.getByUserId = async (req, res) => {
   const id = req.user._id;
+  
   const allTasks = [];
   try {
     const allTaskRecords = await UserTask.find({ userId: id });
+    
     for (const taskRecord of allTaskRecords) {
+      
       const task = await Task.findById(taskRecord.taskId);
-      const startDate = task.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      allTasks.push({ ...task.toObject(), startDate });
+      
+      const startDate = task.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      const endDate = task.endDate.toLocaleString('en-US', { month: 'short', day: 'numeric' })
+      allTasks.push({ ...task._doc, startDate,endDate });
     }
+    
     res.status(200).json(allTasks);
   } catch (err) {
     res.status(500).json({
@@ -247,6 +252,17 @@ exports.completeTasks = async (req, res) => {
   try {
     const task = await Task.findById(req.params.taskId)
     await Task.findByIdAndUpdate(req.params.taskId, { $set: { isCompleted:(!task.isCompleted) } }).exec()
+    res.status(200).json('Task updated successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).json('Error updating task');
+  }
+}
+
+exports.approveTasks = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.taskId)
+    await Task.findByIdAndUpdate(req.params.taskId, { $set: { isApproved:(!task.isApproved) } }).exec()
     res.status(200).json('Task updated successfully');
   } catch (err) {
     console.error(err);
