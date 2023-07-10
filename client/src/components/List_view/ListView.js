@@ -51,6 +51,8 @@ function ListView() {
     fetchProject();
   }, [projectId]);
 
+
+
   const handleToDoArrowClick = () => {
     setToDoVisible(!isToDoVisible);
   };
@@ -124,7 +126,7 @@ function ListView() {
             <span>Sort</span>
           </div>
         </div>
-
+        <CreateTask show={show} handleShow={handleShow} handleClose={handleClose} />
         {/*view content*/}
 
         <div className="view-content">
