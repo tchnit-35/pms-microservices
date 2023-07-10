@@ -8,13 +8,13 @@ const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
 exports.getProjectUsers = async (req,res) =>{
-  await UserProject.find({projectId:req.params.projectId,userId:{$ne:req.user._id}},{userId:1})
-  .then((userIds)=>{
-    return res.status(200).json(userIds)
+  await UserProject.find({ projectId: req.params.projectId }, { userId: 1 })
+  .then((userIds) => {
+    return res.status(200).json(userIds);
   })
-  .catch((err)=>{
-    console.error(err)
-  })
+  .catch((err) => {
+    console.error(err);
+  });
 }
 
 exports.getFutureProjects = async (req, res) => {
