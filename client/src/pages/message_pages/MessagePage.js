@@ -120,7 +120,7 @@ function MessagePage() {
   }
   return (
     <>
-      <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
+      <div className="d-flex flex-column">
         <NavigationBar handleClick={toggleMenu} />
         <SideMenu isOpen={isOpen} />
 

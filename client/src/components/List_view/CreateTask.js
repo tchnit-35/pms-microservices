@@ -9,7 +9,6 @@ import { Stack } from "react-bootstrap";
 import axios from "axios";
 
 import "./CreateTask.css";
-import { response } from "express";
 
 function CreateTask(props) {
   const { projectId } = useParams();
@@ -39,7 +38,8 @@ function CreateTask(props) {
         setTeamMembers(usersResponse.data);
         console.log("Users:", usersResponse.data);
 
-        const fetchName = async () => {
+        
+        {/*const fetchName = async () => {
           try {
             const userNameResonese = await axios.get("http://localhodt:9000/user/", {
               headers:{
@@ -51,7 +51,7 @@ function CreateTask(props) {
             console.error(error);
             // handle the error
           }
-        };
+        };*/}
 
       } catch (error) {
         console.error(error);

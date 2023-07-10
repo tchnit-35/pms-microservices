@@ -6,7 +6,7 @@
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -154,7 +154,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 680px;
+  height: 710px;
   width: 73%;
 }
 
