@@ -1,58 +1,56 @@
-.create-task-modal {
+.update-project-modal {
   padding: 100px;
   border-radius: 30px !important;
 }
 
-.create-task-modal.modal-content {
-  width: 400px;
-  padding: 30px;
-  overflow-y: scroll;
-  margin: auto;
-  border-radius: 40px;
+.modal-content::-webkit-scrollbar {
+  display: none;
 }
-
-.custom-task-modal-body{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 150px;
-}
-
-.custom-task-modal-footer{
-  max-height: 100px;
-}
-
-.custom-task-modal-header {
-  height: 30px;
+.custom-modal-header {
+  height: 55px;
   padding: 20px;
 }
 
-.custom-task-modal-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.custom-modal-form {
   padding: 20px;
 }
 
 .custom-modal-title {
-  font-size: 180px;
+  font-size: 18px;
   padding-left: 15px;
 }
 
+.modify-date-input {
+  width: 140px;
+}
 
-.the-head {
+.date {
+  display: flex;
+  align-items: center;
+}
+
+
+.the-h {
   font-size: 13px;
   font-family: 500;
 }
 
-.ctm-task-btn {
+.the-project-owner {
+  height: 50px;
+
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  font-size: 12px;
-  width: 120px;
-  height: 30px;
+}
+
+.the-user-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ctm-btn {
+  width: 140px;
+  height: 40px;
   border-radius: 7px;
   background-color: transparent;
   color: #034e3b;
@@ -60,8 +58,26 @@
   transition: 0.25s;
 }
 
-.ctm-task-btn:hover {
+.ctm-btn:hover {
   background-color: #034e3b;
   color: white;
   border: 2px solid #034e3b;
+}
+
+.ctm-btn:focus {
+  background-color: #034e3b;
+  color: white;
+}
+
+.custom-checkbox{
+  width: 467px;
+}
+
+
+.custom-priority{
+  width: 205px;
+}
+
+option::placeholder {
+  font-size: 13px;
 }
