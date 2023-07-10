@@ -125,12 +125,6 @@ function ListView() {
           </div>
         </div>
 
-        <CreateTask
-          show={show}
-          handleShow={handleShow}
-          handleClose={handleClose}
-        />
-
         {/*view content*/}
 
         <div className="view-content">

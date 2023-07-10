@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 import { Tooltip } from 'react-tooltip';
-import CreateTask from './CreateTask';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -161,12 +161,6 @@ function BoardView() {
             <span>Sort</span>
           </div>
         </div>
-
-        <CreateTask
-          show={show}
-          handleShow={handleShow}
-          handleClose={handleClose}
-        />
 
         {/*bord content*/}
         <div className="board_view">

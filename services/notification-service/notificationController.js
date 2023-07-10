@@ -57,7 +57,7 @@ consumer.on('message', async function(message) {
       try {
         const newNotification = new Notification({
           content:`${joinUsername} Project: ${joinTopic}`,
-          username:joincreatedBy,
+          username:joinCreatedBy,
           target:joinTarget
         })
        await newNotification.save()

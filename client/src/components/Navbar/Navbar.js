@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -34,13 +34,49 @@ import {
 
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = React.useState(null);
-  const [notif,setNotif] = React.useState(null)
+  const [userInfo, setUserInfo] = useState(null);
+  const [notif,setNotif] = useState(null)
+  const [invitations,setInvitations] = useState([])
   // Get the JWT token from local storage
   const token = localStorage.getItem("token");
+  const handleRefusal = async (invite)=>{
+    const response = await axios.delete(`http://localhost:9090/invitations/${invite._id}`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+  }
+  const handleAccept = async (invite)=>{
+    try{
+    const response = await axios.put(`http://localhost:3002/projects/${invite.link}/join`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    const confirm = await axios.delete(`http://localhost:9090/invitations/${invite._id}/confirm`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+  }catch(err){
+    console.error(err)
+  }
+  }
+  useEffect(()=>{
+    const fetchInvitations = async()=>{
+      const response = await axios.get(
+        `http://localhost:9090/invitations`,{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
+      )
+      setInvitations(response.data)
+    }
+    fetchInvitations()
+  },[token])
 
-
-  React.useEffect(() => {
+  useEffect(() => {
 
     // const fetchNotif = async () => {
     //   const response = await axios.get("http://localhost:9091/notifications", {
@@ -125,24 +161,29 @@ function NavigationBar({ handleClick }) {
       <PopoverBody className="custom-popover-body">
 
       {/*invitation notifiction*/}
-
-        <div className="invitation-to-project mb-2">
-          <div className="invite-msg me-2">
-            <p>
-              <span className="inviter">@User_name </span> has invited you to{" "}
-              <span className="project-invited">project_name</span>
-            </p>
-          </div>
-          <div className="accpet-refuse-btn">
-            <div className="refuse-invitation me-2">
-              <span>Delete</span>
-            </div>
-
-            <div className="accept-invitation">
-              <span>Accept</span>
-            </div>
-          </div>
+      {invitations ? (
+  invitations.map((invitation) => (
+    <div className="invitation-to-project mb-2">
+      <div className="invite-msg me-2">
+        <p>
+          <span className="inviter">{invitation.senderUsername} </span> has invited you to his Project
+        </p>
+      </div>
+      <div className="accpet-refuse-btn">
+        <div className="refuse-invitation me-2" onClick={() => { handleRefusal(invitation) }}>
+          <span>Delete</span>
         </div>
+
+        <div className="accept-invitation" onClick={() => { handleAccept(invitation) }}>
+          <span>Accept</span>
+        </div>
+      </div>
+    </div>
+  ))
+) : (
+  null
+)}
+
 
         {/*task notification*/}
 {/* {notif && notif.map((notif)=>( 
