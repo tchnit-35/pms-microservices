@@ -14,7 +14,7 @@ body {
 .inbox-container {
   display: flex;
   flex-direction: row;
-  max-height: 50vh;
+  max-height: 100vh;
   transition: margin-left 0.3s ease;
 }
 
@@ -160,6 +160,7 @@ body {
 
 .text-area {
   display: flex;
+
   align-items: center;
   padding-left: 30px;
   padding-right: 30px;

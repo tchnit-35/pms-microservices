@@ -62,6 +62,7 @@ const DoneListItems = () => {
             },
           }
         );
+        console.log(response)
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
             const user = await axios.get(
@@ -72,7 +73,7 @@ const DoneListItems = () => {
                 },
               }
             );
-
+              
             if (user===null) {
               return {
                 ...task,

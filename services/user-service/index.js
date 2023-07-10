@@ -7,14 +7,14 @@ const multer = require('multer');
 const kafka = require('kafka-node') 
 const UserProfile = require('./UserProfile');
 const cors = require('cors') 
-
+ 
 app.use(  
   cors({
     origin: "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   })
-); 
+);  
 
 const consumer = new kafka.ConsumerGroup({
   kafkaHost: 'localhost:9092',

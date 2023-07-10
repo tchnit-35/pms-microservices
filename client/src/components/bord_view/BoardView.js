@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 import { Tooltip } from 'react-tooltip';
-
+import CreateTask from '../List_view/CreateTask';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -161,7 +161,7 @@ function BoardView() {
             <span>Sort</span>
           </div>
         </div>
-
+        <CreateTask show={show} handleShow={handleShow} handleClose={handleClose} />
         {/*bord content*/}
         <div className="board_view">
           {/*board to do*/}
@@ -170,6 +170,7 @@ function BoardView() {
               <span className="me-auto">To do</span>
               <FontAwesomeIcon
                 icon={faPlus}
+                onClick={handleShow}
                 className="board-view-more-action me-2"
               />
               <FontAwesomeIcon
@@ -259,6 +260,7 @@ function BoardView() {
               <FontAwesomeIcon
                 icon={faPlus}
                 className="board-view-more-action me-2"
+                onClick={handleShow}
               />
               <FontAwesomeIcon
                 icon={faEllipsis}
@@ -347,6 +349,7 @@ function BoardView() {
               <span className="me-auto">Done</span>
               <FontAwesomeIcon
                 icon={faPlus}
+                onClick={handleShow}
                 className="board-view-more-action me-2"
               />
               <FontAwesomeIcon

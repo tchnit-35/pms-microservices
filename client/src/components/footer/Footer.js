@@ -36,7 +36,7 @@ function Footer() {
   const handleChange = async (value) => {
     setInput(value);
     const response = await axios.get(
-      `http://localhost:9000/user/search?email=${value}`
+      `http://localhost:9000/user/find?email=${value}`
     );
     setResults(response.data); // <--- set the search results
   };

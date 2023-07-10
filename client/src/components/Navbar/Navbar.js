@@ -1,10 +1,12 @@
-import React, {useEffect,useState} from "react";
-import { useNavigate } from "react-router-dom";
+/** @format */
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Navbar.css";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import Container from "react-bootstrap/Container";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Navbar.css';
+
+import Container from 'react-bootstrap/Container';
 import {
   Form,
   InputGroup,
@@ -12,15 +14,15 @@ import {
   PopoverBody,
   Overlay,
   PopoverHeader,
-} from "react-bootstrap";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Popover from "react-bootstrap/Popover";
+} from 'react-bootstrap';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
-import axios from "axios";
+import axios from 'axios';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBars,
   faBell,
@@ -30,72 +32,78 @@ import {
   faArrowUpRightFromSquare,
   faGear,
   faArrowRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
-  const [notif,setNotif] = useState(null)
-  const [invitations,setInvitations] = useState([])
+  const [notif, setNotif] = useState(null);
+  const [invitations, setInvitations] = useState([]);
   // Get the JWT token from local storage
-  const token = localStorage.getItem("token");
-  const handleRefusal = async (invite)=>{
-    const response = await axios.delete(`http://localhost:9090/invitations/${invite._id}`,{
-      headers:{
-        Authorization:`Bearer ${token}`
+  const token = localStorage.getItem('token');
+  const handleRefusal = async (invite) => {
+    const response = await axios.delete(
+      `http://localhost:9090/invitations/${invite._id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    })
-  }
-  const handleAccept = async (invite)=>{
-    try{
-    const response = await axios.put(`http://localhost:3002/projects/${invite.link}/join`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-      }
-    })
-    const confirm = await axios.delete(`http://localhost:9090/invitations/${invite._id}/confirm`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-      }
-    })
-  }catch(err){
-    console.error(err)
-  }
-  }
-  useEffect(()=>{
-    const fetchInvitations = async()=>{
-      const response = await axios.get(
-        `http://localhost:9090/invitations`,{
-          headers:{
-            Authorization:`Bearer ${token}`
-          }
+    );
+  };
+  const handleAccept = async (invite) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3002/projects/${invite.link}/join`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      )
-      setInvitations(response.data)
+      );
+      const confirm = await axios.delete(
+        `http://localhost:9090/invitations/${invite._id}/confirm`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
     }
-    fetchInvitations()
-  },[token])
+  };
+  useEffect(() => {
+    const fetchInvitations = async () => {
+      const response = await axios.get(`http://localhost:9090/invitations`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setInvitations(response.data);
+    };
+    fetchInvitations();
+  }, [token]);
 
   useEffect(() => {
-
     // const fetchNotif = async () => {
     //   const response = await axios.get("http://localhost:9091/notifications", {
     //     headers: {
     //       Authorization: `Bearer ${token}`,
     //     },
     //   });
-      
+
     //   setUserInfo(response.data);
     // };
     // fetchNotif();
 
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:9000/user", {
+      const response = await axios.get('http://localhost:9000/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       setUserInfo(response.data);
     };
     fetchData();
@@ -105,18 +113,16 @@ function NavigationBar({ handleClick }) {
 
     // Make a GET request to the backend logout route
     axios
-      .get("http://localhost:4000/auth/logout", {
+      .get('http://localhost:4000/auth/logout', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        
-  
         // Delete the token from local storage
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
 
-        navigate("/");
+        navigate('/');
       })
       .catch((error) => {
         // Logout failed
@@ -132,18 +138,26 @@ function NavigationBar({ handleClick }) {
         </div>
         <div className="user-info mb-4">
           <div className="profile-pic me-2">
-            <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff" }} size="xl" />
+            <FontAwesomeIcon
+              icon={faUser}
+              style={{ color: '#ffffff' }}
+              size="xl"
+            />
           </div>
           {userInfo ? (
             <div className="user-name-email">
-              <span style={{ color: "#824C71", fontWeight: "bold" }}>{userInfo.username}</span>
-              <span style={{ color: "#4A2545", fontWeight: "light" }}>{userInfo.email}</span>
+              <span style={{ color: '#824C71', fontWeight: 'bold' }}>
+                {userInfo.username}
+              </span>
+              <span style={{ color: '#4A2545', fontWeight: 'light' }}>
+                {userInfo.email}
+              </span>
             </div>
           ) : (
             <div className="user-name-email">Loading...</div>
           )}
         </div>
-        <div className="settings" onClick={() => navigate("/settings")}>
+        <div className="settings" onClick={() => navigate('/settings')}>
           <span>Settings</span>
           <FontAwesomeIcon icon={faGear} />
         </div>
@@ -156,37 +170,48 @@ function NavigationBar({ handleClick }) {
   );
 
   const notifPopover = (
-    <Popover id="popover-notification" className="custom-notif-popover unselectable">
+    <Popover
+      id="popover-notification"
+      className="custom-notif-popover unselectable">
       <PopoverHeader className="custom-poper-head">Notifications</PopoverHeader>
       <PopoverBody className="custom-popover-body">
+        {/*invitation notifiction*/}
+        {invitations ? (
+          invitations.map((invitation) => (
+            <div className="invitation-to-project mb-2">
+              <div className="invite-msg me-2">
+                <p>
+                  <span className="inviter">{invitation.senderUsername} </span>{' '}
+                  has invited you to his Project
+                </p>
+              </div>
+              <div className="accpet-refuse-btn">
+                <div
+                  className="refuse-invitation me-2"
+                  onClick={() => {
+                    handleRefusal(invitation);
+                  }}>
+                  <span>Delete</span>
+                </div>
 
-      {/*invitation notifiction*/}
-      {invitations ? (
-  invitations.map((invitation) => (
-    <div className="invitation-to-project mb-2">
-      <div className="invite-msg me-2">
-        <p>
-          <span className="inviter">{invitation.senderUsername} </span> has invited you to his Project
-        </p>
-      </div>
-      <div className="accpet-refuse-btn">
-        <div className="refuse-invitation me-2" onClick={() => { handleRefusal(invitation) }}>
-          <span>Delete</span>
-        </div>
-
-        <div className="accept-invitation" onClick={() => { handleAccept(invitation) }}>
-          <span>Accept</span>
-        </div>
-      </div>
-    </div>
-  ))
-) : (
-  null
-)}
-
+                <div
+                  className="accept-invitation"
+                  onClick={() => {
+                    handleAccept(invitation);
+                  }}>
+                  <span>Accept</span>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="invitation-to-project mb-2">
+            <span>No Notifications.</span>
+          </div>
+        )}
 
         {/*task notification*/}
-{/* {notif && notif.map((notif)=>( 
+        {/* {notif && notif.map((notif)=>( 
         <div className="task-notification mb-2">
           <div className="task-msg">
             <p className="t-msg">
@@ -207,11 +232,14 @@ function NavigationBar({ handleClick }) {
         bg="light"
         expand="lg"
         className="custom-navbar p-2 sticky-top"
-        style={{ maxHeight: "70px" }}
-      >
-        <Container fluid style={{ maxHeight: "30px" }}>
+        style={{ maxHeight: '70px' }}>
+        <Container fluid style={{ maxHeight: '30px' }}>
           <Navbar.Brand className="custom-bars" onClick={handleClick}>
-            <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff" }} size="sm" />
+            <FontAwesomeIcon
+              icon={faBars}
+              style={{ color: '#ffffff' }}
+              size="sm"
+            />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
 
@@ -219,9 +247,17 @@ function NavigationBar({ handleClick }) {
             <Form className="d-flex mx-auto">
               <InputGroup>
                 <InputGroup.Text className="custon-icon">
-                  <FontAwesomeIcon icon={faSearch} style={{ color: "#b9c0be" }} size="sm" />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    style={{ color: '#b9c0be' }}
+                    size="sm"
+                  />
                 </InputGroup.Text>
-                <FormControl type="search" placeholder="Search" className="custon-input" />
+                <FormControl
+                  type="search"
+                  placeholder="Search"
+                  className="custon-input"
+                />
               </InputGroup>
             </Form>
 
@@ -229,11 +265,14 @@ function NavigationBar({ handleClick }) {
               trigger="click"
               placement="bottom"
               rootClose={true}
-              overlay={notifPopover}
-            >
-              <Nav.Link >
+              overlay={notifPopover}>
+              <Nav.Link>
                 <div className="aid me-4">
-                  <FontAwesomeIcon icon={faBell} style={{ color: "#ffF" }} size="lg" />
+                  <FontAwesomeIcon
+                    icon={faBell}
+                    style={{ color: '#ffF' }}
+                    size="lg"
+                  />
                 </div>
               </Nav.Link>
             </OverlayTrigger>
@@ -241,13 +280,15 @@ function NavigationBar({ handleClick }) {
             <OverlayTrigger
               trigger="click"
               placement="bottom"
-
               overlay={popover}
-              rootClose={true}
-            >
-              <Nav.Link >
+              rootClose={true}>
+              <Nav.Link>
                 <div className="profile">
-                  <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff" }} size="sm" />
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    style={{ color: '#ffffff' }}
+                    size="sm"
+                  />
                 </div>
               </Nav.Link>
             </OverlayTrigger>
