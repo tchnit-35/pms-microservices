@@ -182,6 +182,7 @@ function HomePage() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  console.log(publicMessages);
   return (
     <>
       <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>

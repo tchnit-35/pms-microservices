@@ -32,7 +32,7 @@ const ToDoListItems = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        );
+        );          
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
             const user = await axios.get(
@@ -44,18 +44,16 @@ const ToDoListItems = () => {
               }
             );
 
-            if (user===null) {
+            if (user === null) {
               return {
                 ...task,
                 assignedToUsername:
                   user.data.firstname + ' ' + user.data.lastname,
               };
-            }
-            else {
+            } else {
               return {
                 ...task,
-                assignedToUsername:
-                'Not Assigned' ,
+                assignedToUsername: 'Not Assigned',
               };
             }
           })
@@ -74,6 +72,7 @@ const ToDoListItems = () => {
     };
     fetchTaskList();
   }, [projectId, token]);
+  
   return (
     <>
       <div className="view-content mb-4">
