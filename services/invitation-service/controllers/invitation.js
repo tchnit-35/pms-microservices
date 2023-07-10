@@ -2,14 +2,23 @@ const Invitation = require('../models/Invitation')
 
 
 exports.refuseInvitation = async (req,res)=>{
-  await Invitation.findOneAndRemove({username:req.user.username})
+  await Invitation.findOneAndRemove({_id:req.params.inviteId})
   .then(()=>{
     return res.status(200).json({message:'Invitation Refused'})
   })
   .catch((err)=>{
     return res.status(500).json(err)
   })
+}
 
+exports.deleteInvitation = async (req,res)=>{
+  await Invitation.findOneAndRemove({_id:req.params.inviteId})
+  .then(()=>{
+    return res.status(200).json({message:'Invitation Confirmed'})
+  })
+  .catch((err)=>{
+    return res.status(500).json(err)
+  })
 }
 
 exports.getInvitations = async (req,res)=>{

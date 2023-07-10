@@ -4,9 +4,9 @@ const { findUserProfile, updateUserProfile, getUserProfile, searchByEmail } = re
 const { uploadProfilePicture } = require('../controllers/pfp')
 
 router.get("/",isAuth,getUserProfile)
-router.get("/search",isAuth,findUserProfile)
 router.patch("/",isAuth,updateUserProfile)
-router.post('/search',isAuth,searchByEmail)
+// router.get("/search",isAuth,findUserProfile)
+router.get("/search",searchByEmail)
 router.post("/profile-picture",isAuth,uploadProfilePicture)
 
 

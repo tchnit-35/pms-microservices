@@ -21,7 +21,7 @@ router.get('/',isAuth,findProject)
 
 //Project Invitations
 router.post('/:projectId/invite',isAuth,inviteToProject)
-router.get('/:projectId/join',isAuth,joinProject)
+router.put('/:projectId/join',isAuth,joinProject)
 
 
 module.exports = router

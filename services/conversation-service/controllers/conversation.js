@@ -187,7 +187,7 @@ exports.inviteConversation = async (req,res)=>{
         convoId:req.params.convoId, 
         targetUsernames:req.body.usernames,
         originUsername:req.user.username,
-        convoLink:`http://localhost:3002/projects/${req.params.convoId}/join`
+        convoLink:req.params.convoId
       }
       ),
   };

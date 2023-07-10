@@ -159,6 +159,9 @@
   height: 30px;
   font-size: 14px;
 }
+.add-task-container span{
+  color: #7a82ab;
+}
 
 .add-task-container:hover {
   background-color: #ededed;

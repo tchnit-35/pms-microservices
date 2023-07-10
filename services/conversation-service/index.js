@@ -13,7 +13,7 @@ require('./controllers/messageHandler')
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
- 
+  
 //cors middleware
 
 app.use(  
@@ -22,7 +22,7 @@ app.use(
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   }) 
-);
+); 
 
 app.use("/conversations", conversationRoute);
 

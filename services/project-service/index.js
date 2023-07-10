@@ -21,7 +21,7 @@ client.createTopics(topicsToCreate, (error, result) => {
 // require('./controllers/permission')
 
 
-//json parsing middleware
+//json parsing middleware 
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
 

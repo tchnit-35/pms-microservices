@@ -1,10 +1,12 @@
 const router = require('express').Router()
 const kafka = require('kafka-node');
-const { getInvitations } = require('../controllers/invitation')
+const { getInvitations, refuseInvitation, deleteInvitation } = require('../controllers/invitation')
 const { isAuth } = require('../../isAuthenticated')
 const Invitation = require('../models/Invitation')
 
 router.get('/',isAuth,getInvitations)
+router.delete('/:inviteId',isAuth,refuseInvitation)
+router.delete('/:inviteId/confirm',isAuth,deleteInvitation)
 
 // Create Invitation (consumer)
 const consumer = new kafka.ConsumerGroup({
