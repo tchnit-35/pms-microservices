@@ -10,17 +10,19 @@ const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
 exports.getProjectUsers = async (req, res) => {
-  await UserProject.find(
-    { projectId: req.params.projectId, userId: { $ne: req.user._id } },
-    { userId: 1 }
-  )
-    .then((userIds) => {
-      return res.status(200).json(userIds);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  try {
+    const userIds = await UserProject.find(
+      { projectId: req.params.projectId, userId: { $ne: req.user._id } },
+      { userId: 1 }
+    ).lean(); // Use lean() to improve performance (optional)
+
+    return res.status(200).json(userIds);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+
 
 exports.getFutureProjects = async (req, res) => {
   try {

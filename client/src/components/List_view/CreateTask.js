@@ -13,13 +13,12 @@ import "./CreateTask.css";
 function CreateTask(props) {
   const { projectId } = useParams();
   const [projectTitle, setProjectTitle] = useState(null);
+  const [teamMemberId, setTeamMemberId] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
+  const [projectTasks, setProjectTasks] = useState([]);
 
   const token = localStorage.getItem("token");
 
-  {
-    /*fetch project name*/
-  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,46 +28,69 @@ function CreateTask(props) {
           },
         });
         setProjectTitle(projectResponse.data.project_title);
-  
+
+        //fetch user id
         const usersResponse = await axios.get(`http://localhost:3002/projects/${projectId}/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setTeamMembers(usersResponse.data);
-        console.log("Users:", usersResponse.data);
+        setTeamMemberId(usersResponse.data);
+        console.log("User id:", usersResponse.data);
 
-        
-        {/*const fetchName = async () => {
+        // Fetch user name for each team member
+        const fetchName = async (userId) => {
           try {
-            const userNameResonese = await axios.get("http://localhodt:9000/user/", {
-              headers:{
-                Authorization: `Bearer${token}`
-              }
+            const userNameResponse = await axios.get(`http://localhost:9000/user/`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             });
-            // do something with the response
+            console.log("User name:", userNameResponse.data.username);
+            return userNameResponse.data;
           } catch (error) {
             console.error(error);
             // handle the error
+            return null;
           }
-        };*/}
+        };
 
+        const teamMemberNames = await Promise.all(
+          usersResponse.data.map(async (user) => {
+            const name = await fetchName(user.userId);
+            return { ...user, name };
+          })
+        );
+        setTeamMembers(teamMemberNames);
+
+        const projectTasksResponse = await axios.get(
+          `http://localhost:3003/projects/${projectId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("tasks:", projectTasksResponse.data);
+        setProjectTasks(projectTasksResponse.data);
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     fetchData();
   }, [projectId, token]);
-
-  
-  
 
   const [formData, setFormData] = useState({
     task_name: "",
     start_date: "",
     due_date: "",
     description: "",
+    priority: "",
+    masterTaskId: "",
+    toBeApproved: "",
+    assignedTo: "",
+    dependencies: "",
   });
 
   const handleCreatetask = () => {
@@ -77,6 +99,11 @@ function CreateTask(props) {
       startDate: new Date(formData.start_date),
       endDate: new Date(formData.due_date),
       description: formData.description,
+      priority: formData.priority,
+      masterTaskId: formData.master_task,
+      toBeApproved: formData.to_be_approved,
+      assignedTo: formData.assigned_to,
+      dependencies: formData.description,
     };
 
     axios
@@ -193,35 +220,39 @@ function CreateTask(props) {
             </Form.Group>
 
             <Stack direction="horizontal" gap={3} className="mb-3">
-              <Form.Select aria-label="Default select example" className="custom-input">
+              <Form.Select aria-label="Default select example" className="custom-input" name="assigned_to" value={formData.assigned_to}>
                 <option>Assigned to</option>
                 {teamMembers.map((user) => (
                   <option key={user.userId} value={user.userId}>
-                    {user.userId}
+                    {user.name ? user.name.username : ""}
                   </option>
                 ))}
               </Form.Select>
 
-              <Form.Select aria-label="Default select example" className="custom-input">
+              <Form.Select aria-label="Default select example" className="custom-input" name="dependencies" value={formData.dependencies}>
                 <option>Dependencies</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {projectTasks.map((task) => (
+                  <option key={task._id} value={task._id}>
+                    {task.name}
+                  </option>
+                ))}
               </Form.Select>
             </Stack>
 
             <Stack direction="horizontal" gap={3} className="mb-3">
-              <Form.Select aria-label="Default select example" className="custom-input">
+              <Form.Select aria-label="Default select example" className="custom-input" name="master_task" value={formData.master_task}>
                 <option>Master task</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {projectTasks.map((task) => (
+                  <option key={task._id} value={task._id}>
+                    {task.name}
+                  </option>
+                ))}
               </Form.Select>
 
-              <Form.Select aria-label="Default select example" className="custom-input">
+              <Form.Select aria-label="Default select example" className="custom-input" name="priority" value={formData.priority}>
                 <option>Priority</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
+                <option value="1">Low</option>
+                <option value="2">Medium</option>
                 <option value="3">Three</option>
               </Form.Select>
             </Stack>
@@ -231,12 +262,14 @@ function CreateTask(props) {
               id="checkbox"
               label="To be Approved"
               className="custom-input custom-checkbox ms-auto"
+              name="to_be_approved"
+              value={formData.to_be_approved}
             />
           </Form>
         </Modal.Body>
         <Modal.Footer className="d-flex align-items-center justify-content-center">
           <Button className="ctm-btn" onClick={handleCreateAndClose}>
-            Create project
+            Create Task
           </Button>
         </Modal.Footer>
       </Modal>

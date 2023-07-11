@@ -83,8 +83,8 @@
     background-color: rgb(249, 249, 249);
   }
   
-  .assignee{
-    width: 70%;
+  .list-view-assignee{
+    width: 150px;
     height: 100%;
     display: flex;
     align-items: center;
@@ -93,7 +93,7 @@
     cursor: pointer;
   }
   
-  .assignee:hover{
+  .list-view-assignee:hover{
     background-color: rgb(249, 249, 249);
   }
   

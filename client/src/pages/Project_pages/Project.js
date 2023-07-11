@@ -44,7 +44,7 @@ function Project(props) {
   const popoverRef = useRef(null);
 
   useEffect(() => {
-    console.log("activeView", activeView);
+   // console.log("activeView", activeView);
   }, [activeView]);
 
   useEffect(() => {

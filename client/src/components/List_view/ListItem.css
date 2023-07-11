@@ -30,7 +30,7 @@
 }
 
 .assignee {
-  width: 10%;
+  width: 150px;
   height: 100%;
   display: flex;
   align-items: center;

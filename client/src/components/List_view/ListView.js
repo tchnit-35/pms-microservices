@@ -134,7 +134,7 @@ function ListView() {
 
           <div className="headers">
             <div className="task-name">Task name</div>
-            <div className="assignee">Assignee</div>
+            <div className="list-view-assignee">Assignee</div>
             <div className="time-frame">Time frame</div>
             <div className="priority">Priority</div>
             <div className="status">Status</div>
@@ -176,7 +176,7 @@ function ListView() {
               icon={faSortUp}
               rotation={isDoneVisible ? 180 : 90}
               style={{ color: '666666', transition: '0.25s' }}
-              className=" me-"
+              className=" me-2"
             />
             <span>Done</span>
           </div>
