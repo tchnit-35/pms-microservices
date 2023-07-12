@@ -15,7 +15,9 @@ function CreateTask(props) {
   const [projectTitle, setProjectTitle] = useState(null);
   const [teamMemberId, setTeamMemberId] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
-  const [projectTasks, setProjectTasks] = useState([]);
+  const [assignedList,setAssignedList] = useState([])
+  const [dependencyList,setDpendencyList] = useState([])
+  const [projectTasks, setProjectTasks] = useState([])
 
   const token = localStorage.getItem("token");
 
@@ -100,9 +102,9 @@ function CreateTask(props) {
       endDate: new Date(formData.due_date),
       description: formData.description,
       priority: formData.priority,
-      masterTaskId: formData.master_task,
-      toBeApproved: formData.to_be_approved,
-      assignedTo: formData.assigned_to,
+      masterTaskId: formData.masterTaskId,
+      toBeApproved: formData.toBeApproved,
+      assignedTo: formData.assignedTo,
       dependencies: formData.description,
     };
 
@@ -221,7 +223,6 @@ function CreateTask(props) {
 
             <Stack direction="horizontal" gap={3} className="mb-3">
               <Form.Select aria-label="Default select example" className="custom-input" name="assigned_to" value={formData.assigned_to}>
-                <option>Assigned to</option>
                 {teamMembers.map((user) => (
                   <option key={user.userId} value={user.userId}>
                     {user.name ? user.name.username : ""}
@@ -240,7 +241,7 @@ function CreateTask(props) {
             </Stack>
 
             <Stack direction="horizontal" gap={3} className="mb-3">
-              <Form.Select aria-label="Default select example" className="custom-input" name="master_task" value={formData.master_task}>
+              <Form.Select aria-label="Default select example" className="custom-input" name="master_task" value={formData.masterTaskId}>
                 <option>Master task</option>
                 {projectTasks.map((task) => (
                   <option key={task._id} value={task._id}>
@@ -250,10 +251,9 @@ function CreateTask(props) {
               </Form.Select>
 
               <Form.Select aria-label="Default select example" className="custom-input" name="priority" value={formData.priority}>
-                <option>Priority</option>
-                <option value="1">Low</option>
-                <option value="2">Medium</option>
-                <option value="3">Three</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </Form.Select>
             </Stack>
 
@@ -263,7 +263,7 @@ function CreateTask(props) {
               label="To be Approved"
               className="custom-input custom-checkbox ms-auto"
               name="to_be_approved"
-              value={formData.to_be_approved}
+              value={formData.toBeApproved}
             />
           </Form>
         </Modal.Body>
