@@ -41,7 +41,8 @@
 }
 
 .custom-modal-body{
-    height: 140px;
+    min-height: auto;
+    padding-bottom: 45px;
 }
 
 .cf {
@@ -116,4 +117,20 @@
 }
 .custom-dropdown:hover{
   background-color: #1f735d;
+}
+
+.search-result{
+  font-size: 15px;
+  padding-left: 15px;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.search-result:hover{
+  font-weight: 500;
+}
+
+.invited-user{
+  padding-left: 15px;
+  color: #7a94ab;
 }
