@@ -58,7 +58,7 @@ body {
   font-weight: 500;
 }*/
 
-.high-priority-task-title{
+.high-priority-task-title {
   display: flex;
   align-items: center;
   width: 700px;
@@ -121,7 +121,7 @@ body {
   font-size: 16px;
   font-weight: 400;
 }
-.msg-box{
+.msg-box {
   background-color: white;
 }
 .msg {
@@ -186,10 +186,10 @@ body {
   font-weight: 500;
 }
 
-.recent-div{
+.recent-div {
   display: flex;
   align-items: center;
-  
+
   width: 700px;
   padding: 15px;
   height: 60px;
@@ -200,38 +200,53 @@ body {
 }
 
 .team-member-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 65px;
-    border-radius: 17px;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
-    box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 65px;
+  border-radius: 17px;
+  flex-shrink: 0;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+  box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 0.5);
 }
 
-.team-member-name{
-    font-size: 19px;
-    font-weight: 500;
+.team-member-name {
+  font-size: 19px;
+  font-weight: 500;
 }
 
-.team-member-role{
-    font-size: 9px;
+.team-member-role {
+  font-size: 9px;
 }
 
-.mb-x{
-    padding-bottom: 55px;
+.mb-x {
+  width: 67%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 50px;
 }
 
-.bx{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #95e0dd;
-    border-radius: 4px;
-    width: 45px;
-    height: 14px;
-    color: rgb(62, 65, 69);
+.mb-x::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-mb {
+  padding-bottom: 50px;
+}
+
+.bx {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #95e0dd;
+  border-radius: 4px;
+  width: 45px;
+  height: 14px;
+  color: rgb(62, 65, 69);
 }
 .select-box {
   display: inline-block;
@@ -240,22 +255,23 @@ body {
   border-bottom: 1px solid #1f570a;
   background-color: transparent;
   position: relative;
-  
+
   &::after {
-    content: '';
+    content: "";
     display: inline-block;
-    border-top:   solid 7px #1f570a;
+    border-top: solid 7px #1f570a;
     border-right: solid 4px transparent;
-    border-left:  solid 4px transparent;
+    border-left: solid 4px transparent;
     pointer-events: none;
     position: absolute;
-    top: 18px; right: 13px;
+    top: 18px;
+    right: 13px;
   }
 }
 
 .select {
   width: 100%;
-  height:30px;
+  height: 30px;
   padding: 0 10px;
   border: none;
   border-radius: 0;
@@ -263,16 +279,15 @@ body {
   font-size: 15px;
   font-weight: bold;
   color: #3b6d29;
-  background-color: rgb(197, 226, 153, 0.1);;
-  
+  background-color: rgb(197, 226, 153, 0.1);
+
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  
+  -moz-appearance: none;
+  appearance: none;
+
   &:focus {
     outline: none;
   }
-
 }
 
 select option {

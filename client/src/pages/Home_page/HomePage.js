@@ -300,7 +300,7 @@ function HomePage() {
                   </div>
                 </div>
 
-                <div className="d-flex mb-x">
+                <div className="d-flex custom-mb">
                   {teamMembers.length === 0 ? (
                     <div>Oops! Seems Your Alone in this</div>
                   ) : (
