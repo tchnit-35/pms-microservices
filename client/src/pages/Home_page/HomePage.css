@@ -127,6 +127,8 @@ body {
 }
 .msg {
   font-size: 13px;
+  word-wrap: break-word;
+  max-width: 150px
 }
 
 .unread {

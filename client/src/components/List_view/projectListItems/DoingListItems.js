@@ -85,6 +85,7 @@ const DoingListItems = () => {
             return {
               ...task,
               assignedToUsernames,
+              status:"on-track"
             };
           })
         );
@@ -162,10 +163,12 @@ const DoingListItems = () => {
                 {task.startDate} - {task.endDate}
               </div>
               <div className="priority">
-                <div className="the-priority-low">{task.priority}</div>
+                <div className={`the-priority-${task.priority.toLowerCase()}`}>
+                  {task.priority}
+                </div>
               </div>
-              <div className="status">
-                <div className="the-status-ontrack">{task.status}</div>
+              <div className={`the-status-${task.status}`}>
+                {task.status}
               </div>
             </div>
           ))

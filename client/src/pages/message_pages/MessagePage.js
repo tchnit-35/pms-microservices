@@ -1,6 +1,8 @@
 /** @format */
 
 import React, { useEffect, useState } from 'react';
+
+import { useLocation,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './MessagePage.css';
 import Form from 'react-bootstrap/Form';
@@ -22,10 +24,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 function MessagePage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const convoId = queryParams.get('id');
   const [isOpen, setIsOpen] = useState(false);
   const [messageList, setMessageList] = useState([]);
   const [conversationList, setConversationList] = useState([]);
-  const [convoId, setConvoId] = useState('');
   const token = localStorage.getItem('token');
   const [period, setPeriod] = useState('');
   const [message, setMessage] = useState('');
@@ -41,9 +46,9 @@ function MessagePage() {
       }
     );
 
-    const updateMsg = {...response.data, mark:'user'}
-    console.log(response)
-    setMessageList([...messageList, updateMsg])
+    const updateMsg = { ...response.data, mark: 'user' };
+    console.log(response);
+    setMessageList([...messageList, updateMsg]);
   };
 
   const fetchChangePeriod = (message) => {
@@ -68,7 +73,7 @@ function MessagePage() {
     if (newPeriod !== period) {
       setPeriod(newPeriod);
     }
-}
+  };
   const fetchConversations = async () => {
     const response = await axios.get(`http://localhost:3006/conversations`, {
       headers: {
@@ -108,8 +113,8 @@ function MessagePage() {
     }
   };
 
-  const fetchMessages = async (convoId) => {
-    if (convoId !== '') {
+  const fetchMessages = async () => {
+    if (convoId !== null) {
       const response = await axios.get(
         `http://localhost:3005/conversations/${convoId}`,
         {
@@ -135,18 +140,19 @@ function MessagePage() {
   };
 
   useEffect(() => {
+    fetchMessages();
+  }, [convoId]);
+
+  useEffect(() => {
     fetchConversations();
   }, []);
 
-  useEffect(() => {
-    fetchMessages(convoId)
-  }, [convoId]);  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
   const handleConversationSelect = (convoId) => {
-    setConvoId(convoId);
+    navigate(`/MessagePage?id=${convoId}`);
   };
   return (
     <>
@@ -253,11 +259,11 @@ function MessagePage() {
                 messageList.map((message) =>
                   message.mark == 'else' ? (
                     <>
-                      {fetchChangePeriod(message) ? (
+                      {/* {fetchChangePeriod(message) ? (
                         <div className="the-date-box mx-auto">
                           <span className="the-date">{period}</span>
                         </div>
-                      ) : null}
+                      ) : null} */}
 
                       <div className="your-msg me-auto">
                         <div className="ctn">

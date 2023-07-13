@@ -62,14 +62,14 @@ const DoneListItems = () => {
             },
           }
         );
-        console.log(response)
+        console.log(response);
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
             const assignedToUsernames = [];
-              if (task.assignedTo.length == 0) {
-                assignedToUsernames.push("Not Assigned");
-              } else {        
-            for (const userId of task.assignedTo) {
+            if (task.assignedTo.length == 0) {
+              assignedToUsernames.push('Not Assigned');
+            } else {
+              for (const userId of task.assignedTo) {
                 const user = await axios.get(
                   `http://localhost:9000/user/search?userId=${userId}`,
                   {
@@ -78,13 +78,16 @@ const DoneListItems = () => {
                     },
                   }
                 );
-                assignedToUsernames.push(user.data.firstname + " " + user.data.lastname);
+                assignedToUsernames.push(
+                  user.data.firstname + ' ' + user.data.lastname
+                );
               }
             }
-        
+
             return {
               ...task,
               assignedToUsernames,
+              status:"on-track"
             };
           })
         );
@@ -105,7 +108,7 @@ const DoneListItems = () => {
     };
     fetchTaskList();
   }, [projectId, token]);
-  console.log(taskList)
+  console.log(taskList);
   return (
     <>
       <div className="view-content mb-4">
@@ -160,10 +163,12 @@ const DoneListItems = () => {
                 {task.startDate} - {task.endDate}
               </div>
               <div className="priority">
-                <div className="the-priority-low">{task.priority}</div>
+                <div className={`the-priority-${task.priority.toLowerCase()}`}>
+                  {task.priority}
+                </div>
               </div>
-              <div className="status">
-                <div className="the-status-ontrack">{task.status}</div>
+              <div className={`the-status-${task.status}`}>
+                {task.status}
               </div>
             </div>
           ))

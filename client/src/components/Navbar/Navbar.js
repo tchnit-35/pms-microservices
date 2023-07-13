@@ -33,6 +33,7 @@ import {
   faGear,
   faArrowRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
+import { response } from 'express';
 
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
@@ -51,28 +52,27 @@ function NavigationBar({ handleClick }) {
       }
     );
   };
-  const handleAccept = async (invite) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:3002/projects/${invite.link}/join`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const confirm = await axios.delete(
-        `http://localhost:9090/invitations/${invite._id}/confirm`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (err) {
-      console.error(err);
+const handleAccept = async(invitation) =>{
+ try{
+  await axios.put(`http:localhost:3002/projects/${invitation.link}/join`,
+  {headers:{Authorization:`Bearer ${token}`}})
+  await axios.delete(
+    `http://localhost:9090/invitations/${invitation._id}/confirm`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
-  };
+  );
+} 
+catch (err) {
+  console.error(err);
+}
+
+ 
+ }
+}
+
   useEffect(() => {
     const fetchInvitations = async () => {
       const response = await axios.get(`http://localhost:9090/invitations`, {

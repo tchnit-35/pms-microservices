@@ -371,7 +371,7 @@ const SideMenu = ({ isOpen }) => {
   (conversation) =>
     !isEmptyObject(conversation) && (
       <div className="streams mb-4" key={conversation._id}>
-        <Link className="contact-name" to={`/conversations/${conversation._id}`}>
+        <Link className="contact-name" to={`/MessagePage?id=${conversation._id}`}>
         <FontAwesomeIcon icon={faPeopleGroup} size='sm' style={{marginRight:"10px"}}/>
           {conversation.topic}
         </Link>
@@ -409,7 +409,7 @@ const SideMenu = ({ isOpen }) => {
   (conversation) =>
     !isEmptyObject(conversation) && (
       <div className="streams mb-4" key={conversation._id}>
-        <Link className="contact-name" to={`/conversations/${conversation._id}`}>
+        <Link className="contact-name" to={`/MessagePage?id=${conversation._id}`}>
         <FontAwesomeIcon icon={faPeopleGroup} size='sm' style={{marginRight:"10px"}}/>
           {conversation.topic}
         </Link>

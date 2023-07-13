@@ -48,33 +48,37 @@ function CreateTask(props) {
         setTeamMemberId(usersResponse.data);
         console.log('User id:', usersResponse);
 
-        // Fetch user name for each team member
-        const fetchName = async (userId) => {
-          try {
-            const userNameResponse = await axios.get(
-              `http://localhost:9000/user/`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            console.log('User name:', userNameResponse.data.username);
-            return userNameResponse.data;
-          } catch (error) {
-            console.error(error);
-            // handle the error
-            return null;
-          }
-        };
-
-        const teamMemberNames = await Promise.all(
-          usersResponse.data.map(async (user) => {
-            const name = await fetchName(user.userId);
-            return { ...user, name };
-          })
-        );
-        setTeamMembers(teamMemberNames);
+        const fetchUserList = async () => {
+          if (projectId !== '') {
+            try {
+              const response = await axios.get(
+                `http://localhost:3002/projects/${projectId}/users`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              const userIds = response.data.map((user) => user.userId);
+              const users = await Promise.all(
+                userIds.map(async (userId) => {
+                  const userResponse = await axios.get(
+                    `http://localhost:9000/user/search?userId=${userId}`,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    }
+                  );
+                  return userResponse.data;
+                })
+              );
+              setTeamMembers(users); // Array of user data objects
+            } catch (error) {
+              console.error(error);
+            }
+          }}
+          fetchUserList()
 
         const projectTasksResponse = await axios.get(
           `http://localhost:3003/projects/${projectId}`,
@@ -142,16 +146,16 @@ function CreateTask(props) {
 
   const handleSelectChange = (event) => {
     const selectedUsername = event.target.value;
-    const selectedUser = teamMembers.find(user => user.name.username === selectedUsername);
+    const selectedUser = teamMembers.find(user => user.username === selectedUsername);
   
     setAssignedList([...assignedList, selectedUser]);
     const selectedUserIds = assignedList.map(user => user.userId);
-    const selectedUsernames = assignedList.map(user => user.name.username);
+    const selectedUsernames = assignedList.map(user => user.username);
     setFormData({
       ...formData,
-      assignedTo: [...formData.assignedTo, {userId: selectedUser.userId, username: selectedUser.name.username}],
+      assignedTo: [...formData.assignedTo, {userId: selectedUser.userId, username: selectedUser.username}],
     });
-    setTeamMembers(teamMembers.filter(user => user.name.username !== selectedUsername));
+    setTeamMembers(teamMembers.filter(user => user.username !== selectedUsername));
   };
 
   const handleTaskSelectChange = (event) => {
@@ -166,7 +170,7 @@ function CreateTask(props) {
     });
   };
   const filteredProjectTasks = projectTasks.filter(task => task.endDate <= formData.startDate);
-  
+  console.log(teamMembers)
   return (
     <>
       <Modal
@@ -268,14 +272,14 @@ function CreateTask(props) {
                   onChange={handleSelectChange}>
                   <option value={{}}>Select User</option>
                   {teamMembers.map((user) => (
-                    <option key={user.userId} value={user.name.username}>
-                      {user.name ? user.name.username : ''}
+                    <option key={user.userId} value={user.username}>
+                      {user.username ? user.username : ''}
                     </option>
                   ))}
                 </Form.Select>
                 <div className="d-flex flex-column create-task-selection">
                   {assignedList.map((user) => (
-                    <div key={user.userId}>{user.name.username}</div>
+                    <div key={user.userId}>{user.username}</div>
                   ))}
                 </div>
               </div>

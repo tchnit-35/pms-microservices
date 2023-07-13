@@ -52,13 +52,14 @@ const ToDoListItems = () => {
                 assignedToUsernames.push(user.data.firstname + " " + user.data.lastname);
               }
             }
-        console.log(assignedToUsernames)
+        
             return {
               ...task,
               assignedToUsernames,
+              status:"on-track"
             };
           })
-        );
+        );console.log(updatedTaskList)
         const filteredTaskList = await Promise.all(
           updatedTaskList.filter((task) => {
             const startDate = new Date(task.startDate);
@@ -112,10 +113,12 @@ const ToDoListItems = () => {
                 {task.startDate} - {task.endDate}
               </div>
               <div className="priority">
-                <div className="the-priority-low">{task.priority}</div>
+                <div className={`the-priority-${task.priority.toLowerCase()}`}>
+                  {task.priority}
+                </div>
               </div>
-              <div className="status">
-                <div className="the-status-ontrack">{task.status}</div>
+              <div className={`the-status-${task.status}`}>
+                {task.status}
               </div>
             </div>
           ))
