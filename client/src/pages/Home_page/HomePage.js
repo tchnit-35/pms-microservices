@@ -322,7 +322,7 @@ function HomePage() {
                   </div>
                 </div>
 
-                <div className="d-flex custom-mb">
+                <div className="d-flex mb-x">
                   {teamMembers.length === 0 ? (
                     <div className="error-msg">
                       Oops! Seems Your Alone in this
