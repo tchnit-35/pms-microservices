@@ -54,12 +54,13 @@ function NavigationBar({ handleClick }) {
 const handleAccept = async(invitation) =>{
  try{
   await axios.put(`http:localhost:3002/projects/${invitation.link}/join`,
-  {headers:{Authorization:`Bearer ${token}`}})
+  {headers:{Authorization:`Bearer ${token}`},
+});
   await axios.delete(
     `http://localhost:9090/invitations/${invitation._id}/confirm`,
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
     }
   );
