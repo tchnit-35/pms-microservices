@@ -74,7 +74,7 @@ const DoneListItems = () => {
               }
             );
               
-            if (user===null) {
+            if (user!==null) {
               return {
                 ...task,
                 assignedToUsername:

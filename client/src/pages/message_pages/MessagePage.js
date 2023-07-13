@@ -30,8 +30,8 @@ function MessagePage() {
   const [period, setPeriod] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSentMessage = (message) => {
-    const response = axios.post(
+  const handleSentMessage = async (message) => {
+    const response = await axios.post(
       `http://localhost:3005/conversations/${convoId}`,
       { message },
       {
@@ -40,16 +40,35 @@ function MessagePage() {
         },
       }
     );
-    console.log(Response);
+
+    const updateMsg = {...response.data, mark:'user'}
+    console.log(response)
+    setMessageList([...messageList, updateMsg])
   };
 
-  const fetchPeriod = (message) => {
-    if (message.sentAt.toLocaleString('en-US') != period) {
-      setPeriod(message.sentAt.toLocaleString('en-US'));
+  const fetchChangePeriod = (message) => {
+    const sentAt = new Date(message.sentAt);
+    const today = new Date();
+    let newPeriod;
+    if (
+      sentAt.getFullYear() === today.getFullYear() &&
+      sentAt.getMonth() === today.getMonth() &&
+      sentAt.getDate() === today.getDate()
+    ) {
+      newPeriod = 'Today';
+    } else if (
+      sentAt.getFullYear() === today.getFullYear() &&
+      sentAt.getMonth() === today.getMonth() &&
+      sentAt.getDate() === today.getDate() - 1
+    ) {
+      newPeriod = 'Yesterday';
+    } else {
+      newPeriod = sentAt.toLocaleDateString('en-US');
     }
-    return period;
-  };
-
+    if (newPeriod !== period) {
+      setPeriod(newPeriod);
+    }
+}
   const fetchConversations = async () => {
     const response = await axios.get(`http://localhost:3006/conversations`, {
       headers: {
@@ -235,13 +254,15 @@ function MessagePage() {
                 messageList.map((message) =>
                   message.mark == 'else' ? (
                     <>
-                      <div className="the-date-box mx-auto">
-                        <span className="the-date">{fetchPeriod}</span>
-                      </div>
+                      {fetchChangePeriod(message) ? (
+                        <div className="the-date-box mx-auto">
+                          <span className="the-date">{period}</span>
+                        </div>
+                      ) : null}
 
                       <div className="your-msg me-auto">
                         <div className="ctn">
-                          <div className="the-user-pic me-2">
+                          <div className="the-user-pic me-3">
                             <FontAwesomeIcon
                               icon={faUser}
                               style={{ color: '#FFFFFF' }}
@@ -250,7 +271,7 @@ function MessagePage() {
                           </div>
                           <div className="the-msg me-auto">
                             <span className="the-usernName">
-                              {message.senderUername}
+                              {message.senderUsername}
                             </span>
                             <span className="message">{message.message} </span>
                           </div>

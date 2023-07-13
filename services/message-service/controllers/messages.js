@@ -43,8 +43,8 @@ exports.sendMessage = async (req, res) => {
       if (err) {
         res.status(400).json(err);
       } else {
-        Message.updateOne({ _id: newMessage._id }, { $set: { sent: true } }).exec();
-        res.status(200).json({ message: "Conversation message sent", data });
+        const message = Message.updateOne({ _id: newMessage._id }, { $set: { sent: true } }).exec();
+        res.status(200).json(newMessage);
       }
     });
   } catch (err) {

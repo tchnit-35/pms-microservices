@@ -12,6 +12,7 @@ import {
   faPlus,
   faUser,
   faX,
+  faClipboard
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
@@ -99,8 +100,22 @@ function HomePage() {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        setPriorityTasks(response.data);
+      .then(async (response) => {
+        const updatedTaskList = await Promise.all(
+          response.data.map(async (task) => {
+            const project = await axios.get(
+              `http://localhost:3002/projects/${task.projectId}`,
+              {
+                headers: {
+                  Authorization: 'JWT ' + token,
+                },
+              }
+            );
+            const projectTitle = project.data.project_title;
+            return { ...task, projectTitle };
+          })
+        );
+        setPriorityTasks(updatedTaskList);
       });
 
     // Fetch co-team-members from backend
@@ -216,7 +231,7 @@ function HomePage() {
 
               <div className="messages-box" style={{ backgroundColor: '#fff' }}>
                 {publicMessages.map((message) => (
-                  <div className="d-flex">
+                  <div className="mb-3 d-flex">
                     <div className="home-profile-pic me-2">
                       <FontAwesomeIcon
                         icon={faUser}
@@ -232,10 +247,10 @@ function HomePage() {
                       <span className="msg">{message.message}</span>
                     </div>
 
-                    <div className="d-flex flex-column align-items-center">
-                      <span>
+                    <div className=" d-flex flex-column align-items-center">
+                      <span style={{fontSize:"12px",color:'#060606'}}>
                         {message.sentAt
-                          ? message.sentAt.toLocaleString('en-US', {
+                          ? new Date(message.sentAt).toLocaleString('en-US', {
                               hour: 'numeric',
                               minute: 'numeric',
                             })
@@ -266,9 +281,14 @@ function HomePage() {
                     .slice(0, 3)
                     .map((task) => (
                       <div className="d-flex high-priority-task" key={task._id}>
+                        <FontAwesomeIcon
+                        icon={faClipboard}
+                        size='lg'
+                        style={{color: '#ccccfc', marginRight: '20px' }}
+                        />
                         <span className="the-task me-5">{task.name}</span>
                         <div className="from-project me-auto">
-                          <span className="the-project">{task.project}</span>
+                          <span className="the-project">{task.projectTitle}</span>
                         </div>
                         <div>
                           <span className="me-3">{task.startDate}</span>
@@ -302,7 +322,7 @@ function HomePage() {
 
                 <div className="d-flex custom-mb">
                   {teamMembers.length === 0 ? (
-                    <div>Oops! Seems Your Alone in this</div>
+                    <div className='error-msg'>Oops! Seems Your Alone in this</div>
                   ) : (
                     <div className="d-flex mb-x">
                       {teamMembers.map((member) => (
@@ -316,7 +336,7 @@ function HomePage() {
                           </div>
                           <div className="d-flex flex-column">
                             <span className="team-member-name">
-                              {member.firstname + member.lastname}
+                              {member.firstname +" "+ member.lastname}
                             </span>
                             <span className="team-member-role">
                               {member.username}
@@ -340,7 +360,7 @@ function HomePage() {
                         <span className="team-member-name">{task.name}</span>
 
                         <div className="d-flex align-items-center justify-content-center">
-                          <span className="team-member-role me-2">Project</span>
+                          <span className="team-member-role me-4">Project</span>
                           <div className="bx">
                             <span className="team-member-role">
                               {task.projectTitle}
