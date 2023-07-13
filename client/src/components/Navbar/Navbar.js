@@ -33,7 +33,6 @@ import {
   faGear,
   faArrowRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
-import { response } from 'express';
 
 function NavigationBar({ handleClick }) {
   const navigate = useNavigate();
@@ -68,10 +67,8 @@ const handleAccept = async(invitation) =>{
 catch (err) {
   console.error(err);
 }
-
- 
  }
-}
+
 
   useEffect(() => {
     const fetchInvitations = async () => {
@@ -297,6 +294,7 @@ catch (err) {
       </Navbar>
     </>
   );
-}
+  }
+
 
 export default NavigationBar;

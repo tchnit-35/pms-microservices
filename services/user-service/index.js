@@ -18,7 +18,7 @@ app.use(
  
 const consumer = new kafka.ConsumerGroup({
   kafkaHost: 'localhost:9092',
-  groupId: 'user-profile-creation-group',
+  groupId: 'user-profile-creation-group', 
 }, 'user-creation');
 
 consumer.on('message', async function(message) {

@@ -92,18 +92,21 @@ const DoingListItems = () => {
         const filteredTaskList = await Promise.all(
           updatedTaskList.filter((task) => {
             const startDate = new Date(task.startDate);
-            const endDate = new Date(task.endDate);
-            const currentDate = new Date(Date.now());
+            const current = new Date().toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+            });
+            const currentDate = new Date(current).getTime()
             return (
               (task.toBeApproved === false &&
                 task.isCompleted === false &&
-                startDate >= currentDate) ||
+                startDate <= currentDate) ||
               (task.toBeApproved === true &&
                 task.isCompleted === true &&
-                startDate >= currentDate) ||
+                startDate <= currentDate) ||
               (task.toBeApproved === true &&
                 task.isCompleted === false &&
-                startDate >= currentDate)
+                startDate <= currentDate)
             );
           })
         );

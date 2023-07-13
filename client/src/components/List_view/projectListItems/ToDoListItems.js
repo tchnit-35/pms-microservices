@@ -32,15 +32,16 @@ const ToDoListItems = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        );          
+        );
+        console.log(response);
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
             const assignedToUsernames = [];
-          
-              if (task.assignedTo.length === 0) {
-                assignedToUsernames.push("Not Assigned");
-              } else {        
-            for (const userId of task.assignedTo) {
+
+            if (task.assignedTo.length === 0) {
+              assignedToUsernames.push('Not Assigned');
+            } else {
+              for (const userId of task.assignedTo) {
                 const user = await axios.get(
                   `http://localhost:9000/user/search?userId=${userId}`,
                   {
@@ -49,33 +50,29 @@ const ToDoListItems = () => {
                     },
                   }
                 );
-                assignedToUsernames.push(user.data.firstname + " " + user.data.lastname);
+                assignedToUsernames.push(
+                  user.data.firstname + ' ' + user.data.lastname
+                );
               }
             }
-        
+
             return {
               ...task,
               assignedToUsernames,
-              status:"on-track"
+              status: 'on-track',
             };
           })
-        );console.log(updatedTaskList)
+        );
+        console.log(updatedTaskList);
         const filteredTaskList = await Promise.all(
           updatedTaskList.filter((task) => {
-            const startDate = new Date(task.startDate);
-            const endDate = new Date(task.endDate);
-            const currentDate = new Date(Date.now());
-            return (
-              (task.toBeApproved === false &&
-                task.isCompleted === false &&
-                startDate <= currentDate) ||
-              (task.toBeApproved === true &&
-                task.isCompleted === true &&
-                startDate <= currentDate) ||
-              (task.toBeApproved === true &&
-                task.isCompleted === false &&
-                startDate <= currentDate)
-            );
+            const startDate = new Date(task.startDate).getTime();
+            const current = new Date().toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+            });;
+            const currentDate = new Date(current).getTime()
+            return (startDate > currentDate);
           })
         );
         setTaskList(filteredTaskList);
@@ -85,7 +82,7 @@ const ToDoListItems = () => {
     };
     fetchTaskList();
   }, [projectId, token]);
-  
+
   return (
     <>
       <div className="view-content mb-4">
@@ -117,9 +114,7 @@ const ToDoListItems = () => {
                   {task.priority}
                 </div>
               </div>
-              <div className={`the-status-${task.status}`}>
-                {task.status}
-              </div>
+              <div className={`the-status-${task.status}`}>{task.status}</div>
             </div>
           ))
         ) : (

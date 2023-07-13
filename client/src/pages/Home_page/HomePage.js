@@ -92,7 +92,6 @@ function HomePage() {
       setPublicMessages(publicMessages);
     };
     fetchMessages();
-    console.log(publicMessages);
     // Fetch tasks from backend
     axios
       .get('http://localhost:3003/tasks', {
@@ -137,6 +136,7 @@ function HomePage() {
               },
             }
           );
+          console.log(response);
           const userIds = response.data.map((user) => user.userId);
           const users = await Promise.all(
             userIds.map(async (userId) => {
@@ -313,6 +313,7 @@ function HomePage() {
                       className="select"
                       value={selectedProject}
                       onChange={handleSelectChange}>
+                      <option>- Choose Project -</option>
                       {allProjects.map((project) => (
                         <option key={project._id} value={project._id}>
                           {project.project_title}

@@ -92,13 +92,21 @@ const DoneListItems = () => {
           })
         );
         const filteredTaskList = updatedTaskList.filter((task) => {
+          const startDate = new Date(task.startDate);
+          const current = new Date().toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+          });
+          const currentDate = new Date(current).getTime()
           return (
             (task.toBeApproved === true &&
               task.isApproved === true &&
-              task.isCompleted === true) ||
+              task.isCompleted === true&&
+              startDate <= currentDate) ||
             (task.toBeApproved === false &&
               task.isApproved === false &&
-              task.isCompleted === true)
+              task.isCompleted === true&&
+              startDate <= currentDate)
           );
         }); // filter out tasks that are completed
         setTaskList(filteredTaskList);

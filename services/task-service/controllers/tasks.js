@@ -70,7 +70,7 @@ exports.createSubTask = async(req,res)=>{
 
 exports.createTask = async (req,res)=>{
   const projectId = req.params.projectId
-      const {name,startDate,endDate,priority,description} = req.body
+      const {name,startDate,endDate,priority,description,masterTaskId,depedencies,toBeApproved} = req.body
       const users = req.body.usernames
       const newTask = new Task({
         name,
@@ -78,6 +78,9 @@ exports.createTask = async (req,res)=>{
         endDate,
         priority,
         description,
+        masterTaskId,
+        toBeApproved,
+        depedencies,
         projectId
       })
       newTask
@@ -193,7 +196,7 @@ exports.getByProjectId = async (req, res) => {
 
   try {
     // Fetch all the master tasks for the project
-    const masterTasks = await Task.find({ projectId: projectId, masterTaskId: null });
+    const masterTasks = await Task.find({ projectId, masterTaskId: { $in: ["", null] } });
 
     // Fetch all the subtasks for each master task and group them under their respective master task
     const tasks = await Promise.all(

@@ -52,7 +52,7 @@ function CreateTask(props) {
           if (projectId !== '') {
             try {
               const response = await axios.get(
-                `http://localhost:3002/projects/${projectId}/users`,
+                `http://localhost:3002/projects/${projectId}/allUsers`,
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -110,6 +110,7 @@ function CreateTask(props) {
     dependencies: [],
   });
 
+
   const handleCreatetask = () => {
     const taskData = {
       name: formData.task_name,
@@ -120,7 +121,7 @@ function CreateTask(props) {
       masterTaskId: formData.masterTaskId,
       toBeApproved: formData.toBeApproved,
       usernames: formData.assignedTo,
-      dependencies: formData.description,
+      dependencies: formData.dependencies,
     };
 
     axios
@@ -170,7 +171,7 @@ function CreateTask(props) {
     });
   };
   const filteredProjectTasks = projectTasks.filter(task => task.endDate <= formData.startDate);
-  console.log(teamMembers)
+ console.log(formData)
   return (
     <>
       <Modal
@@ -250,7 +251,7 @@ function CreateTask(props) {
                 as="textarea"
                 className="custom-input"
                 rows={3}
-                placeholder="project description"
+                placeholder="Task Description"
                 name="description"
                 value={formData.description}
                 onChange={(e) =>
@@ -310,8 +311,15 @@ function CreateTask(props) {
                 aria-label="Default select example"
                 className="custom-input"
                 name="master_task"
-                value={formData.masterTaskId}>
-                <option>Master task</option>
+                value={formData.masterTaskId}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    masterTaskId: e.target.value, // Set toBeApproved to true when the checkbox is checked
+                  })
+                }
+                >
+                <option value="">Master task</option>
                 {projectTasks.map((task) => (
                   <option key={task._id} value={task._id}>
                     {task.name}
@@ -323,6 +331,12 @@ function CreateTask(props) {
                 aria-label="Default select example"
                 className="custom-input"
                 name="priority"
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    priority: e.target.value,
+                  })
+                }
                 value={formData.priority}>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -331,13 +345,19 @@ function CreateTask(props) {
             </Stack>
 
             <Form.Check
-              type="checkbox"
-              id="checkbox"
-              label="To be Approved"
-              className="custom-input custom-checkbox ms-auto"
-              name="to_be_approved"
-              value={formData.toBeApproved}
-            />
+  type="checkbox"
+  id="checkbox"
+  label="To be Approved"
+  className="custom-input custom-checkbox ms-auto"
+  name="to_be_approved"
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      toBeApproved: e.target.checked, // Set toBeApproved to true when the checkbox is checked
+    })
+  }
+  checked={formData.toBeApproved}
+/>
           </Form>
         </Modal.Body>
         <Modal.Footer className="d-flex align-items-center justify-content-center">
