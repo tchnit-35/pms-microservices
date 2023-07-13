@@ -81,3 +81,7 @@
 option::placeholder {
   font-size: 13px;
 }
+.create-task-selection{
+  margin-top: 7.5px;
+  font-size: 12px;
+}

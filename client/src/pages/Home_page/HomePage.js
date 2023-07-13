@@ -12,7 +12,7 @@ import {
   faPlus,
   faUser,
   faX,
-  faClipboard
+  faClipboard,
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
@@ -248,7 +248,7 @@ function HomePage() {
                     </div>
 
                     <div className=" d-flex flex-column align-items-center">
-                      <span style={{fontSize:"12px",color:'#060606'}}>
+                      <span style={{ fontSize: '12px', color: '#060606' }}>
                         {message.sentAt
                           ? new Date(message.sentAt).toLocaleString('en-US', {
                               hour: 'numeric',
@@ -282,13 +282,15 @@ function HomePage() {
                     .map((task) => (
                       <div className="d-flex high-priority-task" key={task._id}>
                         <FontAwesomeIcon
-                        icon={faClipboard}
-                        size='lg'
-                        style={{color: '#ccccfc', marginRight: '20px' }}
+                          icon={faClipboard}
+                          size="lg"
+                          style={{ color: '#ccccfc', marginRight: '20px' }}
                         />
                         <span className="the-task me-5">{task.name}</span>
                         <div className="from-project me-auto">
-                          <span className="the-project">{task.projectTitle}</span>
+                          <span className="the-project">
+                            {task.projectTitle}
+                          </span>
                         </div>
                         <div>
                           <span className="me-3">{task.startDate}</span>
@@ -322,11 +324,13 @@ function HomePage() {
 
                 <div className="d-flex custom-mb">
                   {teamMembers.length === 0 ? (
-                    <div className='error-msg'>Oops! Seems Your Alone in this</div>
+                    <div className="error-msg">
+                      Oops! Seems Your Alone in this
+                    </div>
                   ) : (
-                    <div className="d-flex mb-x">
+                    <div className="d-flex">
                       {teamMembers.map((member) => (
-                        <div className="team-member-box me-4">
+                        <div className="team-member-box me-4 ">
                           <div className="home-profile-pic me-3">
                             <FontAwesomeIcon
                               icon={faUser}
@@ -336,7 +340,7 @@ function HomePage() {
                           </div>
                           <div className="d-flex flex-column">
                             <span className="team-member-name">
-                              {member.firstname +" "+ member.lastname}
+                              {member.firstname + ' ' + member.lastname}
                             </span>
                             <span className="team-member-role">
                               {member.username}
@@ -353,23 +357,27 @@ function HomePage() {
                     <span className="the-title">Recent</span>
                   </div>
                 </div>
-                {recentTasks &&
-                  recentTasks.map((task) => (
-                    <div className="team-member-box">
-                      <div className="d-flex flex-column">
-                        <span className="team-member-name">{task.name}</span>
+                <div className="d-flex">
+                  {recentTasks &&
+                    recentTasks.map((task) => (
+                      <div className="team-member-box">
+                        <div className="d-flex flex-column">
+                          <span className="team-member-name">{task.name}</span>
 
-                        <div className="d-flex align-items-center justify-content-center">
-                          <span className="team-member-role me-4">Project</span>
-                          <div className="bx">
-                            <span className="team-member-role">
-                              {task.projectTitle}
+                          <div className="d-flex align-items-center justify-content-center">
+                            <span className="team-member-role me-4">
+                              Project
                             </span>
+                            <div className="bx">
+                              <span className="team-member-role">
+                                {task.projectTitle}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
             </div>
           </div>

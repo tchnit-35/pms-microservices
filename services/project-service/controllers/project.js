@@ -22,6 +22,19 @@ exports.getProjectUsers = async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+exports.getAllProjectUsers = async (req, res) => {
+  try {
+    const userIds = await UserProject.find(
+      { projectId: req.params.projectId },
+      { userId: 1 }
+    ).lean(); // Use lean() to improve performance (optional)
+
+    return res.status(200).json(userIds);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
 exports.getFutureProjects = async (req, res) => {

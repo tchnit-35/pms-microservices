@@ -13,7 +13,7 @@ import {
 import ToDoListItems from "./myTasksListItems/ToDoListItems";
 import DoneListItems from "./myTasksListItems/DoneListItems";
 import DoingListItems from "./myTasksListItems/DoingListItems";
-import CreateTask from "./CreateTask";
+
 
 function ListView() {
   const [isToDoVisible, setToDoVisible] = useState(false);
@@ -42,11 +42,7 @@ function ListView() {
       <div className="unselectable">
         {/*add task, filter, sort*/}
 
-        <div className="d-flex align-items-center actions mb-2">
-          <div className="add-task me-4" onClick={handleShow}>
-            <FontAwesomeIcon icon={faPlus} className="me-1" />
-            <span>Add Task</span>
-          </div>
+        <div className="d-flex align-items-center actions mb-2">  
 
           <div className="filter me-4">
             <FontAwesomeIcon
@@ -68,10 +64,6 @@ function ListView() {
             <span>Sort</span>
           </div>
         </div>
-
-        <CreateTask show={show} handleShow={handleShow} handleClose={handleClose} />
-
-
         
 
         {/*view content*/}

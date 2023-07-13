@@ -33,7 +33,6 @@ const TaskSchema = new mongoose.Schema({
       taskId: String,
     },
   ],
-
   toBeApproved: {
     type: Boolean,
     default: false,
@@ -44,13 +43,8 @@ const TaskSchema = new mongoose.Schema({
   },
   priority: {
     type: String,
-    enum: ['high', 'moderate', 'low'],
+    enum: ['High', 'Medium', 'Low'],
     default: 'high',
-  },
-  status: {
-    type: String,
-    enum: ['On-track', 'At Risk', 'On-Hold', 'Off-Track'],
-    default: 'On-track',
   },
   created_at: {
     type: Date,
@@ -63,6 +57,24 @@ const TaskSchema = new mongoose.Schema({
   masterTaskId: {
     type: String,
   },
+});
+TaskSchema.virtual('status').get(function() {
+  const currentDate = new Date();
+  const daysUntilDue = (this.endDate - currentDate) / (1000 * 60 * 60 * 24);
+
+  if (!this.isCompleted && daysUntilDue <= 2) {
+    return 'At Risk';
+  } else if (this.toBeApproved && !this.isApproved && this.isCompleted) {
+    return 'On-hold';
+  } else if (this.isCompleted && !this.toBeApproved && !this.isApproved && this.endDate >= currentDate) {
+    return 'Completed';
+  } else if (this.isCompleted && this.isApproved) {
+    return 'Approved';
+  } else if (!this.isCompleted && this.endDate >= currentDate) {
+    return 'On-track';
+  } else {
+    return 'Off-track';
+  }
 });
 
 module.exports = mongoose.model('Task', TaskSchema);

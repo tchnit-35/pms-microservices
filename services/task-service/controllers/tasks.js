@@ -70,12 +70,14 @@ exports.createSubTask = async(req,res)=>{
 
 exports.createTask = async (req,res)=>{
   const projectId = req.params.projectId
-      const {name,startDate,endDate} = req.body
-      const users = req.body.users
+      const {name,startDate,endDate,priority,description} = req.body
+      const users = req.body.usernames
       const newTask = new Task({
         name,
         startDate,
         endDate,
+        priority,
+        description,
         projectId
       })
       newTask

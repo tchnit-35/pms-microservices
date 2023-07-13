@@ -65,29 +65,27 @@ const DoneListItems = () => {
         console.log(response)
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
-            const user = await axios.get(
-              `http://localhost:9000/user/search?userId=${task.assignedTo}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
+            const assignedToUsernames = [];
+              if (task.assignedTo.length == 0) {
+                assignedToUsernames.push("Not Assigned");
+              } else {        
+            for (const userId of task.assignedTo) {
+                const user = await axios.get(
+                  `http://localhost:9000/user/search?userId=${userId}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+                assignedToUsernames.push(user.data.firstname + " " + user.data.lastname);
               }
-            );
-              
-            if (user!==null) {
-              return {
-                ...task,
-                assignedToUsername:
-                  user.data.firstname + ' ' + user.data.lastname,
-              };
             }
-            else {
-              return {
-                ...task,
-                assignedToUsername:
-                'Not Assigned' ,
-              };
-            }
+        
+            return {
+              ...task,
+              assignedToUsernames,
+            };
           })
         );
         const filteredTaskList = updatedTaskList.filter((task) => {
@@ -107,6 +105,7 @@ const DoneListItems = () => {
     };
     fetchTaskList();
   }, [projectId, token]);
+  console.log(taskList)
   return (
     <>
       <div className="view-content mb-4">
@@ -154,7 +153,7 @@ const DoneListItems = () => {
                   />
                 </div>
                 <span style={{ fontStyle: 'capitalize' }}>
-                  {task.assignedToUsername}
+                  {task.assignedToUsernames}
                 </span>
               </div>
               <div className="due-date">

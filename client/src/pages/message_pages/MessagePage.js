@@ -139,9 +139,8 @@ function MessagePage() {
   }, []);
 
   useEffect(() => {
-    console.log(convoId);
-    fetchMessages(convoId);
-  }, [convoId]);
+    fetchMessages(convoId)
+  }, [convoId]);  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

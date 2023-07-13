@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./MyTasks.css";
 import ListView from "../../components/List_view/myTaskListView";
+import BoardView from "../../components/bord_view/BoardView";
 import { Process } from "../../components/Timeline_view/Process";
 
 import NavigationBar from "../../components/Navbar/Navbar";
@@ -35,7 +36,7 @@ function MyTasks() {
         setViewContent("list");
         break;
       case "timeline":
-        setViewContent("timeline");
+        setViewContent("board");
         break;
       default:
         //console.log("Unknown view selected:", view);
@@ -132,8 +133,8 @@ function MyTasks() {
                 List
               </div>
               <div
-                className={`${getViewClass("timeline")} me-4`}
-                onClick={() => handleViewClick("timeline")}
+                className={`${getViewClass("board")} me-4`}
+                onClick={() => handleViewClick("board")}
               >
                 Board
               </div>
@@ -147,7 +148,7 @@ function MyTasks() {
 
             {/*Timeline body*/}
 
-            {viewContent === "timeline" && <Process />}
+            {viewContent === "timeline" && <BoardView />}
 
             {!viewContent && <p>No view content selected.</p>}
           </div>

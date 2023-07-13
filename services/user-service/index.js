@@ -15,7 +15,7 @@ app.use(
     credentials: true,
   })
 );  
-
+ 
 const consumer = new kafka.ConsumerGroup({
   kafkaHost: 'localhost:9092',
   groupId: 'user-profile-creation-group',

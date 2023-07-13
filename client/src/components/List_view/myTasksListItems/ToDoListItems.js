@@ -10,48 +10,36 @@ const ToDoListItems = () => {
   const { projectId } = useParams();
   const token = localStorage.getItem('token');
   const [taskList, setTaskList] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
 
-  const handleCheckClick = async (task) => {
-    const taskId = task._id;
-    setIsChecked(!isChecked);
-    const response = await axios.put(`http://localhost:3003/tasks/${taskId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
+
 
   useEffect(() => {
     const fetchTaskList = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3003/projects/${projectId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`http://localhost:3003/tasks`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
-            const project = await axios.get(
-              `http://localhost:3002/projects/${task.projectId}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-
-            return { ...task, Project: project.data.project_title };
+            const project = await axios.get(`http://localhost:3002/projects/${task.projectId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            
+            return { ...task, Project: project.data.project_title, projectScope: project.data.endDate };
           })
         );
         const filteredTaskList = await Promise.all(
           updatedTaskList.filter((task) => {
             const startDate = new Date(task.startDate);
-            const currentDate = new Date(Date.now);
-            return task.isCompleted === false && startDate > currentDate;
+            const currentDate = new Date(Date.now());
+            return (task.toBeApproved===false &&task.isCompleted ===false&& startDate < currentDate )
+            || (task.toBeApproved===true && task.isCompleted ===true&& startDate < currentDate )
+            || (task.toBeApproved===true && task.isCompleted ===false&& startDate < currentDate )
           })
         );
         setTaskList(filteredTaskList);
@@ -60,7 +48,8 @@ const ToDoListItems = () => {
       }
     };
     fetchTaskList();
-  }, [projectId, token]);
+  }, [projectId])
+  
   return (
     <>
       <div className="view-content mb-4">

@@ -49,9 +49,9 @@ const DoingListItems = () => {
           updatedTaskList.filter((task) => {
             const startDate = new Date(task.startDate);
             const currentDate = new Date(Date.now());
-            return (task.toBeApproved===false &&task.isCompleted ===false&& startDate <= currentDate )
-            || (task.toBeApproved===true && task.isCompleted ===true&& startDate <= currentDate )
-            || (task.toBeApproved===true && task.isCompleted ===false&& startDate <= currentDate )
+            return (task.toBeApproved===false &&task.isCompleted ===false&& startDate >= currentDate )
+            || (task.toBeApproved===true && task.isCompleted ===true&& startDate >= currentDate )
+            || (task.toBeApproved===true && task.isCompleted ===false&& startDate >= currentDate )
           })
         );
         setTaskList(filteredTaskList);

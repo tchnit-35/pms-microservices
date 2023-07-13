@@ -65,29 +65,27 @@ const DoingListItems = () => {
 
         const updatedTaskList = await Promise.all(
           response.data.map(async (task) => {
-            const user = await axios.get(
-              `http://localhost:9000/user/search?userId=${task.assignedTo}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
+            const assignedToUsernames = [];
+              if (task.assignedTo.length == 0) {
+                assignedToUsernames.push("Not Assigned");
+              } else {        
+            for (const userId of task.assignedTo) {
+                const user = await axios.get(
+                  `http://localhost:9000/user/search?userId=${userId}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+                assignedToUsernames.push(user.data.firstname + " " + user.data.lastname);
               }
-            );
-            if (user===null) {
-              return {
-                ...task,
-                assignedToUsername:
-                  user.data.firstname + ' ' + user.data.lastname,
-              };
             }
-            else {
-              return {
-                ...task,
-                assignedToUsername:
-                'Not Assigned' ,
-              };
-            }
-             
+        
+            return {
+              ...task,
+              assignedToUsernames,
+            };
           })
         );
         const filteredTaskList = await Promise.all(
@@ -98,13 +96,13 @@ const DoingListItems = () => {
             return (
               (task.toBeApproved === false &&
                 task.isCompleted === false &&
-                startDate <= currentDate) ||
+                startDate >= currentDate) ||
               (task.toBeApproved === true &&
                 task.isCompleted === true &&
-                startDate <= currentDate) ||
+                startDate >= currentDate) ||
               (task.toBeApproved === true &&
                 task.isCompleted === false &&
-                startDate <= currentDate)
+                startDate >= currentDate)
             );
           })
         );
@@ -158,7 +156,7 @@ const DoingListItems = () => {
                     size="xs"
                   />
                 </div>
-                <span>{task.assignedToUsername}</span>
+                <span>{task.assignedToUsernames}</span>
               </div>
               <div className="due-date">
                 {task.startDate} - {task.endDate}
