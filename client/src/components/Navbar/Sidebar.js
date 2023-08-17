@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sidebar.css";
+
+import CreateProject from "../../components/CreateProject/CreateProject";
+
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faPeopleGroup,
   faFolder,
   faChevronDown,
   faClipboardList,
   faHouse,
-  faBell,
+  faMessage,
   faTag,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -27,9 +32,9 @@ const SideMenu = ({ isOpen }) => {
   const [legacyProjects, setLegacyProjects] = useState([]);
   const [publicConversations, setPublicConversations] = useState([]);
   const [privateConversations, setPrivateConversations] = useState([]);
+  const [show, setShow] = useState(false);
 
   const token = localStorage.getItem("token");
-  console.log(token)
 
   useEffect(() => {
     // Fetch current projects from backend
@@ -39,7 +44,8 @@ const SideMenu = ({ isOpen }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => setCurrentProjects(response.data));
+      .then((response) => {
+        setCurrentProjects(response.data)});
 
     // Fetch future projects from backend
     axios
@@ -57,10 +63,11 @@ const SideMenu = ({ isOpen }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => setLegacyProjects(response.data));
-    
-      //Fetch Conversations from backend
-      axios
+      .then((response) =>{
+        setLegacyProjects(response.data)});
+
+    //Fetch Conversations from backend
+    axios
       .get("http://localhost:3006/conversations/recent", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -68,15 +75,10 @@ const SideMenu = ({ isOpen }) => {
       })
       .then((response) => {
         const { publicConversations, privateConversations } = response.data;
-        
         setPublicConversations(publicConversations);
         setPrivateConversations(privateConversations);
       });
-  
   }, []);
-  console.log(privateConversations)
-  console.log(legacyProjects)
-
   const handleCurrentProjectsClick = () => {
     setIsProjectOneVisible(!isProjectOneVisible);
   };
@@ -92,21 +94,39 @@ const SideMenu = ({ isOpen }) => {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
 
-  // const Project = ({ icon, color, projectName }) => {
-  //   return (
-  //     <div className="project unselectable current-project-folder">
-  //       <FontAwesomeIcon icon={icon} style={{ color: color }} size="lg" />
-  //       <span className="project-name">{projectName}</span>
-  //     </div>
-  //   );
-  // };
+  const navigate = useNavigate();
+
+  function moveToHome() {
+    navigate("/HomePage");
+  }
+
+  function moveToInbox() {
+    navigate("/MessagePage");
+  }
+
+  function moveToMyTask() {
+    navigate("/MyTask");
+  }
+
+
+  const Project = ({ icon, color, projectName }) => {
+    return (
+      <div className="project unselectable current-project-folder">
+        <FontAwesomeIcon icon={icon} style={{ color: color }} size="lg" />
+        <span className="project-name">{projectName}</span>
+      </div>
+    );
+  };
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
       <div className={`sidemenu ${isOpen ? "sidemenu-open" : "closed"}`}>
         <div className="sb">
           <div className="navigate unselectable">
-            <div className="cr">
+            <div className="cr"  onClick={handleShow}>
               <table>
                 <tbody>
                   <tr>
@@ -123,7 +143,9 @@ const SideMenu = ({ isOpen }) => {
               </table>
             </div>
 
-            <div className="home">
+            <CreateProject show={show} handleShow={handleShow} handleClose={handleClose} />
+
+            <div className="home" onClick={moveToHome}>
               <table>
                 <tbody>
                   <tr>
@@ -138,7 +160,7 @@ const SideMenu = ({ isOpen }) => {
               </table>
             </div>
 
-            <div className="my-task">
+            <div className="my-task" onClick={moveToMyTask}>
               <table>
                 <tbody>
                   <tr>
@@ -153,15 +175,15 @@ const SideMenu = ({ isOpen }) => {
               </table>
             </div>
 
-            <div className="inbox">
+            <div className="inbox" onClick={moveToInbox}>
               <table>
                 <tbody>
                   <tr>
                     <td style={{ padding: "3px" }}>
-                      <FontAwesomeIcon icon={faBell} />
+                      <FontAwesomeIcon icon={faMessage} />
                     </td>
                     <td>
-                      <span>Inbox</span>
+                      <span>Streams</span>
                     </td>
                   </tr>
                 </tbody>
@@ -191,7 +213,7 @@ const SideMenu = ({ isOpen }) => {
                         <FontAwesomeIcon
                           icon={faChevronDown}
                           rotation={isProjectOneVisible ? 180 : 0}
-                          style={{ color: "#DEDEDE" }}
+                          style={{ color: "#DEDEDE",transition:'0.5s' }}
                           size="sm"
                         />
                       </td>
@@ -200,23 +222,31 @@ const SideMenu = ({ isOpen }) => {
                 </table>
               </div>
               {isProjectOneVisible && (
-  <>
-    {currentProjects.length === 0 ? (
-      <span className="project-name">No Current project found</span>
-    ) : (
-      <ul style={{listStyle:'none'}}>
-        {currentProjects.map((project) => (
-          <li key={project._id} >
-            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
-            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
-              {project.project_title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    )}
-  </>
-)}
+                <>
+                  {currentProjects.length === 0 ? (
+                    <span className="project-name">No Current project found</span>
+                  ) : (
+                    <ul style={{ listStyle: "none",transition:'0.5s'}}>
+                      {currentProjects.map((project) => (
+                        <li key={project._id}>
+                          <FontAwesomeIcon
+                            icon={faClipboardList}
+                            style={{ color: "#9DC284" }}
+                            size="sm"
+                          />
+                          <Link
+                            to={`/Project/${project._id}`}
+                            style={{ marginLeft: "10px", textDecoration: "none" }}
+                            className="project-name"
+                          >
+                            {project.project_title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )}
             </div>
 
             {/*future projects*/}
@@ -236,7 +266,7 @@ const SideMenu = ({ isOpen }) => {
                         <FontAwesomeIcon
                           icon={faChevronDown}
                           rotation={isFutureProjectsVisible ? 180 : 0}
-                          style={{ color: "#DEDEDE" }}
+                          style={{ color: "#DEDEDE" ,transition:'0.5s' }}
                           size="sm"
                         />
                       </td>
@@ -245,23 +275,31 @@ const SideMenu = ({ isOpen }) => {
                 </table>
               </div>
               {isFutureProjectsVisible && (
-  <>
-    {futureProjects.length === 0 ? (
-      <span className="project-name">No Future project found</span>
-    ) : (
-      <ul style={{listStyle:'none'}}>
-        {futureProjects.map((project) => (
-          <li key={project._id} >
-            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
-            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
-              {project.project_title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    )}
-  </>
-)}
+                <>
+                  {futureProjects.length === 0 ? (
+                    <span className="project-name">No Future project found</span>
+                  ) : (
+                    <ul style={{ listStyle: "none" }}>
+                      {futureProjects.map((project) => (
+                        <li key={project._id}>
+                          <FontAwesomeIcon
+                            icon={faClipboardList}
+                            style={{ color: "#9DC284" }}
+                            size="sm"
+                          />
+                          <Link
+                            to={`/Project/${project._id}`}
+                            style={{ marginLeft: "10px", textDecoration: "none" }}
+                            className="project-name"
+                          >
+                            {project.project_title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )}
             </div>
 
             {/*legacy projects*/}
@@ -281,7 +319,7 @@ const SideMenu = ({ isOpen }) => {
                         <FontAwesomeIcon
                           icon={faChevronDown}
                           rotation={isLegacyProjectsVisible ? 180 : 0}
-                          style={{ color: "#DEDEDE" }}
+                          style={{ color: "#DEDEDE",transition:'0.5s' }}
                           size="sm"
                         />
                       </td>
@@ -290,70 +328,118 @@ const SideMenu = ({ isOpen }) => {
                 </table>
               </div>
               {isLegacyProjectsVisible && (
-  <>
-    {legacyProjects.length === 0 ? (
-      <span style={{marginLeft:'10px'}} className="project-name">No Legacy project found</span>
-    ) : (
-      <ul style={{listStyle:'none'}}>
-        {legacyProjects.map((project) => (
-          <li key={project._id} >
-            <FontAwesomeIcon icon={faClipboardList} style={{ color:'#9DC284'}} size="sm"  />
-            <Link to={`/projects/${project._id}`} style={{marginLeft:'10px',textDecoration:'none',}} className='project-name'>
-              {project.project_title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    )}
-  </>
-)}
+                <>
+                  {legacyProjects.length === 0 ? (
+                    <span style={{ marginLeft: "10px" }} className="project-name">
+                      No Legacy project found
+                    </span>
+                  ) : (
+                    <ul style={{ listStyle: "none" }}>
+                      {legacyProjects.map((project) => (
+                        <li key={project._id}>
+                          <FontAwesomeIcon
+                            icon={faClipboardList}
+                            style={{ color: "#9DC284" }}
+                            size="sm"
+                          />
+                          <Link
+                            to={`/Project/${project._id}`}
+                            style={{ marginLeft: "10px", textDecoration: "none" }}
+                            className="project-name"
+                          >
+                            {project.project_title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )}
             </div>
           </div>
 
           <div className="sidebar-about mb-4">
             <span>Streams</span>
           </div>
-<>
-          
-          <div className="public-stream">
-            <span>Public</span>
-          </div>
-
-          <div>
-          {publicConversations.map((conversation) => (
-            !isEmptyObject(conversation)&&(
-          <div className="streams mb-4"  key={conversation._id}>
-            <Link className="contact-name" to={`/conversations/${conversation._id}`}>{conversation.topic}</Link>
-            <div className="last-message" >
-              <span className="me-3">{conversation.time}</span>
-              <span>{conversation.message}</span>
+          <>
+            <div className="public-stream">
+              <span>Public</span>
             </div>
-          </div>
-            )
-      ))}
-          </div>
 
-          <div className="private-stream">
-            <span>Private</span>
-          </div>
-
-          <div>
-  {privateConversations.map((conversation) => (
+            <div>
+            {publicConversations.map(
+  (conversation) =>
     !isEmptyObject(conversation) && (
       <div className="streams mb-4" key={conversation._id}>
-        <Link className="contact-name" to={`/conversations/${conversation._id}`}>{conversation.topic}</Link>
+        <Link className="contact-name" to={`/MessagePage?id=${conversation._id}`}>
+        <FontAwesomeIcon icon={faPeopleGroup} size='sm' style={{marginRight:"10px"}}/>
+          {conversation.topic}
+        </Link>
         <div className="last-message">
-          <span className="me-3">{conversation.time}</span>
-          <span className="message">{conversation.message.length > 20 ? conversation.message.substring(0, 17) + '...' : conversation.message}</span>
+          {conversation.message || conversation.time ? (
+            <>
+              {conversation.time && (
+                <span className="me-3">{conversation.time}</span>
+              )}
+              {conversation.message ? (
+                <span className="message">
+                  {conversation.message.length > 20
+                    ? conversation.message.substring(0, 17) + "..."
+                    : conversation.message}
+                </span>
+              ) : (
+                <span>No message sent yet</span>
+              )}
+            </>
+          ) : (
+            <span>No message sent yet</span>
+          )}
         </div>
       </div>
     )
-  ))}
-</div>
-    </>
+)}
+            </div>
+
+            <div className="private-stream">
+              <span>Private</span>
+            </div>
+
+            <div>
+            {privateConversations.map(
+  (conversation) =>
+    !isEmptyObject(conversation) && (
+      <div className="streams mb-4" key={conversation._id}>
+        <Link className="contact-name" to={`/MessagePage?id=${conversation._id}`}>
+        <FontAwesomeIcon icon={faPeopleGroup} size='sm' style={{marginRight:"10px"}}/>
+          {conversation.topic}
+        </Link>
+        <div className="last-message">
+          {conversation.message || conversation.time ? (
+            <>
+              {conversation.time && (
+                <span className="me-3">{conversation.time}</span>
+              )}
+              {conversation.message ? (
+                <span className="message">
+                  {conversation.message.length > 20
+                    ? conversation.message.substring(0, 17) + "..."
+                    : conversation.message}
+                </span>
+              ) : (
+                <span>No message sent yet</span>
+              )}
+            </>
+          ) : (
+            <span>No message sent yet</span>
+          )}
         </div>
       </div>
-      
+    )
+)}
+            </div>
+          </>
+        </div>
+      </div>
     </>
   );
 };

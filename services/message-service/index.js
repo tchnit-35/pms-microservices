@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.use(  
   cors({
-    origin: "http://localhost:"+PORT.toString(),
+    origin: "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
@@ -26,7 +26,7 @@ app.use("/", messageRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running at %d!",PORT);
-});
+}); 
 
  //Load db
  connectDb()

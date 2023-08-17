@@ -99,6 +99,7 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  transition:0.5s
 }
 
 .project {
@@ -159,6 +160,8 @@
   color: #fbe5a2;
   font-weight: 400;
   margin-bottom: 5px;
+  padding-left: 17px;
+  
 }
 
 .private-stream{
@@ -167,6 +170,7 @@
   color: #cea8bc;
   font-weight: 400;
   margin-bottom: 5px;
+  padding-left: 17px;
 }
 
 .streams{

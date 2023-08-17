@@ -4,7 +4,7 @@ const UserConversation = require("../models/UserConversation")
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const consumer = new kafka.Consumer(
   client,
-  [{ topic: 'project-create', partition: 0 },{ topic: 'project-deletion', partition: 0 },{ topic: 'project-update', partition: 0 },{ topic: 'join-project', partition: 0 },{ topic: 'message-sent', partition: 0 }],
+  [{ topic: 'project-create', partitions: 2 , replicationFactor: 1  },{ topic: 'project-deletion', partitions: 2 , replicationFactor: 1},{ topic: 'project-update', partitions: 2, replicationFactor: 1 },{ topic: 'join-project', partitions: 2 , replicationFactor: 1},{ topic: 'message-sent', partitions: 2 , replicationFactor: 1}],
   { autoCommit: true }
 );
 

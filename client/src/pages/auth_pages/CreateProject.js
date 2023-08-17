@@ -13,15 +13,15 @@ import axios from "axios";
 const CreateProject = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const projectName = form.elements.projectName.value;
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const projectName = form.elements.projectName.value;
 
-    if (!projectName) {
-      alert("Please fill in all the fields");
-      return;
-    }
+      if (!projectName) {
+        alert("Please fill in all the fields");
+        return;
+      }
 
     const projectData = {
       project_title: projectName
@@ -37,7 +37,7 @@ const CreateProject = () => {
       .then((response) => {
         // handle the response from the backend
         console.log(response.data);
-        navigate("/project"); // redirect the user to the projects page
+        navigate("/HomePage"); // redirect the user to the projects page
       })
       .catch((error) => {
         // handle the error

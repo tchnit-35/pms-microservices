@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,6 +32,13 @@ function Login() {
   const [PasswordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+  navigate('/HomePage');
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,17 +65,20 @@ function Login() {
 
         // Handle the successful login
         const userId = response.data.userId;
-        document.cookie = `userId=${userId}; path=/Project`;
+        document.cookie = `userId=${userId}; path=/HomePage`;
 
         setEmail("");
         setPassword("");
 
-        console.log("Registration successful");
-        console.log(response.data);
-
+       // console.log("Login successful");
+        //console.log(response.data);
+        
+        const tokenPayload = JSON.parse(atob(response.data.token.split('.')[1])); // decode the token payload from base64
+        const expirationTime = tokenPayload.exp * 1000; // convert the expiration time from seconds to milliseconds
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem('tokenExpirationTime', expirationTime);
 
-        navigate("/Project");
+        navigate("/HomePage");
       } catch (error) {
         // Handle the registration error
         console.log("Registration error:", error.message);
@@ -136,7 +146,7 @@ function Login() {
                     type="submit"
                     className="form-control mt-3 mb-3 btn-custom"
                   >
-                    Sign up
+                    Sign In 
                   </Button>
 
                   {/* Error */}

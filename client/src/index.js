@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { useEffect,useState } from 'react';
 
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/auth_pages/Signup'
@@ -10,6 +11,10 @@ import CreateProject from './pages/auth_pages/CreateProject';
 import Confirm from './pages/auth_pages/Confirm';
 import Project from './pages/Project_pages/Project';
 import LoginAfterRegister from './pages/auth_pages/LoginAfterRegister';
+import HomePage from './pages/Home_page/HomePage';
+import Settings from './pages/Settings_pages/Settings';
+import MessagePage from './pages/message_pages/MessagePage';
+import MyTasks from './pages/my-tasks/MyTasks';
 
 import {
   createBrowserRouter,
@@ -38,16 +43,44 @@ const router = createBrowserRouter([
     element: <Confirm />,
   },
   {
-    path: "/Project",
+    path: "/Project/:projectId",
     element: <Project />,
   },
   {
     path: "/LoginAfterRegister",
     element: <LoginAfterRegister />,
   },
+  {
+    path: "/HomePage",
+    element: <HomePage />,
+  },
+  {
+    path: "/Settings",
+    element: <Settings />,
+  },
+  {
+    path: "/MessagePage",
+    element: <MessagePage />,
+  },
+  {
+    path: "/MyTask",
+    element: <MyTasks />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+function App(){const [token, setToken] = useState(localStorage.getItem('token'));
+useEffect(() => {
+  const tokenExpirationTime = localStorage.getItem('tokenExpirationTime');
+  if (tokenExpirationTime && Date.now() > tokenExpirationTime) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpirationTime');
+    setToken(null);
+  }
+}, []);
+}
+
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />

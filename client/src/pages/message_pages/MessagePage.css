@@ -1,0 +1,285 @@
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.inbox-container {
+  display: flex;
+  flex-direction: row;
+  max-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+.sidemenu-open + .inbox-container {
+  margin-left: 240px;
+}
+
+.first-part {
+  width: 27%;
+  height: 710px;
+  -webkit-box-shadow: 0px 0px 8px 3px rgba(212, 212, 212, 0.5);
+  box-shadow: 0px 0px 8px 3px rgba(212, 212, 212, 0.5);
+}
+
+.about-chats {
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: flex-end;
+  padding-top: 10px;
+  padding-left: 25px;
+  padding-right: 15px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.chats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 600;
+  width: 55px;
+  border-bottom: 1px solid #12664f;
+}
+
+.new-chat {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.filter-chats {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.a-team-message {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.a-team-message:hover {
+  background-color: rgb(231, 231, 231, 0.4);
+}
+
+.a-private-message {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.a-private-message:hover {
+  background-color: rgb(231, 231, 231, 0.4);
+}
+
+.group-name {
+  max-width: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sender-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sender {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.message-container {
+  max-width: 250px;
+  overflow: hidden;
+}
+
+.grp-message {
+  font-size: 12px;
+  font-weight: 300;
+  max-width: 100px; /* Set a maximum width for the span */
+  overflow: hidden; /* Hide the overflowing text */
+  white-space: nowrap; /* Prevent line breaks */
+  text-overflow: ellipsis;
+}
+
+.grp-message::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 30px;
+  height: 100%;
+}
+
+.msg-time {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 17px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.seperator {
+  margin-left: 12%;
+  width: 88%;
+  border-bottom: 1px dotted gainsboro;
+}
+
+.icon-position {
+  padding-left: 5px;
+}
+
+.second-part {
+  /*border: 1px solid black;*/
+  margin-left: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 710px;
+  width: 73%;
+}
+
+.text-area {
+  display: flex;
+
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 63px;
+  -webkit-box-shadow: 0px 0px 8px 3px rgba(212, 212, 212, 0.5);
+  box-shadow: 0px 0px 8px 3px rgba(212, 212, 212, 0.5);
+}
+
+.ctm-message-input {
+  width: 85%;
+  height: 60%;
+  padding-left: 20px;
+  border: 1px solid rgb(112, 112, 112, 0.3);
+  border-radius: 10px;
+  margin-right: 15px;
+  font-size: 13px;
+}
+
+.ctm-message-input::placeholder {
+  font-size: 13px;
+}
+
+.messages-box {
+  height: 100%;
+  width: 100%;
+  background-color: #efeff2;
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+}
+
+.the-date-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(250, 244, 136, 0.5);
+  height: 30px;
+  width: 120px;
+  border-radius: 15px;
+  overflow: auto;
+  margin-bottom: 50px;
+}
+
+.the-date {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(18, 18, 18, 0.65);
+}
+
+.the-user-pic {
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #7a82ab;
+  margin-right: 15px;
+  border-radius: 15px;
+}
+
+.your-msg {
+  margin-left: 17px;
+  margin-right: 12px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  height: fit-content;
+  padding: 0 20px;
+  max-width: 50%;
+  margin-bottom: 10px;
+  border-radius: 15px 15px 0px 15px;
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(212, 212, 212, 0.5);
+  box-shadow: 0px 0px 6px 1px rgba(212, 212, 212, 0.5);
+}
+
+.my-msg {
+  margin-left: 17px;
+  margin-right: 12px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  height: fit-content;
+  padding: 0 20px;
+  max-width: 50%;
+
+  margin-bottom: 10px;
+  border-radius: 15px 15px 0px 15px;
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(212, 212, 212, 0.5);
+  box-shadow: 0px 0px 6px 1px rgba(212, 212, 212, 0.5);
+}
+
+.ctn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+}
+
+.the-msg {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  padding-right: 70px;
+}
+
+.the-usernName {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.message {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.the-time {
+  margin-top: 30px;
+  font-size: 10px;
+}

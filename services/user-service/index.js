@@ -6,9 +6,19 @@ const userRoute = require('./routes/users')
 const multer = require('multer');
 const kafka = require('kafka-node') 
 const UserProfile = require('./UserProfile');
+const cors = require('cors') 
+ 
+app.use(  
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE,PATCH",
+    credentials: true,
+  })
+);  
+ 
 const consumer = new kafka.ConsumerGroup({
   kafkaHost: 'localhost:9092',
-  groupId: 'user-profile-creation-group',
+  groupId: 'user-profile-creation-group', 
 }, 'user-creation');
 
 consumer.on('message', async function(message) {
@@ -28,7 +38,7 @@ consumer.on('message', async function(message) {
         useUnifiedTopology: true,
     }
 );
- 
+  
 // Set up multer storage engine
 const storage = multer.diskStorage({
     destination: './public/uploads/',
@@ -36,7 +46,7 @@ const storage = multer.diskStorage({
       cb(null, `${Date.now()}-${file.originalname}`);
     }
   });
-  
+   
   // Set up multer middleware for file upload
   const upload = multer({
     storage: storage,

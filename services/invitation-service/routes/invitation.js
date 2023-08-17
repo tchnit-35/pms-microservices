@@ -1,10 +1,12 @@
 const router = require('express').Router()
 const kafka = require('kafka-node');
-const { getInvitations } = require('../controllers/invitation')
+const { getInvitations, refuseInvitation, deleteInvitation } = require('../controllers/invitation')
 const { isAuth } = require('../../isAuthenticated')
 const Invitation = require('../models/Invitation')
 
 router.get('/',isAuth,getInvitations)
+router.delete('/:inviteId',isAuth,refuseInvitation)
+router.delete('/:inviteId/confirm',isAuth,deleteInvitation)
 
 // Create Invitation (consumer)
 const consumer = new kafka.ConsumerGroup({
@@ -13,10 +15,14 @@ const consumer = new kafka.ConsumerGroup({
 }, ['project-invite','conversation-invite']);
 
 consumer.on('message', async function(message) {
-  const { projectId, usernames,senderUsername,link } = JSON.parse(message.value);
+  const { value, topic } = message;
+  switch (topic) {
+    case 'project-invite':
+  const { projectId, usernames,senderUsername,link,projectTitle } = JSON.parse(value);
   try { 
     usernames.forEach(async username=>{
       const newInvitation = new Invitation({
+        content:`${username} has invited you to ${projectTitle}`,
         username,
         senderUsername,
         link,
@@ -26,9 +32,31 @@ consumer.on('message', async function(message) {
       await newInvitation.save()
     })
 
-    console.log('Invitation created:', projectId);
+    console.log('Project Invitation created:', projectId);
   } catch (err) {
     console.error('Error creating invitation :', err);
+  }
+  break
+  case 'conversation-invite':
+    const { convoId, targetUsernames,originUsername,convoLink} = JSON.parse(value);
+    try { 
+      targetUsernames.forEach(async username=>{
+        const newInvitation = new Invitation({
+          content:`${originUsername} has invited you to a Conversation Stream`,
+          username,
+          originUsername,
+          link,
+          convoId
+        })
+        console.log(' Conversation Invitation sent to:', username);
+        await newInvitation.save()
+      })
+  
+      console.log('Invitation created:', projectId);
+    } catch (err) {
+      console.error('Error creating invitation :', err);
+    }
+    break
   }
 });
 

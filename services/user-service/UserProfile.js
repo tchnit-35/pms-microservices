@@ -14,7 +14,7 @@ const UserProfileSchema = new mongoose.Schema({
     type:String,
     required:true
   },
-  lastname:{
+  lastname:{ 
     type:String,
     required:true
   },  

@@ -5,6 +5,17 @@ const Producer = kafka.Producer;
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
 const producer = new Producer(client);
 
+// exports.getUserMessages = async (req,res)=>{
+//   const userId = req.user.username;
+//   try {
+//     const receivedMessages = await Message.find({  senderUsername: { $ne: userId } } );
+//     await Message.find({ senderUsername: { $ne: userId } },{$set:{seen:true}} )
+//     res.status(200).json(receivedMessages );
+//   } catch (err) {
+//     res.status(401).json({ error: err.message });
+//   }
+// }
+
 exports.sendMessage = async (req, res) => {
   const conversationId = req.params.convoId;
   const senderUsername = req.user.username;
@@ -17,7 +28,6 @@ exports.sendMessage = async (req, res) => {
 
   try {
     await newMessage.save();
-
     const payload = {
       topic: "message-sent",
       messages: JSON.stringify({
@@ -33,8 +43,8 @@ exports.sendMessage = async (req, res) => {
       if (err) {
         res.status(400).json(err);
       } else {
-        Message.updateOne({ _id: newMessage._id }, { $set: { sent: true } }).exec();
-        res.status(200).json({ message: "Conversation message sent", data });
+        const message = Message.updateOne({ _id: newMessage._id }, { $set: { sent: true } }).exec();
+        res.status(200).json(newMessage);
       }
     });
   } catch (err) {
@@ -43,14 +53,16 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.getMessages = async (req, res) => {
-  const conversationId = req.params.convoid;
+  const conversationId = req.params.convoId;
   const userId = req.user.username;
   try {
-    const userMessages = await Message.find({ conversationId,  senderUsername: userId } );
-    const receivedMessages = await Message.find({ conversationId,   senderUsername: { $ne: userId } } );
-    await Message.find({ conversationId,   senderUsername: { $ne: userId } },{$set:{seen:true}} )
-    res.status(200).json({ Usermessages:userMessages,receivedMessages:receivedMessages });
+    const userMessages = await Message.find({ conversationId, senderUsername: userId }).lean();
+    const receivedMessages = await Message.find({ conversationId, senderUsername: { $ne: userId } }).lean();
+    await Message.updateMany({ conversationId, senderUsername: { $ne: userId } }, { $set: { beenSeen: true } });
+    const markedUserMessages = userMessages.map((message) => ({ ...message, mark: "user" }));
+    const markedReceivedMessages = receivedMessages.map((message) => ({ ...message, mark: "else" }));
+    res.status(200).json({ userMessages: markedUserMessages, receivedMessages: markedReceivedMessages });
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
-};
+}

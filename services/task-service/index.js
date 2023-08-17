@@ -1,4 +1,4 @@
-const amqp = require('amqplib')
+
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
@@ -7,23 +7,23 @@ const taskRoute = require("./routes/task");
 const Task = require('./models/Task');
 const app = express();
 const PORT  = 3003
-
+  
 //json parsing middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-//cors middleware
-
+//cors middleware 
+ 
 app.use(  
   cors({
-    origin: "http://localhost:"+PORT.toString(),
-    methods: "GET,POST,PUT,DELETE",
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   })
 );
-
-app.use("/", taskRoute);
+ 
+app.use("/", taskRoute); 
 
 app.listen(PORT, () => {
   console.log("Server is running at %d!",PORT);
@@ -31,5 +31,5 @@ app.listen(PORT, () => {
 
  //Load db
  connectDb()
-
+ 
 

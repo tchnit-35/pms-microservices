@@ -25,7 +25,7 @@
   transition: 0.5s;
   border-radius: 20px;
   height: 30px;
-  width: 130px;
+  width: 140px;
 }
 
 .invite-user:hover {
@@ -41,7 +41,8 @@
 }
 
 .custom-modal-body{
-    height: 80px;
+    min-height: auto;
+    padding-bottom: 45px;
 }
 
 .cf {
@@ -106,4 +107,30 @@
     font-weight: 500;
     color: #7a82ab;
     cursor: pointer;
+}
+
+.custom-dropdown{
+  font-size: 13px;
+  background-color: #12664f;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.custom-dropdown:hover{
+  background-color: #1f735d;
+}
+
+.search-result{
+  font-size: 15px;
+  padding-left: 15px;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.search-result:hover{
+  font-weight: 500;
+}
+
+.invited-user{
+  padding-left: 15px;
+  color: #7a94ab;
 }

@@ -176,4 +176,7 @@ router.get("/logout", isAuth, async (req, res) => {
   }
 });
 
+//Get all users according to query condition
+
+
 module.exports = router

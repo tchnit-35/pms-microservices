@@ -1,0 +1,74 @@
+.settings-container {
+  padding-top: 25px;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.sidemenu-open + .settings-container {
+  margin-left: 230px;
+}
+
+.head {
+  padding-left: 40px;
+  padding-right: 40px;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.the-user-detail {
+  padding-left: 40px;
+  padding-right: 40px;
+  display: flex;
+}
+
+.setting-user-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  width: 130px;
+  border-radius: 10px;
+  background-color: #7a82ab;
+}
+
+.user-name-email {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  top: 0;
+}
+
+.user-name {
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.user-email {
+  font-size: 17px;
+}
+
+.the-form {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+  padding-right: 40px;
+  width: 800px;
+}
+
+.form-custom-input {
+  width: 90%;
+  background-color: rgb(240, 240, 240);
+}
+
+.form-custom-input:focus {
+  background-color: rgb(240, 240, 240, 0.7);
+  border: none;
+}
+
+.stack-size {
+  width: 800px;
+}
+.xxx {
+  width: 350px;
+}

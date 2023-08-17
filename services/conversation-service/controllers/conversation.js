@@ -47,13 +47,28 @@ exports.getUserConversations = async (req, res) => {
   try {
     const userConvos = await UserConversation.find({ username });
     for (const userConvo of userConvos) {
-      const convo = await Conversation.findById(userConvo.conversationId);
-      const topic = convo.topic || getUsernames(convo,req.user.username); 
-      const conversation = [convo, topic];
+      const convo = await Conversation.findById(userConvo.conversationId, { lastMessage: 0 });
+      const lastMessage = await Conversation.findById(userConvo.conversationId, { lastMessage: 1 });
+      const topic = convo.topic || getUsernames(convo, req.user.username);
+      let conversation={}
+      if (!lastMessage.lastMessage.message) {
+        conversation = {
+          ...convo.toObject(),
+          message: "",
+          time: new Date(),
+          username: ""}
+        }else{
+          conversation = {
+            ...convo.toObject(),
+            message: lastMessage.lastMessage.message,
+            time: lastMessage.lastMessage.time.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric'}),
+            username: lastMessage.lastMessage.username}
+      }
+
       if (convo.type === "public" && convo.state === "active") {
-        publicConversations.push(conversation);
+        publicConversations.push([conversation, topic ]);
       } else if ((convo.type === "private" && convo.state === "active") || (convo.type === "private" && convo.createdBy === req.user.username)) {
-        privateConversations.push(conversation);
+        privateConversations.push([conversation, topic ]);
       }
     }
     res.status(200).json({ public: publicConversations, private: privateConversations });
@@ -77,11 +92,11 @@ exports.getMostRecentConversations = async (req, res) => {
       const convo = await Conversation.findById(userConvo.conversationId);
       const topic = convo.topic || await getUsernames(convo,req.user.username); 
       const conversation = { _id: convo._id, topic };
-      if (convo.lastMessage) {
+      if (convo.lastMessage.message) {
         conversation.message = convo.lastMessage.message;
         conversation.time = new Date(convo.lastMessage.time).toLocaleString(undefined, {hour: 'numeric', minute: 'numeric'});
-      }
-      if (conversation.type === "public") {
+      } 
+      if (convo.type === "public") {
         publicConversations.push(conversation);
       } else {
         privateConversations.push(conversation);
@@ -103,7 +118,7 @@ exports.getMostRecentConversations = async (req, res) => {
     // Get the most recent conversation for each type
     const mostRecentPublicConversation = publicConversations.slice(0,3);
     const mostRecentPrivateConversation = privateConversations.slice(0,3);
-
+    
     res.status(200).send({ publicConversations: mostRecentPublicConversation, privateConversations: mostRecentPrivateConversation });
   } catch (err) {
     res.status(500).json({
@@ -169,10 +184,10 @@ exports.inviteConversation = async (req,res)=>{
     topic: 'conversation-invite',
     messages: JSON.stringify(
       { 
-        projectId:req.params.convoId, 
-        usernames:req.body.usernames,
-        senderUsername:req.user.username,
-        link:`http://localhost:3002/projects/${req.params.convoId}/join`
+        convoId:req.params.convoId, 
+        targetUsernames:req.body.usernames,
+        originUsername:req.user.username,
+        convoLink:req.params.convoId
       }
       ),
   };
